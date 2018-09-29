@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">CF</string>
+    <string name="welcome">ברוכים הבאים! </string>
+    <string name="welcome_text">אני CF,  ואני האפליקציה\n שתעזור לכם לנהל את היום\n בקלות ובהנאה !</string>
+    <string name="welcome_button">בואו נצא לדרך</string>
+    <string name="title_activity_login">Sign in</string>\
+    <string name="title_fev1">FEV1</string>
+    <string name="fev1_percentage">73%</string>
+    <string name="save">שמור</string>
+    <string name="sign_up">הרשמה</string>
+    <string name="sign_in">התחברות</string>
+    <string name="continue_btn">המשך</string>
+    <string name="add_contacts">הוסף אנשי קשר</string>
+
+</resources>

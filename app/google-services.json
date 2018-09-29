@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "68472336388",
+    "firebase_url": "https://project-cf-e4da8.firebaseio.com",
+    "project_id": "project-cf-e4da8",
+    "storage_bucket": "project-cf-e4da8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:68472336388:android:dbdb81bf4759c67c",
+        "android_client_info": {
+          "package_name": "com.nastia.cf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "68472336388-sisdiljjbdrtt8ksep9h95lq7qg03vm6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nastia.cf",
+            "certificate_hash": "b2bf739357df44cb6f9bd891322f548e7360525c"
+          }
+        },
+        {
+          "client_id": "68472336388-a40f7f50cl3mudgpi9d6s293vndlf47v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARKlyXjcF3u_09nsdHha9v9Q9Cy3Rzo0c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "68472336388-a40f7f50cl3mudgpi9d6s293vndlf47v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class welcome extends AppCompatActivity {
+public class welcomeActivity extends AppCompatActivity {
 
 
     @Override
@@ -17,7 +17,7 @@ public class welcome extends AppCompatActivity {
         final Button nextBtn = findViewById(R.id.nextBtn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(welcome.this, signUp.class);
+                Intent intent = new Intent(welcomeActivity.this, signUpActivity.class);
                 startActivity(intent);
             }
         });

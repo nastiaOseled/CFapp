@@ -14,16 +14,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".welcome">
+        <activity android:name=".welcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".signUp" />
-        <activity android:name=".fev1_edit" />
-        <activity android:name=".signUp_details"></activity>
+        <activity android:name=".signUpActivity" />
+        <activity android:name=".fev1_editActivity" />
+        <activity android:name=".signUp_detailsActivity" />
+        <activity android:name=".menuActivity" />
+        <activity android:name=".questionsActivity" />
+        <activity android:name=".breathingActivity" />
+        <activity android:name=".MedicinesActivity"></activity>
     </application>
 
 </manifest>

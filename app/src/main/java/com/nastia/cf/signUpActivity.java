@@ -18,9 +18,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class signUp extends AppCompatActivity implements View.OnClickListener{
+public class signUpActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String TAG = signUp.class.getSimpleName();
+    private static final String TAG = signUpActivity.class.getSimpleName();
     private FirebaseAuth mAuth;
     private boolean isSignIn = true ;
     private TextView signUpBtn;
@@ -100,12 +100,12 @@ public class signUp extends AppCompatActivity implements View.OnClickListener{
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(signUp.this, signUp_details.class);
+                            Intent intent = new Intent(signUpActivity.this, signUp_detailsActivity.class);
                             startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(signUp.this, "ההרשמה נכשלה",
+                            Toast.makeText(signUpActivity.this, "ההרשמה נכשלה",
                                     Toast.LENGTH_SHORT).show();
                             
                         }
@@ -138,11 +138,12 @@ public class signUp extends AppCompatActivity implements View.OnClickListener{
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            Intent intent = new Intent(signUpActivity.this, menuActivity.class);
+                            startActivity(intent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(signUp.this, "ההתחברות נכשלה.",
+                            Toast.makeText(signUpActivity.this, "ההתחברות נכשלה.",
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -201,18 +202,18 @@ public class signUp extends AppCompatActivity implements View.OnClickListener{
 
     public void continueBtnListener(View v){
         if(isSignIn){
-            //signIn();
+            signIn(signin_email.getText().toString(),signin_psw.getText().toString());
         }
         else{
             if(signup_psw.getText().toString().equals( signup_psw2.getText().toString()) && terms.isChecked()){
                 createAccount(signup_email.getText().toString(),signup_psw.getText().toString());
             }
             else if(!terms.isChecked()){
-                Toast.makeText(signUp.this, "אשר את התקנון ותנאי השירות",
+                Toast.makeText(signUpActivity.this, "אשר את התקנון ותנאי השירות",
                         Toast.LENGTH_SHORT).show();
             }
             else{
-                Toast.makeText(signUp.this, "הסיסמאות אינן תואמות",
+                Toast.makeText(signUpActivity.this, "הסיסמאות אינן תואמות",
                         Toast.LENGTH_SHORT).show();
             }
         }

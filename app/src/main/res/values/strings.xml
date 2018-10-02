@@ -11,5 +11,12 @@
     <string name="sign_in">התחברות</string>
     <string name="continue_btn">המשך</string>
     <string name="add_contacts">הוסף אנשי קשר</string>
-
+    <string name="last_check">ביקורת אחרונה</string>
+    <string name="start">אני מתחיל !</string>
+    <string name="b2">והחזק</string>
+    <string name="b3">3</string>
+    <string name="b4">במשך</string>
+    <string name="b5">שניות</string>
+    <string name="b1">קח נשימה עמוקה</string>
+    <string name="med">תרופות</string>
 </resources>

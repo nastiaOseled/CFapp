@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/rsz_background_blue"
     android:orientation="vertical"
-    tools:context=".welcome">
+    tools:context=".welcomeActivity">
 
 
     <ImageView
@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="45dp"
-        app:srcCompat="@drawable/logo_big" />
+        app:srcCompat="@drawable/rsz_logo_big" />
 
     <TextView
         android:layout_width="221dp"

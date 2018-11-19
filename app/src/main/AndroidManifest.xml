@@ -27,7 +27,8 @@
         <activity android:name=".menuActivity" />
         <activity android:name=".questionsActivity" />
         <activity android:name=".breathingActivity" />
-        <activity android:name=".MedicinesActivity"></activity>
+        <activity android:name=".MedicinesActivity" />
+        <activity android:name=".sportWheel"></activity>
     </application>
 
 </manifest>

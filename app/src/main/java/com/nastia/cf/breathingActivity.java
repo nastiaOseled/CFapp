@@ -2,6 +2,7 @@ package com.nastia.cf;
 
 import android.app.Activity;
 import android.content.Intent;
+
 import android.os.CountDownTimer;
 
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +12,12 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.view.View;
 import android.widget.TextView;
-import android.os.CountDownTimer;
+
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class breathingActivity extends AppCompatActivity {
 
@@ -93,6 +99,15 @@ public class breathingActivity extends AppCompatActivity {
                         }
                         else{
                             c3.setChecked(true);
+//                            Map<String, Object> activity = new HashMap<>();
+//                            SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+//                            Date date = new Date();
+//                            String stringdate = dt.format(date);
+//                            activity.put("Date", stringdate);
+//                            activity.put("done", true);
+//
+//
+//                            db.collection("user_details").document(mAuth.getCurrentUser().getUid()).set(user);
                             Intent intent = new Intent(breathingActivity.this, menuActivity.class);
                             startActivity(intent);
                         }

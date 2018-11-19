@@ -32,19 +32,7 @@ public class questionsActivity extends AppCompatActivity {
         @Override
         public void onItemClicked(ItemAdapter.ItemViewHolder<?> viewHolder, int id) {
             ItemAdapter.ItemHolder itemHolder = viewHolder.getItemHolder();
-            questionItem item = ((questionItem) itemHolder.item);
 
-            switch (id) {
-                case ItemAdapter.OnItemClickedListener.ACTION_ID_COLLAPSED_VIEW:
-                    showToast(String.format("Collapsed %s clicked!", item.getTitle()));
-                    break;
-                case ItemAdapter.OnItemClickedListener.ACTION_ID_EXPANDED_VIEW:
-                    showToast(String.format("Expanded %s clicked!", item.getTitle()));
-                    break;
-                default:
-                    // do nothing
-                    break;
-            }
         }
     };
 

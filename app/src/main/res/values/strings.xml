@@ -19,4 +19,21 @@
     <string name="b5">שניות</string>
     <string name="b1">קח נשימה עמוקה</string>
     <string name="med">תרופות</string>
+    <string name="med2">עריכת תרופה</string>
+    <string name="med2name">:שם תרופה</string>
+    <string name="med2amount">מינון:</string>
+    <string name="med2MG">MG</string>
+    <string name="addAlert">+ הוסף תזכורת</string>
+
+    <string-array name="planets_array">
+        <item>Mercury</item>
+        <item>Venus</item>
+        <item>Earth</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+
 </resources>

@@ -24,6 +24,7 @@
     <string name="med2amount">מינון:</string>
     <string name="med2MG">MG</string>
     <string name="addAlert">+ הוסף תזכורת</string>
+    <string name="addBtn">+ הוסף</string>
 
     <string-array name="planets_array">
         <item>Mercury</item>
@@ -34,6 +35,8 @@
         <item>Saturn</item>
         <item>Uranus</item>
         <item>Neptune</item>
+        <item>Other</item>
     </string-array>
+    <string name="title_activity_nutrition">Nutrition</string>
 
 </resources>

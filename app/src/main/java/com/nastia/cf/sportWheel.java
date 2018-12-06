@@ -113,7 +113,7 @@ public class sportWheel extends AppCompatActivity {
         });
     }
 
-    public void saveBtn(View v){
+    /*public void saveBtn(View v){
         final int newFev1 = np.getValue();
         final DocumentReference user_details = db.collection("user_details")
                 .document(mAuth.getCurrentUser().getUid());
@@ -143,6 +143,6 @@ public class sportWheel extends AppCompatActivity {
                 }
             }
         });
+*/
 
-    }
 }

@@ -26,6 +26,17 @@
     <string name="addAlert">+ הוסף תזכורת</string>
     <string name="addBtn">+ הוסף</string>
 
+    <string-array name="foods_array">
+        <item>אבטיח</item>
+        <item>תפוח</item>
+        <item>פסטה</item>
+        <item>אורז</item>
+        <item>עגבניה</item>
+        <item>חלב</item>
+        <item>יוגורט</item>
+        <item>מלפפון</item>
+        <item>בצל</item>
+        <item>המבורגר</item>
     <string-array name="planets_array">
         <item>advil</item>
         <item>orkambi</item>

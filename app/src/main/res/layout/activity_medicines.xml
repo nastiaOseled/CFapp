@@ -35,6 +35,6 @@
     <android.support.v7.widget.RecyclerView
         android:layout_width="299dp"
         android:layout_height="389dp"
-        tools:layout_editor_absoluteX="43dp"
-        tools:layout_editor_absoluteY="151dp" />
+        tools:layout_editor_absoluteX="56dp"
+        tools:layout_editor_absoluteY="195dp" />
 </android.support.constraint.ConstraintLayout>

@@ -27,17 +27,15 @@
     <string name="addBtn">+ הוסף</string>
 
     <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
+        <item>advil</item>
+        <item>orkambi</item>
+        <item>orkambi</item>
+        <item>nurophen</item>
         <item>Other</item>
     </string-array>
     <string name="title_activity_nutrition">Nutrition</string>
 
     <string name="Pactivity">פעילות גופנית</string>
+    <string name="title_activity_med">med</string>
+    <string name="title_activity_med_edit">medEdit</string>
 </resources>

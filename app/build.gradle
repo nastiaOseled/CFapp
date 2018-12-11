@@ -30,6 +30,7 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-firestore:4.2.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation 'com.android.support:design:28.0.0'
+    implementation 'com.github.jinatonic.confetti:confetti:1.1.1'
     implementation project(path: ':fancyaccordionview', configuration: 'default')
     implementation 'com.android.support:multidex:1.0.3'
     testImplementation 'junit:junit:4.12'

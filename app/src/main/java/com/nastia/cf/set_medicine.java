@@ -1,6 +1,7 @@
 package com.nastia.cf;
 
 import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,15 +9,19 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +31,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.*;
 import com.sysdata.widget.accordion.ExpandableItemHolder;
+import com.sysdata.widget.accordion.FancyAccordionView;
 import com.sysdata.widget.accordion.Item;
 
 import java.util.ArrayList;
@@ -37,16 +43,23 @@ public class set_medicine extends AppCompatActivity {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
+    private LinearLayout alarmsView;
     private Spinner spinner;
+    int hour,min;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_medicine);
-
+        alarmsView = (LinearLayout) findViewById(R.id.alarms);
         spinner = (Spinner) findViewById(R.id.spinner);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.planets_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                   @Override
                   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -63,12 +76,12 @@ public class set_medicine extends AppCompatActivity {
 
                   }
               });
-                setComboBox();
+                //setComboBox();
 
         final Button addReminderBtn = findViewById(R.id.addReminderBtn);
         addReminderBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                openTimePickerDialog();
             }
         });
 
@@ -80,9 +93,33 @@ public class set_medicine extends AppCompatActivity {
         });
     }
 
+    private void openTimePickerDialog()
+    {
+        TimePickerDialog dialog=new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int min) {
+                //set selected time to textview
+                //settime.setText(updateTime(hour,min));
+                updateAlatms();
+            }
+        },hour,min,false);
+        dialog.show();
+
+
+    }
+
+    private void updateAlatms(){
+        //TextView textView = new TextView(this);
+        //textView.setText("your text");
+        LayoutInflater factory = LayoutInflater.from(this);
+        View myView = factory.inflate(R.layout.alarm, null);
+
+        alarmsView.addView(myView);
+    }
 
     public void setComboBox(){
 
+/*
         final List<CharSequence> spinnerArray = new ArrayList<>();
 
         db.collection("Medicines")
@@ -103,6 +140,7 @@ public class set_medicine extends AppCompatActivity {
                 });
 
 
+
         // Create an ArrayAdapter using the string array and a default spinner layout
         @SuppressLint("ResourceType") ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
                         this, android.R.layout.simple_spinner_item, spinnerArray);
@@ -111,7 +149,7 @@ public class set_medicine extends AppCompatActivity {
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
 
-
+*/
     }
 
 

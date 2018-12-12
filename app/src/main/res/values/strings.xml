@@ -37,6 +37,7 @@
         <item>מלפפון</item>
         <item>בצל</item>
         <item>המבורגר</item>
+    </string-array>
     <string-array name="planets_array">
         <item>advil</item>
         <item>orkambi</item>

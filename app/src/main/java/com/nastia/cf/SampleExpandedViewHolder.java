@@ -39,7 +39,7 @@ public final class SampleExpandedViewHolder extends ExpandedViewHolder {
     private SampleExpandedViewHolder(View itemView) {
         super(itemView);
 
-        mTitleTextView = (TextView) itemView.findViewById(R.id.hour);
+        mTitleTextView = (TextView) itemView.findViewById(R.id.time);
         mDescriptionTextView = (TextView) itemView.findViewById(R.id.sample_layout_expanded_description);
     }
 

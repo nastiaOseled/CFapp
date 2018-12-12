@@ -32,7 +32,7 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
         if(i==R.id.medc) {
-            Intent intent = new Intent(menuActivity.this, set_medicine.class);
+            Intent intent = new Intent(menuActivity.this, MedicinesActivity.class);
             startActivity(intent);
         }
         if(i==R.id.food) {

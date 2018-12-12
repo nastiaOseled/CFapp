@@ -27,7 +27,7 @@
         tools:text="Expanded View" />
 
     <Switch
-        android:id="@+id/switch"
+        android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/hour"

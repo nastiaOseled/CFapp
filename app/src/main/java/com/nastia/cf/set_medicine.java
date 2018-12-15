@@ -35,7 +35,10 @@ import com.sysdata.widget.accordion.FancyAccordionView;
 import com.sysdata.widget.accordion.Item;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class set_medicine extends AppCompatActivity {
 
@@ -51,6 +54,11 @@ public class set_medicine extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle b = getIntent().getExtras();
+        String value = ""; // or other values
+        if(b != null)
+            value = b.getString("id");
+        Toast.makeText(set_medicine.this,value, Toast.LENGTH_LONG).show();
         setContentView(R.layout.activity_set_medicine);
         alarmsView = (LinearLayout) findViewById(R.id.alarms);
         spinner = (Spinner) findViewById(R.id.spinner);
@@ -88,7 +96,34 @@ public class set_medicine extends AppCompatActivity {
         final Button saveBtn = findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                final DocumentReference user_details = db.collection("user_details")
+                        .document(mAuth.getCurrentUser().getUid());
 
+                user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                if(!document.contains("fev1")){
+                                    Map<String, Object> newField = new HashMap<>();
+                                    newField.put("fev1", 32);
+                                    user_details.set(newField, SetOptions.merge());
+                                }
+                                else{
+                                    user_details.update("fev1", newFev1);
+                                }
+                                Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                                Intent intent = new Intent(fev1_editActivity.this, menuActivity.class);
+                                startActivity(intent);
+                            } else {
+                                Log.d(TAG, "No such document");
+                            }
+                        } else {
+                            Log.d(TAG, "get failed with ", task.getException());
+                        }
+                    }
+                });
             }
         });
     }
@@ -100,7 +135,8 @@ public class set_medicine extends AppCompatActivity {
             public void onTimeSet(TimePicker timePicker, int hour, int min) {
                 //set selected time to textview
                 //settime.setText(updateTime(hour,min));
-                updateAlatms();
+
+                updateAlatms(String.valueOf(hour)+":"+String.valueOf(min));
             }
         },hour,min,false);
         dialog.show();
@@ -108,12 +144,13 @@ public class set_medicine extends AppCompatActivity {
 
     }
 
-    private void updateAlatms(){
+    private void updateAlatms(String s){
         //TextView textView = new TextView(this);
         //textView.setText("your text");
         LayoutInflater factory = LayoutInflater.from(this);
         View myView = factory.inflate(R.layout.alarm, null);
-
+        TextView tv_year = (TextView)myView.findViewById(R.id.time);
+        tv_year.setText(s);
         alarmsView.addView(myView);
     }
 

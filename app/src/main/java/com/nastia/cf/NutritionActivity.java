@@ -104,7 +104,10 @@ public class NutritionActivity extends AppCompatActivity {
                                     calories.setText(sum+"");
 
                                     //set how much calories left
-                                    caloriesLeft.setText((recommendedCalories-sum)+"");
+                                    if(recommendedCalories-sum > 0)
+                                        caloriesLeft.setText((recommendedCalories-sum)+"");
+                                    else
+                                        caloriesLeft.setText(0+"");
                                 }
 
                             }

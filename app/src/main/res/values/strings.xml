@@ -35,8 +35,6 @@
         <item>חלב</item>
         <item>יוגורט</item>
         <item>מלפפון</item>
-        <item>בצל</item>
-        <item>המבורגר</item>
     </string-array>
     <string-array name="planets_array">
         <item>advil</item>
@@ -52,6 +50,7 @@
     <string name="title_activity_med_edit">medEdit</string>
 
     <string-array name="unit_of_measure">
+        <item>100 גרם</item>
         <item>יחידה</item>
         <item>כוס</item>
         <item>חופן</item>

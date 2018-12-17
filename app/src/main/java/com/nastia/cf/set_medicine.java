@@ -114,11 +114,11 @@ public class set_medicine extends AppCompatActivity {
 
                                 }
                                 else{
-                                    user_details.update("fev1", newFev1);
+                                 //   user_details.update("fev1", newFev1);
                                 }
                                 Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                                Intent intent = new Intent(fev1_editActivity.this, menuActivity.class);
-                                startActivity(intent);
+                             //   Intent intent = new Intent(fev1_editActivity.this, menuActivity.class);
+                           //     startActivity(intent);
                             } else {
                                 Log.d(TAG, "No such document");
                             }

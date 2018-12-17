@@ -3,12 +3,14 @@ package com.nastia.cf;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -177,6 +179,7 @@ public class addNutrition extends AppCompatActivity {
         final EditText input = new EditText(this);
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
+      //  input.setRawInputType(Configuration.KEYBOARD_12KEY);
         builder.setView(input);
 
         // Set up the buttons
@@ -198,6 +201,8 @@ public class addNutrition extends AppCompatActivity {
                 insertNewFoodToUserNutritionList(anotherFood, newFood);
 
                 dialog.dismiss();
+                //TODO
+           //     spinner2.setSelection(spinner2.getIte);
             }
         });
         builder.setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
@@ -208,6 +213,7 @@ public class addNutrition extends AppCompatActivity {
         });
 
         builder.show();
+
     }
 
     public void insertNewValueToNutritionCollection(String anotherFood, Map<String, Object> newFood){
@@ -233,7 +239,7 @@ public class addNutrition extends AppCompatActivity {
                 .document(mAuth.getCurrentUser().getUid());
 
         user_details.collection("nutrition reports").document(anotherFood)
-                .set(newFood)
+                .set(newFood, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

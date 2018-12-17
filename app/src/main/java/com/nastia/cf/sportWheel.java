@@ -60,6 +60,11 @@ public class sportWheel extends AppCompatActivity {
         BtnRoll = findViewById(R.id.cntBtn3);
         BtnDone = findViewById(R.id.done);
         BtnDone.setVisibility(View.INVISIBLE);
+        BtnDone.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                finish();
+            }
+        });
         BtnRoll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

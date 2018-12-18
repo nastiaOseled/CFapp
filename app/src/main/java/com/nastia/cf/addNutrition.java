@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -90,12 +91,12 @@ public class addNutrition extends AppCompatActivity {
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DocumentSnapshot document;
+
                 String anotherFood=spinner2.getSelectedItem().toString();
-                DocumentReference user_details = db.collection("Nutrition")
+                DocumentReference nutrition = db.collection("Nutrition")
                         .document(anotherFood);
 
-                user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                nutrition.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -120,7 +121,7 @@ public class addNutrition extends AppCompatActivity {
                                     newFood.put("calories", caloriesToInsert);
                                     break;
 
-                                default:
+                                case "100 גרם":
                                     caloriesToInsert=(int) calories *amount2;
                                     newFood.put("name", anotherFood);
                                     newFood.put("calories", caloriesToInsert);
@@ -158,10 +159,7 @@ public class addNutrition extends AppCompatActivity {
                               ArrayAdapter<CharSequence> adapter = new ArrayAdapter(addNutrition.this,
                               android.R.layout.simple_spinner_item, spinnerArray);
                                  adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                 if(spinnerArray.isEmpty())
-                                    Log.i("","array is empty");
-                                 else
-                                     Log.i("","array is not empty");
+
                                   spinner2.setAdapter(adapter);
 
                         } else {
@@ -234,10 +232,29 @@ public class addNutrition extends AppCompatActivity {
             }
 
 
-    public void insertNewFoodToUserNutritionList(String anotherFood, Map<String, Object> newFood){
+    public void insertNewFoodToUserNutritionList(final String anotherFood, final Map<String, Object> newFood){
         final DocumentReference user_details = db.collection("user_details")
                 .document(mAuth.getCurrentUser().getUid());
 
+    /*    user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    final DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        CollectionReference foods=user_details.collection("nutrition reports");
+                        foods.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                long calories=0;
+                                if(task.isSuccessful()){
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        if(document.getString("name").equals(anotherFood))
+                                            calories=(Long)document.getLong("calories");
+                                    }} */
+
+
+      //  newFood.put(anotherFood, new Object(newFood.get(anotherFood)+calories));
         user_details.collection("nutrition reports").document(anotherFood)
                 .set(newFood, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

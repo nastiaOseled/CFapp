@@ -63,10 +63,12 @@ public class set_medicine extends AppCompatActivity {
         alarmsView = (LinearLayout) findViewById(R.id.alarms);
         spinner = (Spinner) findViewById(R.id.spinner);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+      /*  ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.planets_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(adapter); */
+
+        setComboBox();
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                   @Override
@@ -84,7 +86,7 @@ public class set_medicine extends AppCompatActivity {
 
                   }
               });
-                //setComboBox();
+
 
         final Button addReminderBtn = findViewById(R.id.addReminderBtn);
         addReminderBtn.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +158,6 @@ public class set_medicine extends AppCompatActivity {
 
     public void setComboBox(){
 
-/*
         final List<CharSequence> spinnerArray = new ArrayList<>();
 
         db.collection("Medicines")
@@ -170,6 +171,14 @@ public class set_medicine extends AppCompatActivity {
                                 spinnerArray.add(document.getString("name"));
                             }
                             spinnerArray.add("other");
+
+                            // Create an ArrayAdapter using the string array and a default spinner layout
+                            @SuppressLint("ResourceType") ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
+                                    set_medicine.this, android.R.layout.simple_spinner_item, spinnerArray);
+                            // Specify the layout to use when the list of choices appears
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            // Apply the adapter to the spinner
+                            spinner.setAdapter(adapter);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -178,15 +187,8 @@ public class set_medicine extends AppCompatActivity {
 
 
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        @SuppressLint("ResourceType") ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-                        this, android.R.layout.simple_spinner_item, spinnerArray);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
 
-*/
+
     }
 
 

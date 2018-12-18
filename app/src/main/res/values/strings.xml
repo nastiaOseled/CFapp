@@ -26,16 +26,6 @@
     <string name="addAlert">+ הוסף תזכורת</string>
     <string name="addBtn">+ הוסף</string>
 
-    <string-array name="foods_array">
-        <item>אבטיח</item>
-        <item>תפוח</item>
-        <item>פסטה</item>
-        <item>אורז</item>
-        <item>עגבניה</item>
-        <item>חלב</item>
-        <item>יוגורט</item>
-        <item>מלפפון</item>
-    </string-array>
     <string-array name="planets_array">
         <item>advil</item>
         <item>orkambi</item>
@@ -53,6 +43,5 @@
         <item>100 גרם</item>
         <item>יחידה</item>
         <item>כוס</item>
-        <item>חופן</item>
     </string-array>
 </resources>

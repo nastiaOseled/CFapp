@@ -48,6 +48,7 @@ public class set_medicine extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private LinearLayout alarmsView;
     private Spinner spinner;
+    ArrayList<String> alartsTime = new ArrayList<String>() ;
     int hour,min;
 
 
@@ -58,7 +59,6 @@ public class set_medicine extends AppCompatActivity {
         String value = ""; // or other values
         if(b != null)
             value = b.getString("id");
-        Toast.makeText(set_medicine.this,value, Toast.LENGTH_LONG).show();
         setContentView(R.layout.activity_set_medicine);
         alarmsView = (LinearLayout) findViewById(R.id.alarms);
         spinner = (Spinner) findViewById(R.id.spinner);
@@ -73,7 +73,7 @@ public class set_medicine extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                   @Override
                   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                      Toast.makeText(parent.getContext(), parent.getItemIdAtPosition(position)+" is selected", Toast.LENGTH_LONG).show();
+                      //Toast.makeText(parent.getContext(), parent.getItemIdAtPosition(position)+" is selected", Toast.LENGTH_LONG).show();
                     /*  ((TextView) parent.getChildAt(0)).setTextColor(Color.BLUE);
                     String selected=parent.getItemAtPosition(position).toString();
                     if(selected.equals("other")){
@@ -86,7 +86,7 @@ public class set_medicine extends AppCompatActivity {
 
                   }
               });
-
+                //setComboBox();
 
         final Button addReminderBtn = findViewById(R.id.addReminderBtn);
         addReminderBtn.setOnClickListener(new View.OnClickListener() {
@@ -98,8 +98,10 @@ public class set_medicine extends AppCompatActivity {
         final Button saveBtn = findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                final DocumentReference user_details = db.collection("user_details")
-                        .document(mAuth.getCurrentUser().getUid());
+                Map<String, Object> newField = new HashMap<>();
+                newField.put("Name", spinner.getSelectedItem().toString());
+                final CollectionReference user_details = db.collection("user_details")
+                        .document(mAuth.getCurrentUser().getUid()).collection("med");
 
                 user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
@@ -107,10 +109,11 @@ public class set_medicine extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
-                                if(!document.contains("fev1")){
+                                if(!document.contains("med")){
                                     Map<String, Object> newField = new HashMap<>();
-                                    newField.put("fev1", 32);
+                                    newField.put("Name", spinner.getSelectedItem().toString());
                                     user_details.set(newField, SetOptions.merge());
+
                                 }
                                 else{
                                  //   user_details.update("fev1", newFev1);
@@ -138,7 +141,14 @@ public class set_medicine extends AppCompatActivity {
                 //set selected time to textview
                 //settime.setText(updateTime(hour,min));
 
-                updateAlatms(String.valueOf(hour)+":"+String.valueOf(min));
+                if (min < 10) {
+                    updateAlatms(String.valueOf(hour) + ":0" + String.valueOf(min));
+                    alartsTime.add(String.valueOf(hour) + ":0" + String.valueOf(min));
+                }
+                else {
+                    updateAlatms(String.valueOf(hour) + ":" + String.valueOf(min));
+                    alartsTime.add(String.valueOf(hour) + ":" + String.valueOf(min));
+                }
             }
         },hour,min,false);
         dialog.show();

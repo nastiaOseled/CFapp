@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +39,13 @@ public class MedicinesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicines);
+        /*Button saveBtn =  findViewById(R.id.saveBtn);
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+               *//* Intent myIntent = new Intent(MedicinesActivity.this, set_medicine.class);
+                startActivityForResult(myIntent, 0);*//*
+            }
+        });*/
 
         db.collection("user_details").
                 document(mAuth.getCurrentUser().getUid()).collection("med").get()
@@ -72,29 +81,6 @@ public class MedicinesActivity extends AppCompatActivity {
                         }
                     }
                 });
-/*        Cities.add("bdfbhgfb");
-        ListAdapter cityAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, Cities);
-        ListView cityListView = (ListView) findViewById(R.id.medList);
-        cityListView.setAdapter(cityAdapter);
-
-        cityListView.setOnItemClickListener(
-                new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String cities = String.valueOf(parent.getItemAtPosition(position));
-                        Toast.makeText(MedicinesActivity.this, cities, Toast.LENGTH_LONG).show();
-
-                       *//* if (position == 1) {
-                            //code specific to first list item
-                            Intent myIntent = new Intent(view.getContext(), NewYork.class);
-                            startActivityForResult(myIntent, 0);
-
-
-                        }*//*
-                    }
-
-
-                });*/
 
     }
 

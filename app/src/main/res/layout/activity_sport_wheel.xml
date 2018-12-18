@@ -71,7 +71,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/round_pink_button"
         android:onClick="continueBtnListener"
-        android:text="@string/continue_btn"
+        android:text="סובב"
         android:textColor="#ffffff"
         android:textSize="16sp"
         android:textStyle="bold"

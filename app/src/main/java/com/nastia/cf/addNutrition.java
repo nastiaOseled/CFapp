@@ -1,6 +1,7 @@
 package com.nastia.cf;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -12,6 +13,7 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -211,6 +213,9 @@ public class addNutrition extends AppCompatActivity {
         });
 
         builder.show();
+        input.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
     }
 

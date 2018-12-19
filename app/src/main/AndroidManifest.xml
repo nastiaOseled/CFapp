@@ -31,7 +31,8 @@
         <activity android:name=".sportWheel" />
         <activity android:name=".set_medicine" />
         <activity android:name=".NutritionActivity" />
-        <activity android:name=".addNutrition" />
+        <activity android:name=".addNutrition"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".EditMed"></activity>
     </application>
 

@@ -213,9 +213,10 @@ public class addNutrition extends AppCompatActivity {
         });
 
         builder.show();
+
         input.requestFocus();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
 
     }
 

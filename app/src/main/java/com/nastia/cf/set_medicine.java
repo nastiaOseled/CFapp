@@ -25,6 +25,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -48,17 +50,17 @@ public class set_medicine extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private LinearLayout alarmsView;
     private Spinner spinner;
-    ArrayList<String> alartsTime = new ArrayList<String>() ;
+    ArrayList<String> alertsTime = new ArrayList<String>() ;
     int hour,min;
+    String medId ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
-        String value = ""; // or other values
         if(b != null)
-            value = b.getString("id");
+            medId = b.getString("id");
         setContentView(R.layout.activity_set_medicine);
         alarmsView = (LinearLayout) findViewById(R.id.alarms);
         spinner = (Spinner) findViewById(R.id.spinner);
@@ -98,12 +100,85 @@ public class set_medicine extends AppCompatActivity {
         final Button saveBtn = findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Map<String, Object> newField = new HashMap<>();
-                newField.put("Name", spinner.getSelectedItem().toString());
-                final CollectionReference user_details = db.collection("user_details")
-                        .document(mAuth.getCurrentUser().getUid()).collection("med");
+                Map<String, Object> nameField = new HashMap<>();
+                nameField.put("Name", spinner.getSelectedItem().toString());
+                if (medId == null) {
+                    db.collection("user_details")
+                            .document(mAuth.getCurrentUser().getUid()).collection("med")
+                            .add(nameField)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                    Map<String, Object> alarm = new HashMap<>();
+                                    alarm.put("time", "8:00");
+                                    documentReference.collection("alarms").document("8:00")
+                                            .set(alarm)
+                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void aVoid) {
+                                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                }
+                                            })
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Log.w(TAG, "Error writing document", e);
+                                                }
+                                            });
+                                    ;
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error adding document", e);
+                                }
+                            });
+                }
+                else{
+                    //set medicine name if changed
+                    final CollectionReference user_med = db.collection("user_details")
+                            .document(mAuth.getCurrentUser().getUid()).collection("med");
+                    user_med.document(medId).set(nameField)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error writing document", e);
+                                }
+                            });
+                    //delete all existing alarms
+                    user_med.document(medId).collection("alarms").get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            Log.d(TAG, document.getId() + " => " + document.getData());
+                                            document.getReference().delete();
+                                        }
+                                    } else {
+                                        Log.d(TAG, "Error getting documents: ", task.getException());
+                                    }
+                                }
+                            });
+                    //add all alarms
+                    for (String alarmTime:alertsTime) {
+                        Map<String, Object> alarm = new HashMap<>();
+                        alarm.put("time", alarmTime);
+                        user_med.document(medId).collection("alarms").add(alarm);
+                    }
 
-                user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                }
+                    finish();
+/*                user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -128,7 +203,7 @@ public class set_medicine extends AppCompatActivity {
                             Log.d(TAG, "get failed with ", task.getException());
                         }
                     }
-                });
+                });*/
             }
         });
     }
@@ -138,16 +213,12 @@ public class set_medicine extends AppCompatActivity {
         TimePickerDialog dialog=new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int min) {
-                //set selected time to textview
-                //settime.setText(updateTime(hour,min));
 
                 if (min < 10) {
                     updateAlatms(String.valueOf(hour) + ":0" + String.valueOf(min));
-                    alartsTime.add(String.valueOf(hour) + ":0" + String.valueOf(min));
-                }
+            }
                 else {
                     updateAlatms(String.valueOf(hour) + ":" + String.valueOf(min));
-                    alartsTime.add(String.valueOf(hour) + ":" + String.valueOf(min));
                 }
             }
         },hour,min,false);
@@ -156,13 +227,12 @@ public class set_medicine extends AppCompatActivity {
 
     }
 
-    private void updateAlatms(String s){
-        //TextView textView = new TextView(this);
-        //textView.setText("your text");
+    private void updateAlatms(String time){
+        alertsTime.add(time);
         LayoutInflater factory = LayoutInflater.from(this);
         View myView = factory.inflate(R.layout.alarm, null);
         TextView tv_year = (TextView)myView.findViewById(R.id.time);
-        tv_year.setText(s);
+        tv_year.setText(time);
         alarmsView.addView(myView);
     }
 

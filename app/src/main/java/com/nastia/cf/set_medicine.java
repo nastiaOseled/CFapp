@@ -96,7 +96,7 @@ public class set_medicine extends AppCompatActivity {
         });
 
         final Button saveBtn = findViewById(R.id.saveBtn);
-        saveBtn.setOnClickListener(new View.OnClickListener() {
+  /*      saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Map<String, Object> newField = new HashMap<>();
                 newField.put("Name", spinner.getSelectedItem().toString());
@@ -130,7 +130,7 @@ public class set_medicine extends AppCompatActivity {
                     }
                 });
             }
-        });
+        }); */
     }
 
     private void openTimePickerDialog()

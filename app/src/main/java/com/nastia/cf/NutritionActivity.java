@@ -92,9 +92,17 @@ public class NutritionActivity extends AppCompatActivity {
                                         calories.setText((Long)document.getLong("calories")+"");
                                         tr.addView(calories);
 
+                                        TextView space = new TextView(NutritionActivity.this);
+                                        space.setText("      ");
+                                        tr.addView(space);
+
                                         TextView foodItem = new TextView(NutritionActivity.this);
                                         foodItem.setText(document.getString("name"));
                                         tr.addView(foodItem);
+
+
+
+
 
                                         table.addView(tr);
                                     }

@@ -37,6 +37,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,33 +109,38 @@ public class addNutrition extends AppCompatActivity {
                             if (document.exists())
                                 calories=document.getLong("calories");
                             int caloriesToInsert=0;
-                            int amount2=Integer.parseInt(amount.getText().toString());
-                            String anotherFood=spinner2.getSelectedItem().toString();
-                            Map<String, Object> newFood = new HashMap<>();
-                            switch(spinner3.getSelectedItem().toString()){
-                                case  "כוס" :
-                                    caloriesToInsert=(int) calories *CONVERT_G_TO_CUP*amount2;
-                                    newFood.put("name", anotherFood);
-                                    newFood.put("calories", caloriesToInsert);
-                                    break;
+                            int amount2=1;
+                            if( amount.getText().toString().matches(""))
+                                Toast.makeText(addNutrition.this,"נא הכנס כמות",Toast.LENGTH_LONG ).show();
+                            else{
+                                amount2=Integer.parseInt(amount.getText().toString());
+                                String anotherFood=spinner2.getSelectedItem().toString();
+                                Map<String, Object> newFood = new HashMap<>();
+                                switch(spinner3.getSelectedItem().toString()){
+                                    case  "כוס" :
+                                        caloriesToInsert=(int) calories *CONVERT_G_TO_CUP*amount2;
+                                        newFood.put("name", anotherFood);
+                                        newFood.put("calories", caloriesToInsert);
+                                        break;
 
-                                case  "יחידה" :
-                                    caloriesToInsert=(int) calories *CONVERT_G_TO_UNIT*amount2;
-                                    newFood.put("name", anotherFood);
-                                    newFood.put("calories", caloriesToInsert);
-                                    break;
+                                    case  "יחידה" :
+                                        caloriesToInsert=(int) calories *CONVERT_G_TO_UNIT*amount2;
+                                        newFood.put("name", anotherFood);
+                                        newFood.put("calories", caloriesToInsert);
+                                        break;
 
-                                case "100 גרם":
-                                    caloriesToInsert=(int) calories *amount2;
-                                    newFood.put("name", anotherFood);
-                                    newFood.put("calories", caloriesToInsert);
-                                    break;
-                            }
+                                    case "100 גרם":
+                                        caloriesToInsert=(int) calories *amount2;
+                                        newFood.put("name", anotherFood);
+                                        newFood.put("calories", caloriesToInsert);
+                                        break;
+                                }
 
-                            //insert new food to user's nutrition reports list
-                            insertNewFoodToUserNutritionList(anotherFood, newFood);
-                        } }});
-                startActivity(new Intent(addNutrition.this,NutritionActivity.class));
+                                //insert new food to user's nutrition reports list
+                                insertNewFoodToUserNutritionList(anotherFood, newFood);
+                                startActivity(new Intent(addNutrition.this,NutritionActivity.class));
+                        } }}});
+
             }
 
         });
@@ -238,42 +245,55 @@ public class addNutrition extends AppCompatActivity {
             }
 
 
-    public void insertNewFoodToUserNutritionList(final String anotherFood, final Map<String, Object> newFood){
-        final DocumentReference user_details = db.collection("user_details")
-                .document(mAuth.getCurrentUser().getUid());
+    public void insertNewFoodToUserNutritionList(final String anotherFood, final Map<String, Object> newFood) {
 
-    /*    user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        final Date today = Calendar.getInstance().getTime();
+
+        DocumentReference docRef = db.collection("user_details").
+                document(mAuth.getCurrentUser().getUid()).collection("nutrition reports").document("Date");
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    final DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        CollectionReference foods=user_details.collection("nutrition reports");
-                        foods.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                long calories=0;
-                                if(task.isSuccessful()){
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        if(document.getString("name").equals(anotherFood))
-                                            calories=(Long)document.getLong("calories");
-                                    }} */
+                DocumentSnapshot document = task.getResult();
+                Date d = (Date) document.get("Date");
+                if (!d.equals(today)) {
 
+                    db.collection("user_details").
+                            document(mAuth.getCurrentUser().getUid()).collection("nutrition reports").get()
+                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        //delete all documents
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            document.getReference().delete();
+                                            Log.d(TAG, document.getId() + " => " + document.getData());
+                                        }
+                                    }
+                                    //add today date
+                                    db.collection("user_details").
+                                            document(mAuth.getCurrentUser().getUid()).collection("nutrition reports").add(today);
+                                }
+                            });
+                }//if date is not today
+            }
+        });
 
-      //  newFood.put(anotherFood, new Object(newFood.get(anotherFood)+calories));
-        user_details.collection("nutrition reports").document(anotherFood)
-                .set(newFood, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+        //add new food
+        db.collection("user_details").
+                document(mAuth.getCurrentUser().getUid()).collection("nutrition reports").add(newFood)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written to user!");
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document to user", e);
+                        Log.w(TAG, "Error adding document", e);
                     }
                 });
     }
+
 }

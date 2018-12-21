@@ -19,9 +19,10 @@ import java.util.ArrayList;
 
 public class ContactsActivity extends AppCompatActivity {
 
-    ArrayList<Contact> contacts;
+    ArrayList<Contact> contacts=new ArrayList<>();
     Button addBtn;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+    ContactsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class ContactsActivity extends AppCompatActivity {
         });
 
         // Create adapter passing in the sample user data
-        ContactsAdapter adapter = new ContactsAdapter(contacts);
+        adapter = new ContactsAdapter(contacts);
         // Attach the adapter to the recyclerview to populate items
         rvContacts.setAdapter(adapter);
         // Set layout manager to position the items
@@ -71,8 +72,9 @@ public class ContactsActivity extends AppCompatActivity {
                                 (ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                     }
                     phones.close();
-                    contacts.add(new Contact(name, number));
-                    Toast.makeText(getApplicationContext(),number+name , Toast.LENGTH_LONG).show();
+                    addContacts(new Contact(name, number));
+                    adapter.notifyDataSetChanged();
+
                 } else {
                     Toast.makeText(getApplicationContext(), "This contact has no phone number", Toast.LENGTH_LONG).show();
                 }
@@ -108,8 +110,11 @@ public class ContactsActivity extends AppCompatActivity {
  public void addContacts(Contact c){
         if(this.contacts.size()==3)
             return;
-
-        this.contacts.add(c);
+        if( ! contacts.contains(c))
+            this.contacts.add(c);
+        else{
+            Toast.makeText(getApplicationContext(),"איש קשר כבר קיים" , Toast.LENGTH_LONG).show();
+        }
 
         if(this.contacts.size()==3)
             addBtn.setEnabled(false);

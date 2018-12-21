@@ -43,6 +43,10 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(menuActivity.this, sportWheel.class);
             startActivity(intent);
         }
+        if(i==R.id.cal) {
+            Intent intent = new Intent(menuActivity.this, ContactsActivity.class);
+            startActivity(intent);
+        }
 
     }
 }

@@ -61,7 +61,6 @@ public class ContactsActivity extends AppCompatActivity {
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
 
         addBtn = (Button) findViewById(R.id.addBtn);
-        updateAddBtn();
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -186,5 +185,6 @@ public class ContactsActivity extends AppCompatActivity {
                 }
             }
         });
+        updateAddBtn();
     }
 }

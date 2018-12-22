@@ -175,7 +175,7 @@ public class ContactsActivity extends AppCompatActivity {
                                     for (QueryDocumentSnapshot document : task.getResult()){
                                         String name=document.getString("name");
                                         String phone=document.getString("phone");
-                                        addContacts(new Contact(name, phone));
+                                        contacts.add(new Contact(name, phone));
                                     }
                                     adapter.notifyDataSetChanged();
 

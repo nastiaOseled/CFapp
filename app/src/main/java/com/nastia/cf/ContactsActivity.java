@@ -36,7 +36,7 @@ public class ContactsActivity extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public static ArrayList<Contact> contacts=new ArrayList<>();
-    Button addBtn;
+    static Button addBtn;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     ContactsAdapter adapter;
 
@@ -147,7 +147,7 @@ public class ContactsActivity extends AppCompatActivity {
         return;
  }
 
-    public boolean updateAddBtn(){
+    public static boolean updateAddBtn(){
         if(contacts.size()==3){
             addBtn.setEnabled(false);
             return false;

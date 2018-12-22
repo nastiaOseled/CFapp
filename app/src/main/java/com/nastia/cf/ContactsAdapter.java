@@ -9,10 +9,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.List;
 
 public class ContactsAdapter extends
         RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
+
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     private List<Contact> mContacts;
 
@@ -35,7 +47,7 @@ public class ContactsAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         // Get the data model based on position
         Contact contact = mContacts.get(i);
 
@@ -49,9 +61,36 @@ public class ContactsAdapter extends
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final DocumentReference user_details = db.collection("user_details")
+                        .document(mAuth.getCurrentUser().getUid());
+                user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                user_details.collection("contacts")
+                                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()){
+                                                if( document.getString("name").equals(viewHolder.nameTextView)) {
+                                                    document.getReference().delete();
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }
+                });
                 ContactsActivity.contacts.remove(i);
                // mContacts.remove(i);
                 notifyDataSetChanged();
+                ContactsActivity.updateAddBtn();
             }
         });
     }

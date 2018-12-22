@@ -53,6 +53,7 @@ public class ContactsActivity extends AppCompatActivity {
                 showContacts();
             }
         });
+        updateAddBtn();
         importContacts();
 
         // Create adapter passing in the sample user data

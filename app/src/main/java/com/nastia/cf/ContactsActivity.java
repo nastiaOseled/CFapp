@@ -35,7 +35,7 @@ public class ContactsActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public ArrayList<Contact> contacts=new ArrayList<>();
+    public static ArrayList<Contact> contacts=new ArrayList<>();
     Button addBtn;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     ContactsAdapter adapter;
@@ -172,7 +172,9 @@ public class ContactsActivity extends AppCompatActivity {
                                     for (QueryDocumentSnapshot document : task.getResult()){
                                         String name=document.getString("name");
                                         String phone=document.getString("phone");
-                                        contacts.add(new Contact(name, phone));
+                                        Contact c=new Contact(name, phone);
+                                        if( ! contacts.contains(c))
+                                            contacts.add(c);
                                     }
                                     adapter.notifyDataSetChanged();
                                     updateAddBtn();

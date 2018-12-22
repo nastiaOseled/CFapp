@@ -71,20 +71,6 @@ public class ContactsAdapter extends
                             if (document.exists()) {
                                 user_details.collection("contacts")
                                         .document(viewHolder.nameTextView.getText().toString()).delete();
-             /*                   user_details.collection("contacts")
-                                        .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()){
-                                                if( document.getString("name").equals(viewHolder.nameTextView.toString())) {
-                                                    document.getReference().delete();
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }); */
                             }
                         }
                     }

@@ -35,7 +35,7 @@ public class ContactsAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         // Get the data model based on position
         Contact contact = mContacts.get(i);
 
@@ -44,8 +44,16 @@ public class ContactsAdapter extends
         textView.setText(contact.getName());
         textView = viewHolder.phoneTextView;
         textView.setText(contact.getPhoneNum());
-        Button button = viewHolder.removeBtn;
+        final Button button = viewHolder.removeBtn;
         button.setEnabled(true);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ContactsActivity.contacts.remove(i);
+               // mContacts.remove(i);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

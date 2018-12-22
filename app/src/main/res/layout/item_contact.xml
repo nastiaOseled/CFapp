@@ -31,13 +31,12 @@
         android:id="@+id/removeBtn"
         android:layout_width="52dp"
         android:layout_height="34dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
         android:text="הסר"
         android:textStyle="bold"
         android:textSize="14sp"
         android:textColor="#ffffff"
         android:background="#f22318"
-        app:layout_constraintEnd_toStartOf="@id/contact_name"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

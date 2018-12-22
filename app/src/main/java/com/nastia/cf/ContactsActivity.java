@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,11 +16,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ContactsActivity extends AppCompatActivity {
 
-    ArrayList<Contact> contacts=new ArrayList<>();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    public static ArrayList<Contact> contacts=new ArrayList<>();
     Button addBtn;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     ContactsAdapter adapter;
@@ -30,22 +46,27 @@ public class ContactsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contacts);
 
         RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvContacts);
+
+        importContacts();
+
+        // Create adapter passing in the sample user data
+    /*    contacts.add(new Contact("hello1","05444"));
+        contacts.add(new Contact("hello2","054442"));
+        contacts.add(new Contact("hello3","054443"));  */
+
+        // Attach the adapter to the recyclerview to populate items
+        rvContacts.setAdapter(adapter);
+        // Set layout manager to position the items
+        rvContacts.setLayoutManager(new LinearLayoutManager(this));
+
         addBtn = (Button) findViewById(R.id.addBtn);
-        if(this.contacts.size()==3)
-            addBtn.setEnabled(false);
+        updateAddBtn();
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showContacts();
             }
         });
-
-        // Create adapter passing in the sample user data
-        adapter = new ContactsAdapter(contacts);
-        // Attach the adapter to the recyclerview to populate items
-        rvContacts.setAdapter(adapter);
-        // Set layout manager to position the items
-        rvContacts.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -72,7 +93,7 @@ public class ContactsActivity extends AppCompatActivity {
                                 (ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                     }
                     phones.close();
-                    addContacts(new Contact(name, number));
+                    addContacts(new Contact(name,number));
                     adapter.notifyDataSetChanged();
 
                 } else {
@@ -108,17 +129,61 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
  public void addContacts(Contact c){
-        if(this.contacts.size()==3)
-            return;
+
+     //add new contact
+     Map<String, Object> newContact=new HashMap<>();
+     newContact.put("name", c.getName());
+     newContact.put("phone", c.getPhoneNum());
+
+     db.collection("user_details").
+             document(mAuth.getCurrentUser().getUid()).collection("contacts").add(newContact);
+
         if( ! contacts.contains(c))
             this.contacts.add(c);
         else{
             Toast.makeText(getApplicationContext(),"איש קשר כבר קיים" , Toast.LENGTH_LONG).show();
         }
 
-        if(this.contacts.size()==3)
-            addBtn.setEnabled(false);
-
+        updateAddBtn();
         return;
  }
+
+    public boolean updateAddBtn(){
+        if(contacts.size()==3){
+            addBtn.setEnabled(false);
+            return false;
+        }
+        addBtn.setEnabled(true);
+        return true;
+    }
+
+    public void importContacts() {
+        final DocumentReference user_details = db.collection("user_details")
+                .document(mAuth.getCurrentUser().getUid());
+        user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        user_details.collection("contacts")
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()){
+                                        String name=document.getString("name");
+                                        String phone=document.getString("phone");
+                                        addContacts(new Contact(name, phone));
+                                    }
+
+                                    adapter = new ContactsAdapter(contacts);
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
+    }
 }

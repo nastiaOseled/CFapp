@@ -46,7 +46,13 @@ public class ContactsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_contacts);
 
         RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rvContacts);
-
+        addBtn = (Button) findViewById(R.id.addBtn);
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showContacts();
+            }
+        });
         importContacts();
 
         // Create adapter passing in the sample user data
@@ -59,14 +65,6 @@ public class ContactsActivity extends AppCompatActivity {
         rvContacts.setAdapter(adapter);
         // Set layout manager to position the items
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
-
-        addBtn = (Button) findViewById(R.id.addBtn);
-        addBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showContacts();
-            }
-        });
     }
 
     @Override

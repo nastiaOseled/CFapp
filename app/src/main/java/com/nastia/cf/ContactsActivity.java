@@ -137,7 +137,8 @@ public class ContactsActivity extends AppCompatActivity {
         if( ! contacts.contains(c)) {
             this.contacts.add(c);
             db.collection("user_details").
-                    document(mAuth.getCurrentUser().getUid()).collection("contacts").add(newContact);
+                    document(mAuth.getCurrentUser().getUid()).collection("contacts").document(c.getName()).set(newContact);
+                  //  document(mAuth.getCurrentUser().getUid()).collection("contacts").add(newContact);
         }
         else{
             Toast.makeText(getApplicationContext(),"איש קשר כבר קיים" , Toast.LENGTH_LONG).show();

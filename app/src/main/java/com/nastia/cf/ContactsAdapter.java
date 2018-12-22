@@ -75,7 +75,7 @@ public class ContactsAdapter extends
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if (task.isSuccessful()) {
                                             for (QueryDocumentSnapshot document : task.getResult()){
-                                                if( document.getString("name").equals(viewHolder.nameTextView)) {
+                                                if( document.getString("name").equals(viewHolder.nameTextView.toString())) {
                                                     document.getReference().delete();
                                                     break;
                                                 }

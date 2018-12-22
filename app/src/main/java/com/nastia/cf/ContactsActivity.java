@@ -35,7 +35,7 @@ public class ContactsActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public static ArrayList<Contact> contacts=new ArrayList<>();
+    public ArrayList<Contact> contacts=new ArrayList<>();
     Button addBtn;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     ContactsAdapter adapter;

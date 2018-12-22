@@ -54,6 +54,7 @@ public class ContactsActivity extends AppCompatActivity {
         contacts.add(new Contact("hello2","054442"));
         contacts.add(new Contact("hello3","054443"));  */
 
+        adapter = new ContactsAdapter(contacts);
         // Attach the adapter to the recyclerview to populate items
         rvContacts.setAdapter(adapter);
         // Set layout manager to position the items
@@ -176,8 +177,8 @@ public class ContactsActivity extends AppCompatActivity {
                                         String phone=document.getString("phone");
                                         addContacts(new Contact(name, phone));
                                     }
+                                    adapter.notifyDataSetChanged();
 
-                                    adapter = new ContactsAdapter(contacts);
                                 }
                             }
                         });

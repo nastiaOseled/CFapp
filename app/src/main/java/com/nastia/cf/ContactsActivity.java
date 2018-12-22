@@ -175,7 +175,7 @@ public class ContactsActivity extends AppCompatActivity {
                                         contacts.add(new Contact(name, phone));
                                     }
                                     adapter.notifyDataSetChanged();
-
+                                    updateAddBtn();
                                 }
                             }
                         });
@@ -183,6 +183,5 @@ public class ContactsActivity extends AppCompatActivity {
                 }
             }
         });
-        updateAddBtn();
     }
 }

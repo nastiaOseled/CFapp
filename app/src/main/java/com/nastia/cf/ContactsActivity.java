@@ -136,11 +136,11 @@ public class ContactsActivity extends AppCompatActivity {
      newContact.put("name", c.getName());
      newContact.put("phone", c.getPhoneNum());
 
-     db.collection("user_details").
-             document(mAuth.getCurrentUser().getUid()).collection("contacts").add(newContact);
-
-        if( ! contacts.contains(c))
+        if( ! contacts.contains(c)) {
             this.contacts.add(c);
+            db.collection("user_details").
+                    document(mAuth.getCurrentUser().getUid()).collection("contacts").add(newContact);
+        }
         else{
             Toast.makeText(getApplicationContext(),"איש קשר כבר קיים" , Toast.LENGTH_LONG).show();
         }

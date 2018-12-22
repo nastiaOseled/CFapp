@@ -70,7 +70,7 @@ public class ContactsAdapter extends
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 user_details.collection("contacts")
-                                        .document(viewHolder.nameTextView.toString()).delete();
+                                        .document(viewHolder.nameTextView.getText().toString()).delete();
              /*                   user_details.collection("contacts")
                                         .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override

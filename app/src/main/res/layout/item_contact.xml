@@ -37,6 +37,7 @@
         android:textSize="14sp"
         android:textColor="#ffffff"
         android:background="#f22318"
+        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

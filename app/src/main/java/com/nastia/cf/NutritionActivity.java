@@ -4,13 +4,13 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,23 +21,33 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class NutritionActivity extends AppCompatActivity {
 
     //DB connection
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     Button addBtn;
     TextView calories;
     TextView caloriesLeft;
     TableLayout table;
-    //map to save all foods of user in a certain day
-    public Map <String, Long> foodsMap=new HashMap<>();
+    RecyclerView rvNutrition;
+
+    //all food items of user in a certain day
+    public static ArrayList<Food> nutritionList = new ArrayList<>();
+
+    public static NutritionAdapter adapter;
+
+    //sums the amount of calories for today
+    public static long sum = 0;
+    int recommendedCalories=0;
 
 
     @Override
@@ -45,22 +55,51 @@ public class NutritionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nutrition);
 
-        calories=(TextView) findViewById(R.id.textView13);
-        caloriesLeft=(TextView) findViewById(R.id.textView15);
+        calories = (TextView) findViewById(R.id.textView13);
+        caloriesLeft = (TextView) findViewById(R.id.textView15);
+        rvNutrition = (RecyclerView) findViewById(R.id.rvNutrition);
 
-        addBtn=findViewById(R.id.addBtn);
-        addBtn.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        addBtn = findViewById(R.id.addBtn);
+        addBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 startActivity(new Intent(NutritionActivity.this, addNutrition.class));
             }
         });
 
+        //TODO import nutritionList
+
+        adapter = new NutritionAdapter(nutritionList);
+        // Attach the adapter to the recyclerview to populate items
+        rvNutrition.setAdapter(adapter);
+        // Set layout manager to position the items
+        rvNutrition.setLayoutManager(new LinearLayoutManager(NutritionActivity.this));
+
         setCalories();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // nutritionList.add(new Food("test", Long.parseLong("100")));
+        adapter.notifyDataSetChanged();
+        //set calories amount so far
+        calories.setText(sum + "");
+
+        //set how much calories left
+        if (recommendedCalories - sum > 0)
+            caloriesLeft.setText((recommendedCalories - sum) + "");
+        else
+            caloriesLeft.setText(0 + "");
+
+    }
 
 
     private void setCalories() {
+
+        nutritionList.clear();
+        sum=0;
+        final Date today = new Date();
+        final String stringToday = addNutrition.sfd.format(today);
 
         //get recommended calories per day
         final DocumentReference user_details = db.collection("user_details")
@@ -71,51 +110,44 @@ public class NutritionActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        final int recommendedCalories = document.getLong("recommendedCaloriesPerDay").intValue();
-                        CollectionReference foods=user_details.collection("nutrition reports");
+                        recommendedCalories = document.getLong("recommendedCaloriesPerDay").intValue();
+                        CollectionReference foods = user_details.collection("nutrition reports");
+
+                        //check if today's date matches DB date
+                        foods.document("Date").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                DocumentSnapshot document = task.getResult();
+                                String time = document.getString("date");
+                                if (!stringToday.equals(time)) {
+                                    NutritionActivity.deleteAllNutrition(stringToday, time);
+                                }
+                            }
+                        });
+
+                        //get today's calories sum so far
                         foods.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                String st="hello";
-                                long sum=0;
-                                if(task.isSuccessful()){
+                                if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
-                                        sum+=(Long)document.getLong("calories");
-                                       // insertToFoodMap(document.getString("name"),(Long)document.getLong("calories"));
-
-                                        //set table
-                                        table = findViewById(R.id.table1);
-
-                                        TableRow tr = new TableRow(NutritionActivity.this);
-
-                                        TextView calories = new TextView(NutritionActivity.this);
-                                        calories.setText((Long)document.getLong("calories")+"");
-                                        tr.addView(calories);
-
-                                        TextView space = new TextView(NutritionActivity.this);
-                                        space.setText("      ");
-                                        tr.addView(space);
-
-                                        TextView foodItem = new TextView(NutritionActivity.this);
-                                        foodItem.setText(document.getString("name"));
-                                        tr.addView(foodItem);
-
-
-
-
-
-                                        table.addView(tr);
+                                        if (document.getString("date") != null)
+                                            continue;
+                                        sum += (Long) document.getLong("calories");
+                                        nutritionList.add(new Food(document.getString("name"), document.getLong("calories")
+                                                , document.getString("unit")));
                                     }
 
+                                    adapter.notifyDataSetChanged();
 
-                                     //set calories amount so far
-                                    calories.setText(sum+"");
+                                    //set calories amount so far
+                                    calories.setText(sum + "");
 
                                     //set how much calories left
-                                    if(recommendedCalories-sum > 0)
-                                        caloriesLeft.setText((recommendedCalories-sum)+"");
+                                    if (recommendedCalories - sum > 0)
+                                        caloriesLeft.setText((recommendedCalories - sum) + "");
                                     else
-                                        caloriesLeft.setText(0+"");
+                                        caloriesLeft.setText(0 + "");
                                 }
 
                             }
@@ -128,4 +160,38 @@ public class NutritionActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * delete all nutrition reports of the user in case today's date does not matches DB date
+     */
+    public static void deleteAllNutrition(final String stringToday, String previousDate) {
+        nutritionList.clear();
+        db.collection("user_details").
+                document(mAuth.getCurrentUser().getUid()).collection("nutrition reports").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            //delete all documents
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                document.getReference().delete();
+                            }
+                        }
+                        //add today date
+                        Map<String, Object> todayDate = new HashMap<>();
+                        todayDate.put("date", stringToday);
+                        db.collection("user_details").
+                                document(mAuth.getCurrentUser().getUid()).collection("nutrition reports")
+                                .document("Date").set(todayDate, SetOptions.merge());
+                    }
+                });
+
+        db.collection("user_details").
+                document(mAuth.getCurrentUser().getUid()).collection("calories_reports").get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                    }
+                });
+    }
 }

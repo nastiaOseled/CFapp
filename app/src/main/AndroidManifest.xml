@@ -32,8 +32,12 @@
         <activity android:name=".set_medicine" />
         <activity android:name=".NutritionActivity" />
         <activity android:name=".addNutrition" />
-        <activity android:name=".EditMed" />
         <activity android:name=".ContactsActivity" />
+        <activity android:name=".confetti" />
+        <activity
+            android:name=".testActivity"
+            android:label="@string/title_activity_test"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -8,7 +8,7 @@
     tools:context=".MedicinesActivity">
 
     <Button
-        android:id="@+id/saveBtn2"
+        android:id="@+id/saveBtn"
         android:layout_width="156dp"
         android:layout_height="35dp"
         android:layout_alignParentBottom="true"

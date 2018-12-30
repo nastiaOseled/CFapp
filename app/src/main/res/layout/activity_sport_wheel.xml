@@ -36,7 +36,7 @@
 
     <Button
         android:id="@+id/done"
-        android:layout_width="156dp"
+        android:layout_width="152dp"
         android:layout_height="35dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -47,18 +47,39 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/round_pink_button"
-        android:onClick="continueBtnListener"
         android:text="סיימתי"
         android:textColor="#ffffff"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.967"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wheel" />
+        app:layout_constraintTop_toBottomOf="@+id/wheel"
+        app:layout_constraintVertical_bias="0.492" />
 
     <Button
-        android:id="@+id/cntBtn3"
+        android:id="@+id/again"
+        android:layout_width="158dp"
+        android:layout_height="35dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/round_pink_button"
+        android:text="סובב שוב"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/wheel"
+        app:layout_constraintVertical_bias="0.492" />
+
+    <Button
+        android:id="@+id/cntBtn2"
         android:layout_width="156dp"
         android:layout_height="35dp"
         android:layout_alignParentBottom="true"
@@ -70,15 +91,16 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/round_pink_button"
-        android:onClick="continueBtnListener"
         android:text="סובב"
         android:textColor="#ffffff"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wheel" />
+        app:layout_constraintTop_toBottomOf="@+id/wheel"
+        app:layout_constraintVertical_bias="0.492" />
 
     <ImageView
         android:id="@+id/wheel"
@@ -155,5 +177,75 @@
         app:layout_constraintEnd_toEndOf="@+id/popup"
         app:layout_constraintStart_toStartOf="@+id/popup"
         app:layout_constraintTop_toTopOf="@+id/popup" />
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="697dp"
+        android:layout_height="784dp"
+        android:background="#CC000000"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/finishText"
+        android:layout_width="256dp"
+        android:layout_height="42dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="364dp"
+        android:gravity="center"
+        android:text="עשית את זה!"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/lungs"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.293" />
+
+    <ImageView
+        android:id="@+id/crown"
+        android:layout_width="121dp"
+        android:layout_height="98dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/finishText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/crown" />
+
+    <ImageView
+        android:id="@+id/share"
+        android:layout_width="157dp"
+        android:layout_height="151dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/share" />
 
 </android.support.constraint.ConstraintLayout>

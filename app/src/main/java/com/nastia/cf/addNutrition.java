@@ -259,21 +259,21 @@ public class addNutrition extends AppCompatActivity {
 
     public void insertNewFoodToUserNutritionList(final String anotherFood, final Map<String, Object> newFood) {
 
-        final Date today = new Date();
-        final String stringToday=sfd.format(today);
+//        final Date today = new Date();
+//        final String stringToday=sfd.format(today);
 
-        DocumentReference docRef = db.collection("user_details").
-                document(mAuth.getCurrentUser().getUid()).collection("nutrition reports").document("Date");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                DocumentSnapshot document = task.getResult();
-                String time = document.getString("date");
-                if ( ! stringToday.equals(time)) {
-                    NutritionActivity.deleteAllNutrition(stringToday,time);
-                }//if date is not today
-            }
-        });
+//        DocumentReference docRef = db.collection("user_details").
+//                document(mAuth.getCurrentUser().getUid()).collection("nutrition reports").document("Date");
+//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+//                DocumentSnapshot document = task.getResult();
+//                String time = document.getString("date");
+//                if ( ! stringToday.equals(time)) {
+//                    NutritionActivity.deleteAllNutrition(stringToday,time);
+//                }//if date is not today
+//            }
+//        });
 
         //add new food
         db.collection("user_details").

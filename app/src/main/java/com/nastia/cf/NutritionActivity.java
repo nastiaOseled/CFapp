@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
@@ -39,6 +40,9 @@ public class NutritionActivity extends AppCompatActivity {
     TextView caloriesLeft;
     TableLayout table;
     RecyclerView rvNutrition;
+    TextView recommended;
+    ImageView recommendedFrame;
+    TextView date;
 
     //all food items of user in a certain day
     public static ArrayList<Food> nutritionList = new ArrayList<>();
@@ -47,7 +51,7 @@ public class NutritionActivity extends AppCompatActivity {
 
     //sums the amount of calories for today
     public static long sum = 0;
-    int recommendedCalories=0;
+    int recommendedCalories = 0;
 
 
     @Override
@@ -58,7 +62,9 @@ public class NutritionActivity extends AppCompatActivity {
         calories = (TextView) findViewById(R.id.textView13);
         caloriesLeft = (TextView) findViewById(R.id.textView15);
         rvNutrition = (RecyclerView) findViewById(R.id.rvNutrition);
-
+        recommended = (TextView) findViewById(R.id.textView23);
+        recommendedFrame = (ImageView) findViewById(R.id.imageView5);
+        date = (TextView) findViewById(R.id.textView25);
         addBtn = findViewById(R.id.addBtn);
         addBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -96,8 +102,6 @@ public class NutritionActivity extends AppCompatActivity {
 
     private void setCalories() {
 
-        nutritionList.clear();
-        sum=0;
         final Date today = new Date();
         final String stringToday = addNutrition.sfd.format(today);
 
@@ -111,7 +115,9 @@ public class NutritionActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         recommendedCalories = document.getLong("recommendedCaloriesPerDay").intValue();
-                        CollectionReference foods = user_details.collection("nutrition reports");
+                        recommended.setText(recommendedCalories + "");
+                        caloriesLeft.setText(recommendedCalories + "");
+                        final CollectionReference foods = user_details.collection("nutrition reports");
 
                         //check if today's date matches DB date
                         foods.document("Date").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -120,51 +126,61 @@ public class NutritionActivity extends AppCompatActivity {
                                 DocumentSnapshot document = task.getResult();
                                 String time = document.getString("date");
                                 if (!stringToday.equals(time)) {
-                                    NutritionActivity.deleteAllNutrition(stringToday, time);
+                                    deleteAllNutrition(stringToday, time);
+                                } else {
+                                    //get today's calories sum so far
+                                    date.setText(time+"");
+                                    sum = 0;
+                                    nutritionList.clear();
+                                    foods.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    if (document.getString("date") != null)
+                                                        continue;
+                                                    sum += (Long) document.getLong("calories");
+                                                    nutritionList.add(new Food(document.getString("name"),
+                                                            document.getLong("calories")
+                                                            , document.getString("unit")));
+                                                }
+
+                                                adapter.notifyDataSetChanged();
+
+                                                //set calories amount so far
+                                                calories.setText(sum + "");
+
+                                                //set how much calories left
+                                                if (recommendedCalories - sum > 0)
+                                                    caloriesLeft.setText((recommendedCalories - sum) + "");
+                                                else
+                                                    caloriesLeft.setText(0 + "");
+                                            }
+
+                                        }
+                                    });
                                 }
                             }
                         });
 
-                        //get today's calories sum so far
-                        foods.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for (QueryDocumentSnapshot document : task.getResult()) {
-                                        if (document.getString("date") != null)
-                                            continue;
-                                        sum += (Long) document.getLong("calories");
-                                        nutritionList.add(new Food(document.getString("name"), document.getLong("calories")
-                                                , document.getString("unit")));
-                                    }
-
-                                    adapter.notifyDataSetChanged();
-
-                                    //set calories amount so far
-                                    calories.setText(sum + "");
-
-                                    //set how much calories left
-                                    if (recommendedCalories - sum > 0)
-                                        caloriesLeft.setText((recommendedCalories - sum) + "");
-                                    else
-                                        caloriesLeft.setText(0 + "");
-                                }
-
-                            }
-                        });
                     }
                 }
             }
         });
-
 
     }
 
     /**
      * delete all nutrition reports of the user in case today's date does not matches DB date
      */
-    public static void deleteAllNutrition(final String stringToday, String previousDate) {
+    public void deleteAllNutrition(final String stringToday, final String previousDate) {
+
+        //calculate sum calories
+        for (Food f : nutritionList)
+            sum += f.getCalories();
         nutritionList.clear();
+        adapter.notifyDataSetChanged();
+        calories.setText("0");
         db.collection("user_details").
                 document(mAuth.getCurrentUser().getUid()).collection("nutrition reports").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -182,16 +198,16 @@ public class NutritionActivity extends AppCompatActivity {
                         db.collection("user_details").
                                 document(mAuth.getCurrentUser().getUid()).collection("nutrition reports")
                                 .document("Date").set(todayDate, SetOptions.merge());
-                    }
-                });
 
-        db.collection("user_details").
-                document(mAuth.getCurrentUser().getUid()).collection("calories_reports").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
+                        todayDate.clear();
+                        todayDate.put("date", previousDate);
+                        todayDate.put("calories", sum);
+                        db.collection("user_details").
+                                document(mAuth.getCurrentUser().getUid()).collection("calories_reports")
+                                .add(todayDate);
+                        sum = 0;
                     }
                 });
     }
+
 }

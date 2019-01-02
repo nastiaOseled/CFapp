@@ -34,11 +34,6 @@
         <activity android:name=".addNutrition" />
         <activity android:name=".ContactsActivity" />
         <activity android:name=".welcomeActivity"></activity>
-        <activity android:name=".confetti" />
-        <activity
-            android:name=".testActivity"
-            android:label="@string/title_activity_test"
-            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

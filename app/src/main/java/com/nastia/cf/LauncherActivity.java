@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 public class LauncherActivity extends AppCompatActivity {
 
-    public static SharedPreferences sharedPref;
+    private static SharedPreferences sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

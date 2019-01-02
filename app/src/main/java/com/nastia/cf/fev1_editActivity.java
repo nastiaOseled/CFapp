@@ -91,8 +91,7 @@ public class fev1_editActivity extends AppCompatActivity {
                             user_details.update("fev1", newFev1);
                         }
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        Intent intent = new Intent(fev1_editActivity.this, menuActivity.class);
-                        startActivity(intent);
+                        finish();
                     } else {
                         Log.d(TAG, "No such document");
                     }

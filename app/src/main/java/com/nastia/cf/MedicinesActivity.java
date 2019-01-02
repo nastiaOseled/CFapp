@@ -39,14 +39,32 @@ public class MedicinesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicines);
-        /*Button saveBtn =  findViewById(R.id.saveBtn);
+        Button saveBtn =  findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-               *//* Intent myIntent = new Intent(MedicinesActivity.this, set_medicine.class);
-                startActivityForResult(myIntent, 0);*//*
+                Intent myIntent = new Intent(MedicinesActivity.this, set_medicine.class);
+                startActivityForResult(myIntent, 0);
             }
-        });*/
+        });
+        importMeds();
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 0) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                Boolean returnValue = data.getBooleanExtra("changed",false);
+                if (returnValue)
+                    importMeds();
+            }
+        }
+    }
+
+    private void importMeds(){
+        meds= new ArrayList<String>();
+        medsId= new ArrayList<String>();
         db.collection("user_details").
                 document(mAuth.getCurrentUser().getUid()).collection("med").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -59,10 +77,11 @@ public class MedicinesActivity extends AppCompatActivity {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                             }
                             ListAdapter cityAdapter = new ArrayAdapter<String>(MedicinesActivity.this, android.R.layout.simple_list_item_1, meds);
-                            ListView cityListView = (ListView) findViewById(R.id.medList);
-                            cityListView.setAdapter(cityAdapter);
+                            ListView medListView = (ListView) findViewById(R.id.medList);
+                            medListView.setAdapter(cityAdapter);
 
-                            cityListView.setOnItemClickListener(
+                            medListView.setOnItemClickListener(
+
                                     new AdapterView.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -70,6 +89,7 @@ public class MedicinesActivity extends AppCompatActivity {
                                             Intent myIntent = new Intent(view.getContext(), set_medicine.class);
                                             Bundle b = new Bundle();
                                             b.putString("id", medsId.get(position)); //Your id
+                                            b.putString("name", meds.get(position));
                                             myIntent.putExtras(b);
                                             startActivityForResult(myIntent, 0);
                                         }
@@ -81,7 +101,6 @@ public class MedicinesActivity extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 
 }

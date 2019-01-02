@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".welcomeActivity">
+        <activity android:name=".LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,6 +34,7 @@
         <activity android:name=".addNutrition" />
         <activity android:name=".EditMed" />
         <activity android:name=".ContactsActivity" />
+        <activity android:name=".welcomeActivity"></activity>
     </application>
 
 </manifest>

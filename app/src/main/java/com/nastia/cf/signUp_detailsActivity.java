@@ -1,6 +1,7 @@
 package com.nastia.cf;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -73,6 +74,12 @@ public class signUp_detailsActivity extends AppCompatActivity {
         //user.put("birthDate", birthDate.getText().toString());
 
         db.collection("user_details").document(mAuth.getCurrentUser().getUid()).set(user);
+
+        SharedPreferences sharedPref =LauncherActivity.getPref();
+        final SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("userConnected", true);
+        editor.commit();
+
         Intent intent = new Intent(signUp_detailsActivity.this, menuActivity.class);
         startActivity(intent);
     }

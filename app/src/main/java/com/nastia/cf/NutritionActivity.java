@@ -129,7 +129,7 @@ public class NutritionActivity extends AppCompatActivity {
                                     deleteAllNutrition(stringToday, time);
                                 } else {
                                     //get today's calories sum so far
-                                    date.setText(time+"");
+                                    date.setText(stringToday+"");
                                     sum = 0;
                                     nutritionList.clear();
                                     foods.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -1,6 +1,8 @@
 package com.nastia.cf;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -128,6 +130,10 @@ public class signUpActivity extends AppCompatActivity implements View.OnClickLis
             return;
         }
 
+        SharedPreferences sharedPref =LauncherActivity.getPref();
+        final SharedPreferences.Editor editor = sharedPref.edit();
+
+
         //showProgressDialog();    ??
 
         // [START sign_in_with_email]
@@ -138,8 +144,13 @@ public class signUpActivity extends AppCompatActivity implements View.OnClickLis
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
+
+                            editor.putBoolean("userConnected", true);
+                            editor.commit();
+
                             Intent intent = new Intent(signUpActivity.this, menuActivity.class);
                             startActivity(intent);
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());

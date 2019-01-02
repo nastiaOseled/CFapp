@@ -3,6 +3,7 @@ package com.nastia.cf;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -19,13 +20,26 @@ public class LauncherActivity extends AppCompatActivity {
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         boolean b=sharedPref.getBoolean("userConnected", false);
         if( ! b){
-            Intent in=new Intent(this, welcomeActivity.class);
-            startActivity(in);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    Intent in=new Intent(LauncherActivity.this, welcomeActivity.class);
+                    startActivity(in);
+                }
+            }, 2000);
         }
 
         else {
-            Intent in=new Intent(this, menuActivity.class);
-            startActivity(in);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    Intent in=new Intent(LauncherActivity.this, menuActivity.class);
+                    startActivity(in);
+                }
+            }, 2000);
+
         }
 
     }

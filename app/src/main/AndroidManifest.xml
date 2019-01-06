@@ -33,7 +33,8 @@
         <activity android:name=".NutritionActivity" />
         <activity android:name=".addNutrition" />
         <activity android:name=".ContactsActivity" />
-        <activity android:name=".welcomeActivity"></activity>
+        <activity android:name=".welcomeActivity" />
+        <activity android:name=".FeedActivity"></activity>
     </application>
 
 </manifest>

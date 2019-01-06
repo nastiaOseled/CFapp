@@ -98,12 +98,12 @@
         android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/conect"
+        app:layout_constraintTop_toBottomOf="@+id/feed"
         app:layout_constraintVertical_bias="0.341"
         app:srcCompat="@drawable/rsz_cal_icon" />
 
     <ImageView
-        android:id="@+id/conect"
+        android:id="@+id/feed"
         android:layout_width="92dp"
         android:layout_height="88dp"
         android:layout_marginBottom="8dp"

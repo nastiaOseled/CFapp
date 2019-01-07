@@ -31,9 +31,9 @@ import java.util.Map;
 
 public class NutritionActivity extends AppCompatActivity {
 
-    //DB connection
-    private final static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//    //DB connection
+//    private final static FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     Button addBtn;
     TextView calories;
@@ -43,6 +43,7 @@ public class NutritionActivity extends AppCompatActivity {
     TextView recommended;
     ImageView recommendedFrame;
     TextView date;
+    Button backBtn;
 
     //all food items of user in a certain day
     public static ArrayList<Food> nutritionList = new ArrayList<>();
@@ -69,6 +70,14 @@ public class NutritionActivity extends AppCompatActivity {
         addBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 startActivity(new Intent(NutritionActivity.this, addNutrition.class));
+            }
+        });
+
+        backBtn=(Button) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
@@ -106,18 +115,16 @@ public class NutritionActivity extends AppCompatActivity {
         final String stringToday = addNutrition.sfd.format(today);
 
         //get recommended calories per day
-        final DocumentReference user_details = db.collection("user_details")
-                .document(mAuth.getCurrentUser().getUid());
-        user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        LauncherActivity.user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        recommendedCalories = document.getLong("recommendedCaloriesPerDay").intValue();
+                        recommendedCalories = LauncherActivity.RECOMMENDED_CALORIES;
                         recommended.setText(recommendedCalories + "");
                         caloriesLeft.setText(recommendedCalories + "");
-                        final CollectionReference foods = user_details.collection("nutrition reports");
+                        final CollectionReference foods = LauncherActivity.user_details.collection("nutrition reports");
 
                         //check if today's date matches DB date
                         foods.document("Date").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -181,8 +188,10 @@ public class NutritionActivity extends AppCompatActivity {
         nutritionList.clear();
         adapter.notifyDataSetChanged();
         calories.setText("0");
-        db.collection("user_details").
-                document(mAuth.getCurrentUser().getUid()).collection("nutrition reports").get()
+
+//        db.collection("user_details").
+//                document(mAuth.getCurrentUser().getUid())
+        LauncherActivity.user_details.collection("nutrition reports").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -195,15 +204,17 @@ public class NutritionActivity extends AppCompatActivity {
                         //add today date
                         Map<String, Object> todayDate = new HashMap<>();
                         todayDate.put("date", stringToday);
-                        db.collection("user_details").
-                                document(mAuth.getCurrentUser().getUid()).collection("nutrition reports")
+//                        db.collection("user_details").
+//                                document(mAuth.getCurrentUser().getUid())
+                        LauncherActivity.user_details.collection("nutrition reports")
                                 .document("Date").set(todayDate, SetOptions.merge());
 
                         todayDate.clear();
                         todayDate.put("date", previousDate);
                         todayDate.put("calories", sum);
-                        db.collection("user_details").
-                                document(mAuth.getCurrentUser().getUid()).collection("calories_reports")
+//                        db.collection("user_details").
+//                                document(mAuth.getCurrentUser().getUid())
+                        LauncherActivity.user_details.collection("calories_reports")
                                 .add(todayDate);
                         sum = 0;
                     }

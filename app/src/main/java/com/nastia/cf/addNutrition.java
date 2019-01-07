@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -69,11 +70,8 @@ public class addNutrition extends AppCompatActivity {
         spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(parent.getContext(),
-                        "OnItemSelectedListener : " + parent.getItemAtPosition(position).toString(),
-                        Toast.LENGTH_LONG).show();
                 if (parent.getItemAtPosition(position).toString().equals("אחר"))
-                    getInputFromUser();
+                    showInputDialog();
             }
 
             @Override
@@ -256,6 +254,49 @@ public class addNutrition extends AppCompatActivity {
                 });
     }
 
+    protected void showInputDialog() {
+
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptView = layoutInflater.inflate(R.layout.input_dialog_nutrition, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptView);
+
+        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setNegativeButton("ביטול",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String anotherFood = editText.getText().toString();
+
+                        //set the document before insert
+                        Map<String, Object> newFood = new HashMap<>();
+                        newFood.put("name", anotherFood);
+                        newFood.put("calories", 100);
+                        newFood.put("unit", "100 גרם");
+
+                        //insert new value to nutritionList list
+                    //    insertNewValueToNutritionCollection(anotherFood, newFood);
+
+                        //insert new value to user's nutritionList reports list
+                        insertNewFoodToUserNutritionList(anotherFood, newFood);
+
+                        //TODO
+                        //     spinner2.setSelection(spinner2.getIte);
+                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
 
     public void insertNewFoodToUserNutritionList(final String anotherFood, final Map<String, Object> newFood) {
 
@@ -276,8 +317,7 @@ public class addNutrition extends AppCompatActivity {
 //        });
 
         //add new food
-        db.collection("user_details").
-                document(mAuth.getCurrentUser().getUid()).collection("nutrition reports").add(newFood)
+        LauncherActivity.user_details.collection("nutrition reports").add(newFood)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
@@ -290,6 +330,7 @@ public class addNutrition extends AppCompatActivity {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
+
     }
 
 }

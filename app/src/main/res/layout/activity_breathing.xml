@@ -19,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/rsz_br_icon" />
 
+
     <ImageView
         android:id="@+id/lungs"
         android:layout_width="163dp"
@@ -332,5 +333,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/crown" />
+
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/back_btn"
+        android:rotation="180"
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

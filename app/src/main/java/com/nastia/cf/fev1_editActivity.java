@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ public class fev1_editActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private TextView fevText;
     private NumberPicker np;
+    Button backBtn;
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -37,6 +39,13 @@ public class fev1_editActivity extends AppCompatActivity {
 
          np = findViewById(R.id.numberPicker);
          fevText = findViewById(R.id.fevText);
+        backBtn=(Button) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         np.setMinValue(40);
         np.setMaxValue(100);

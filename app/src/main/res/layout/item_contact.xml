@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
@@ -11,8 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginRight="30dp"
+        android:layout_marginRight="70dp"
         android:layout_marginTop="8dp"
         />
 
@@ -21,23 +23,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginRight="30dp"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@id/contact_name"
         app:layout_constraintTop_toBottomOf="@id/contact_name"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="4dp"
 
         />
 
     <Button
         android:id="@+id/removeBtn"
-        android:layout_width="52dp"
-        android:layout_height="34dp"
-        android:layout_marginLeft="40dp"
-        android:text="הסר"
-        android:textStyle="bold"
-        android:textSize="14sp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginLeft="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        android:background="@android:drawable/ic_delete"
         android:textColor="#ffffff"
-        android:background="#f22318"
-        android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

@@ -33,13 +33,22 @@ public class MedicinesActivity extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ArrayList<String> meds = new ArrayList<String>();
     private ArrayList<String> medsId = new ArrayList<String>();
+    Button saveBtn;
+    Button backBtn;
 
     ListView medList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicines);
-        Button saveBtn =  findViewById(R.id.saveBtn);
+        saveBtn =  findViewById(R.id.saveBtn);
+        backBtn=(Button) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent myIntent = new Intent(MedicinesActivity.this, set_medicine.class);

@@ -35,10 +35,10 @@ public class ContactsActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public static ArrayList<Contact> contacts=new ArrayList<>();
     static Button addBtn;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     ContactsAdapter adapter;
+    Button backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,19 +53,29 @@ public class ContactsActivity extends AppCompatActivity {
                 showContacts();
             }
         });
-        updateAddBtn();
-        importContacts();
+        backBtn=(Button) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+       // importContacts();
 
         // Create adapter passing in the sample user data
     /*    contacts.add(new Contact("hello1","05444"));
         contacts.add(new Contact("hello2","054442"));
         contacts.add(new Contact("hello3","054443"));  */
 
-        adapter = new ContactsAdapter(contacts);
+        adapter = new ContactsAdapter(LauncherActivity.contacts);
         // Attach the adapter to the recyclerview to populate items
         rvContacts.setAdapter(adapter);
         // Set layout manager to position the items
         rvContacts.setLayoutManager(new LinearLayoutManager(this));
+
+        updateAddBtn();
     }
 
     @Override
@@ -134,8 +144,8 @@ public class ContactsActivity extends AppCompatActivity {
      newContact.put("name", c.getName());
      newContact.put("phone", c.getPhoneNum());
 
-        if( ! contacts.contains(c)) {
-            this.contacts.add(c);
+        if( ! LauncherActivity.contacts.contains(c)) {
+            LauncherActivity.contacts.add(c);
             db.collection("user_details").
                     document(mAuth.getCurrentUser().getUid()).collection("contacts").document(c.getName()).set(newContact);
                   //  document(mAuth.getCurrentUser().getUid()).collection("contacts").add(newContact);
@@ -149,7 +159,7 @@ public class ContactsActivity extends AppCompatActivity {
  }
 
     public static boolean updateAddBtn(){
-        if(contacts.size()==3){
+        if(LauncherActivity.contacts.size()==3){
             addBtn.setEnabled(false);
             return false;
         }
@@ -157,16 +167,22 @@ public class ContactsActivity extends AppCompatActivity {
         return true;
     }
 
-    public void importContacts() {
-        final DocumentReference user_details = db.collection("user_details")
-                .document(mAuth.getCurrentUser().getUid());
-        user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+    public void importContacts(){
+
+        adapter.notifyDataSetChanged();
+        updateAddBtn();
+    }
+
+ /**   public void importContacts() {
+
+        LauncherActivity.user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        user_details.collection("contacts")
+                        LauncherActivity.user_details.collection("contacts")
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -187,5 +203,5 @@ public class ContactsActivity extends AppCompatActivity {
                 }
             }
         });
-    }
+    } */
 }

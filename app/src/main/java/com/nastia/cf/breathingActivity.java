@@ -50,6 +50,7 @@ public class breathingActivity extends AppCompatActivity {
     private final List<ConfettiManager> activeConfettiManagers = new ArrayList<>();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    Button backBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,13 @@ public class breathingActivity extends AppCompatActivity {
         c3.setEnabled(false);
         seconds = findViewById(R.id.second);
 
+        backBtn=(Button) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     public void onClick(View v) {

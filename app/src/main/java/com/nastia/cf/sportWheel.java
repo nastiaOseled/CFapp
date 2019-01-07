@@ -63,6 +63,7 @@ public class sportWheel extends AppCompatActivity {
     final ArrayList<CharSequence> contactsArry = new ArrayList<>();
     String[] conArr;
     public static ArrayList<Contact> contacts=new ArrayList<>();
+    Button backBtn;
 
     protected int goldDark, goldMed, gold, goldLight;
     protected int[] colors;
@@ -155,6 +156,14 @@ public class sportWheel extends AppCompatActivity {
         share.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 openShareListDialog();
+            }
+        });
+
+        backBtn=(Button) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 

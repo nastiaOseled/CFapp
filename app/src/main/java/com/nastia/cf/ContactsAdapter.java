@@ -75,7 +75,7 @@ public class ContactsAdapter extends
                         }
                     }
                 });
-                ContactsActivity.contacts.remove(i);
+                LauncherActivity.contacts.remove(i);
                // mContacts.remove(i);
                 notifyDataSetChanged();
                 ContactsActivity.updateAddBtn();

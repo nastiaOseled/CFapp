@@ -29,6 +29,8 @@ public class LauncherActivity extends AppCompatActivity {
     public  static String NICKNAME;
     public  static int RECOMMENDED_CALORIES;
     public static ArrayList<Contact> contacts=new ArrayList<>();
+    public  static double WEIGHT;
+
     private static SharedPreferences sharedPref;
 
 

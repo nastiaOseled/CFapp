@@ -29,7 +29,6 @@ public class questionsActivity extends AppCompatActivity {
     private static final String TAG = signUpActivity.class.getSimpleName();
 
     Button backBtn;
-    private Toast mToast;
     private FancyAccordionView mRecyclerView;
     private ItemAdapter.OnItemClickedListener mListener = new ItemAdapter.OnItemClickedListener() {
         @Override
@@ -109,34 +108,6 @@ public class questionsActivity extends AppCompatActivity {
         final int dataCount = 50;
         int index = 0;
 
-//        final List<ExpandableItemHolder> itemHolders = new ArrayList<>(dataCount);
-//        Item itemModel;
-//        ExpandableItemHolder itemHolder;
-//        for ( questionItem item : q) {
-////            itemModel = questionItem.create(item.getTitle(), item.getDescription());
-//            itemModel = questionItem.create("vvvv", "rgregeg");
-//            itemHolder = new ExpandableItemHolder(itemModel);
-//            itemHolders.add(itemHolder);
-//        }
-//
-//        mRecyclerView.setAdapterItems(itemHolders);
-    }
-
-    private String getItemTitle(int position) {
-        return String.format(Locale.ITALY, "Item %d", position + 1);
-    }
-
-    private String getItemDescription(int position) {
-        return String.format(Locale.ITALY, "Hello World, I'm an expandable item!", position);
-    }
-
-    private void showToast(String text) {
-        if (mToast != null) {
-            mToast.cancel();
-        }
-
-        mToast = Toast.makeText(this, text, Toast.LENGTH_SHORT);
-        mToast.show();
     }
 
 }

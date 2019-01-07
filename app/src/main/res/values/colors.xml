@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3f51b5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#555669</color>
+    <color name="colorPrimaryDark">#555669</color>
     <color name="colorAccent">#fd8f90</color>
 
     <color name="gold_dark">#fd8f90</color>
-    <color name="gold_med">#4da7bc</color>
-    <color name="gold">#a7ddea</color>
+    <color name="gold_med">#20859d</color>
+    <color name="gold">#b9e8f3</color>
     <color name="gold_light">#fecece</color>
     <color name="blue">#42a5f5</color>
 </resources>

@@ -9,6 +9,19 @@
     android:fillEnabled="true"
     tools:context=".sportWheel">
 
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="471dp"
+        android:layout_height="470dp"
+        android:layout_marginLeft="124dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="342dp"
+        android:alpha="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/rsz_sport_icon"
+        android:rotation="-30"/>
+
     <TextView
         android:id="@+id/textView10"
         android:layout_width="112dp"

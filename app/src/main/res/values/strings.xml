@@ -26,6 +26,12 @@
     <string name="addAlert">+ הוסף תזכורת</string>
     <string name="addBtn">+ הוסף</string>
 
+    <string name="age">גיל</string>
+    <string name="weight">משקל</string>
+    <string name="height">גובה</string>
+    <string name="maxC">יעד הקלוריות שלי</string>
+    <string name="edit">עריכת פרופיל</string>
+
     <string-array name="planets_array">
         <item>advil</item>
         <item>orkambi</item>

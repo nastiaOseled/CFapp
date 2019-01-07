@@ -67,6 +67,10 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(menuActivity.this, FeedActivity.class);
             startActivity(intent);
         }
+        if(i==R.id.settings) {
+            Intent intent = new Intent(menuActivity.this, SettingsActivity.class);
+            startActivity(intent);
+        }
 
     }
 

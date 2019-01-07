@@ -49,6 +49,7 @@ public class sportWheel extends AppCompatActivity {
     Button BtnDone;
     Button BtnRollAgain;
     String ActivityId;
+    Button backBtn;
 
     protected int goldDark, goldMed, gold, goldLight;
     protected int[] colors;
@@ -136,6 +137,14 @@ public class sportWheel extends AppCompatActivity {
         gold = res.getColor(R.color.gold);
         goldLight = res.getColor(R.color.gold_light);
         colors = new int[] { goldDark, goldMed, gold, goldLight };
+
+        backBtn=(Button) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 

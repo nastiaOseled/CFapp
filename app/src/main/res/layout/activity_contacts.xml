@@ -4,54 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/rsz_background_blue"
     tools:context=".ContactsActivity">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:text="אנשי קשר"
-        android:textSize="24sp"
-        android:layout_marginTop="40dp"
+        android:textColor="#ffffff"
+        android:textSize="27sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
- />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/subTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
+        android:gravity="center"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="הוסף עד 3 אנשים קשר אליהם יישלח מידע ועדכונים"
+        android:layout_marginTop="45dp"
+        android:text="הוסף עד 3 אנשי קשר אליהם יישלח מידע ועדכונים"
         android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <view class="android.support.v7.widget.RecyclerView"
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/rvContacts"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginTop="40dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subTitle"
-        >
-    </view>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subTitle"/>
 
     <Button
         android:id="@+id/addBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_width="110dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/round_pink_button"
         android:text="הוסף איש קשר"
-        android:textStyle="bold"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@id/rvContacts"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rvContacts" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="307dp"
+        android:layout_height="399dp"
+        android:layout_marginLeft="160dp"
+        android:layout_marginStart="160dp"
+        android:layout_marginTop="360dp"
+        android:alpha="0.15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/rsz_cont_icon" />
+
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/back_btn"
+        android:rotation="180"
+        android:textColor="#ffffff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

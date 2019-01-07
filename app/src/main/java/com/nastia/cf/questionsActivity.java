@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +28,7 @@ public class questionsActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = signUpActivity.class.getSimpleName();
 
+    Button backBtn;
     private Toast mToast;
     private FancyAccordionView mRecyclerView;
     private ItemAdapter.OnItemClickedListener mListener = new ItemAdapter.OnItemClickedListener() {
@@ -54,6 +57,14 @@ public class questionsActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             mRecyclerView.setExpandedItemId(savedInstanceState.getLong(KEY_EXPANDED_ID, Item.INVALID_ID));
         }
+
+        backBtn=(Button) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         loadData();
 

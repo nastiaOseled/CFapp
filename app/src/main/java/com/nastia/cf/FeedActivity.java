@@ -31,11 +31,11 @@ import static com.nastia.cf.NutritionActivity.nutritionList;
 public class FeedActivity extends AppCompatActivity {
 
 
-    //DB connection
-    private final static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final DocumentReference user_details = db.collection("user_details")
-            .document(mAuth.getCurrentUser().getUid());
+//    //DB connection
+//    private final static FirebaseFirestore db = FirebaseFirestore.getInstance();
+//    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//    final DocumentReference user_details = db.collection("user_details")
+//            .document(mAuth.getCurrentUser().getUid());
 
 
     Button changeBtn;
@@ -43,6 +43,7 @@ public class FeedActivity extends AppCompatActivity {
     public FeedAdapter adapter;
     TextView nickname;
     ArrayList<Post> posts = new ArrayList<>();
+    Button backBtn;
 
 
     @Override
@@ -53,6 +54,13 @@ public class FeedActivity extends AppCompatActivity {
         changeBtn = findViewById(R.id.button3);
         rvPosts = findViewById(R.id.rvPosts);
         nickname = findViewById(R.id.nickname);
+        backBtn=(Button) findViewById(R.id.backBtn);
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         adapter = new FeedAdapter(posts);
         // Attach the adapter to the recyclerview to populate items
@@ -72,7 +80,7 @@ public class FeedActivity extends AppCompatActivity {
 
     private void importPosts() {
         //populate posts array list and notify adapter
-        user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+   /**     LauncherActivity.user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -82,7 +90,8 @@ public class FeedActivity extends AppCompatActivity {
                     }
                 }
             }
-        });
+        }); */
+        nickname.setText(LauncherActivity.NICKNAME+"");
     }
 
 
@@ -106,7 +115,8 @@ public class FeedActivity extends AppCompatActivity {
                 .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         nickname.setText(editText.getText() + "");
-                        user_details.update("name", editText.getText().toString());
+                        LauncherActivity.NICKNAME=editText.getText().toString();
+                        LauncherActivity.user_details.update("name", editText.getText().toString());
                     }
                 });
 

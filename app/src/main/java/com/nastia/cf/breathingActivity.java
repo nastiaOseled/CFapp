@@ -1,11 +1,14 @@
 package com.nastia.cf;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.res.Resources;
 import android.os.CountDownTimer;
 
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewGroup;
@@ -18,8 +21,14 @@ import android.widget.TextView;
 
 import com.github.jinatonic.confetti.CommonConfetti;
 import com.github.jinatonic.confetti.ConfettiManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,6 +60,10 @@ public class breathingActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Button backBtn;
+    ArrayList mSelectedItems;
+    final ArrayList<CharSequence> contactsArry = new ArrayList<>();
+    String[] conArr;
+    public static ArrayList<Contact> contacts=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +105,13 @@ public class breathingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        importContacts();
+        share.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                openShareListDialog();
             }
         });
     }
@@ -164,6 +184,82 @@ public class breathingActivity extends AppCompatActivity {
     protected ConfettiManager generateInfinite() {
         return CommonConfetti.rainingConfetti(container, colors)
                 .infinite();
+    }
+
+    private void openShareListDialog() {
+
+        mSelectedItems = new ArrayList();  // Where we track the selected items
+        conArr = new String[contactsArry.size()];
+        conArr = contactsArry.toArray(conArr);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // Set the dialog title
+        builder.setTitle("את מי תרצה לשתף?")
+                // Specify the list array, the items to be selected by default (null for none),
+                // and the listener through which to receive callbacks when items are selected
+                .setMultiChoiceItems(conArr, null,
+                        new DialogInterface.OnMultiChoiceClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which,
+                                                boolean isChecked) {
+                                if (isChecked) {
+                                    // If the user checked the item, add it to the selected items
+                                    mSelectedItems.add(which);
+                                } else if (mSelectedItems.contains(which)) {
+                                    // Else, if the item is already in the array, remove it
+                                    mSelectedItems.remove(Integer.valueOf(which));
+                                }
+                            }
+                        })
+                // Set the action buttons
+                .setPositiveButton("שתף", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User clicked OK, so save the mSelectedItems results somewhere
+                        // or return them to the component that opened the dialog
+
+                    }
+                })
+                .setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
+    public void importContacts() {
+        final DocumentReference user_details = db.collection("user_details")
+                .document(mAuth.getCurrentUser().getUid());
+        user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        user_details.collection("contacts")
+                                .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()){
+                                        String name=document.getString("name");
+                                        String phone=document.getString("phone");
+                                        Contact c=new Contact(name, phone);
+                                        if( ! contacts.contains(c))
+                                            contacts.add(c);
+                                        contactsArry.add(name);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+            }
+        });
     }
 
 }

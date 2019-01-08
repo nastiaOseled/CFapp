@@ -263,21 +263,6 @@ public class sportWheel extends AppCompatActivity {
 
     private void openShareListDialog() {
 
-/*        AlertDialog.Builder builder = new AlertDialog.Builder(sportWheel.this);
-        builder.setTitle("ניתן לבחור תרופה מהרשימה הבאה")
-                .setItems(medArr, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        name.setText(medArr[which].toString());
-                    }
-                })
-                .setNegativeButton("חזור", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancelled the dialog
-                    }
-                });
-        AlertDialog dialog = builder.create();
-        dialog.show();*/
-
         mSelectedItems = new ArrayList();  // Where we track the selected items
         conArr = new String[contactsArry.size()];
         conArr = contactsArry.toArray(conArr);

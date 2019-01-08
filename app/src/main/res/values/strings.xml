@@ -20,10 +20,10 @@
     <string name="b1">קח נשימה עמוקה</string>
     <string name="med">תרופות</string>
     <string name="med2">עריכת תרופה</string>
-    <string name="med2name">:שם תרופה</string>
+    <string name="med2name">שם תרופה:</string>
     <string name="med2amount">מינון:</string>
     <string name="med2MG">MG</string>
-    <string name="addAlert">+ הוסף תזכורת</string>
+    <string name="addAlert">+ הוסף התראה</string>
     <string name="addBtn">+ הוסף</string>
 
     <string name="age">גיל</string>

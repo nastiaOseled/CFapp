@@ -161,6 +161,7 @@ public class ContactsActivity extends AppCompatActivity {
     public static boolean updateAddBtn(){
         if(LauncherActivity.contacts.size()==3){
             addBtn.setEnabled(false);
+            addBtn.getBackground().setAlpha(64);
             return false;
         }
         addBtn.setEnabled(true);

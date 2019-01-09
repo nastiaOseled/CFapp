@@ -28,7 +28,6 @@ public class LauncherActivity extends AppCompatActivity {
 
     public  static String NICKNAME;
     public  static int RECOMMENDED_CALORIES;
-    public static ArrayList<Contact> contacts=new ArrayList<>();
     public  static double WEIGHT;
 
     private static SharedPreferences sharedPref;
@@ -82,8 +81,8 @@ public class LauncherActivity extends AppCompatActivity {
                                                     String name=document.getString("name");
                                                     String phone=document.getString("phone");
                                                     Contact c=new Contact(name, phone);
-                                                    if( ! contacts.contains(c))
-                                                        contacts.add(c);
+//                                                    if( ! contacts.contains(c))
+//                                                        contacts.add(c);
                                                 }
                                             }
                                         }

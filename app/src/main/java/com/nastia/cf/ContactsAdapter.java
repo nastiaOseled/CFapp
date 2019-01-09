@@ -32,6 +32,7 @@ public class ContactsAdapter extends
         mContacts = contacts;
     }
 
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -47,9 +48,16 @@ public class ContactsAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
+        super.onBindViewHolder(holder, position, payloads);
+    }
+
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         // Get the data model based on position
-        Contact contact = mContacts.get(i);
+        final Contact contact = mContacts.get(i);
+        final ViewHolder newViewHolder=viewHolder;
 
         // Set item views based on your views and data model
         TextView textView = viewHolder.nameTextView;
@@ -70,17 +78,18 @@ public class ContactsAdapter extends
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 user_details.collection("contacts")
-                                        .document(viewHolder.nameTextView.getText().toString()).delete();
+                                        .document(newViewHolder.nameTextView.getText().toString()).delete();
+//                                 .document("אמא").delete();
                             }
                         }
                     }
                 });
-                LauncherActivity.contacts.remove(i);
-               // mContacts.remove(i);
+                ContactsActivity.contacts.remove(i);
                 notifyDataSetChanged();
                 ContactsActivity.updateAddBtn();
             }
         });
+
     }
 
     @Override

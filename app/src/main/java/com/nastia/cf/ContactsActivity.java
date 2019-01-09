@@ -39,6 +39,7 @@ public class ContactsActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     ContactsAdapter adapter;
     Button backBtn;
+    public static ArrayList<Contact> contacts=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,14 +63,10 @@ public class ContactsActivity extends AppCompatActivity {
         });
 
 
-       // importContacts();
+        importContacts();
 
-        // Create adapter passing in the sample user data
-    /*    contacts.add(new Contact("hello1","05444"));
-        contacts.add(new Contact("hello2","054442"));
-        contacts.add(new Contact("hello3","054443"));  */
 
-        adapter = new ContactsAdapter(LauncherActivity.contacts);
+        adapter = new ContactsAdapter(contacts);
         // Attach the adapter to the recyclerview to populate items
         rvContacts.setAdapter(adapter);
         // Set layout manager to position the items
@@ -144,8 +141,8 @@ public class ContactsActivity extends AppCompatActivity {
      newContact.put("name", c.getName());
      newContact.put("phone", c.getPhoneNum());
 
-        if( ! LauncherActivity.contacts.contains(c)) {
-            LauncherActivity.contacts.add(c);
+        if( ! contacts.contains(c)) {
+            contacts.add(c);
             db.collection("user_details").
                     document(mAuth.getCurrentUser().getUid()).collection("contacts").document(c.getName()).set(newContact);
                   //  document(mAuth.getCurrentUser().getUid()).collection("contacts").add(newContact);
@@ -158,24 +155,29 @@ public class ContactsActivity extends AppCompatActivity {
         return;
  }
 
+ public static void removeContacts(Contact c){
+
+ }
+
     public static boolean updateAddBtn(){
-        if(LauncherActivity.contacts.size()==3){
+        if(contacts.size()==3){
             addBtn.setEnabled(false);
             addBtn.getBackground().setAlpha(64);
             return false;
         }
         addBtn.setEnabled(true);
+        addBtn.getBackground().setAlpha(255);
         return true;
     }
 
 
-    public void importContacts(){
+   /* public void importContacts(){
 
         adapter.notifyDataSetChanged();
         updateAddBtn();
-    }
+    } */
 
- /**   public void importContacts() {
+    public void importContacts() {
 
         LauncherActivity.user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -204,5 +206,5 @@ public class ContactsActivity extends AppCompatActivity {
                 }
             }
         });
-    } */
+    }
 }

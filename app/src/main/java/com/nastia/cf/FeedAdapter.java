@@ -26,17 +26,17 @@ public class FeedAdapter extends
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View textView;
+        View postView;
         switch (i){
             case 0:
-                textView = inflater.inflate(R.layout.item_post_text, viewGroup, false);
-                return new TextViewHolder(textView);
+                postView = inflater.inflate(R.layout.item_post_text, viewGroup, false);
+                return new TextViewHolder(postView);
             case 1:
-                textView = inflater.inflate(R.layout.item_post_image, viewGroup, false);
-                return new ImageViewHolder(textView);
+                postView = inflater.inflate(R.layout.item_post_image, viewGroup, false);
+                return new ImageViewHolder(postView);
             case 2:
-                textView = inflater.inflate(R.layout.item_post_location, viewGroup, false);
-                return new LocationViewHolder(textView);
+                postView = inflater.inflate(R.layout.item_post_location, viewGroup, false);
+                return new LocationViewHolder(postView);
         }
         return null;
     }
@@ -50,7 +50,9 @@ public class FeedAdapter extends
             case 0:
                 TextViewHolder tvh=(TextViewHolder) viewHolder;
                 textView = tvh.nickname;
-                textView.setText("test text post");
+                textView.setText(p.getNickname());
+                textView=tvh.date;
+                textView.setText(p.getDate()+"");
                 break;
             case 1:
                 ImageViewHolder ivh=(ImageViewHolder) viewHolder;
@@ -70,12 +72,14 @@ public class FeedAdapter extends
 
     @Override
     public int getItemViewType(int position) {
-        return super.getItemViewType(position);
+        Post p=mPostsList.get(position);
+        return (int)p.getType();
     }
 
     class TextViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
         public TextView nickname;
+        public TextView date;
         public TextView time;
         public TextView text;
 
@@ -84,6 +88,7 @@ public class FeedAdapter extends
 
             image = (ImageView) itemView.findViewById(R.id.imageLogo);
             nickname = (TextView) itemView.findViewById(R.id.nickname);
+            date = (TextView) itemView.findViewById(R.id.date);
             time = (TextView) itemView.findViewById(R.id.time);
             text = (TextView) itemView.findViewById(R.id.text);
         }

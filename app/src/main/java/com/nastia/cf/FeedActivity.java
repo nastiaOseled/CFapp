@@ -71,7 +71,7 @@ public class FeedActivity extends AppCompatActivity {
             }
         });
 
-        nickname.setText(LauncherActivity.NICKNAME+"");
+        nickname.setText(menuActivity.NICKNAME+"");
         adapter = new FeedAdapter(posts);
         // Attach the adapter to the recyclerview to populate items
         rvPosts.setAdapter(adapter);
@@ -158,7 +158,6 @@ public class FeedActivity extends AppCompatActivity {
                 .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         nickname.setText(editText.getText() + "");
-                        LauncherActivity.NICKNAME = editText.getText().toString();
                         menuActivity.NICKNAME=editText.getText().toString();
                         LauncherActivity.user_details.update("name", editText.getText().toString());
                     }

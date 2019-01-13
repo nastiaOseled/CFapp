@@ -1,6 +1,7 @@
 package com.nastia.cf;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,11 +40,13 @@ public class SettingsActivity extends AppCompatActivity {
     TextView height;
     TextView calories;
     Button editBtn;
+    ImageView img;
 
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +57,7 @@ public class SettingsActivity extends AppCompatActivity {
         height = findViewById(R.id.heightEdit);
         calories = findViewById(R.id.caloriesEdit);
         editBtn = findViewById(R.id.editBtn);
+        img = findViewById(R.id.image);
         editBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,80 +70,59 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        DocumentReference user_details = db.collection("user_details")
-                .document(mAuth.getCurrentUser().getUid());
+        Context context = img.getContext();
+        int id = context.getResources().getIdentifier(menuActivity.IMAGE, "drawable", context.getPackageName());
+        img.setImageResource(id);
 
-        user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        if(!document.contains("name")){
-                            name.setText("");
-                        }
-                        else{
-                            name.setText(document.getString("name"));
-                        }
-                        if(!document.contains("weight")){
-                            weight.setText("");
-                        }
-                        else{
-                            weight.setText(document.getDouble("weight").toString());
-                        }
-                        if(!document.contains("height")){
-                            height.setText("");
-                        }
-                        else{
-                            height.setText(document.getDouble("height").toString());
-                        }
-                        if(!document.contains("recommendedCaloriesPerDay")){
-                            calories.setText("");
-                        }
-                        else {
-                            calories.setText(document.getDouble("recommendedCaloriesPerDay").intValue() + "");
-                        }
-                        if(!document.contains("birthDate")){
-                            calories.setText("");
-                        }
-                        else{
-                            String dateString = document.getString("birthDate");
-                            String dateStrin = "5/14/15";
-                            DateFormat dateFormat = new SimpleDateFormat("dd.mm.yy");
-                            Date date = null;
-                            try {
-                                date = dateFormat.parse(dateString);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            LocalDate date1 = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                            Date input = new Date();
-                            LocalDate now = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        name.setText(menuActivity.NICKNAME);
+        weight.setText(menuActivity.WEIGHT + "");
+        height.setText(menuActivity.HEIGHT + "");
+        String dateString = menuActivity.BIRTHDAY;
+        DateFormat dateFormat = new SimpleDateFormat("dd.mm.yy");
+        Date date = null;
+        try {
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        LocalDate date1 = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Date input = new Date();
+        LocalDate now = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int y = Period.between(date1, now).getYears();
+        age.setText(y + "");
+        calories.setText(menuActivity.RECOMMENDED_CALORIES + "");
 
-                            int y =Period.between(date1, now).getYears();
-                            age.setText(y+"");
-
-                        }
-
-
-                    } else {
-
-                    }
-                } else {
-
-                }
-            }
-        });
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == 0) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                //set from menu
+                Context context = img.getContext();
+                int id = context.getResources().getIdentifier(menuActivity.IMAGE, "drawable", context.getPackageName());
+                img.setImageResource(id);
+
+                name.setText(menuActivity.NICKNAME);
+                weight.setText(menuActivity.WEIGHT + "");
+                height.setText(menuActivity.HEIGHT + "");
+                String dateString = menuActivity.BIRTHDAY;
+                DateFormat dateFormat = new SimpleDateFormat("dd.mm.yy");
+                Date date = null;
+                try {
+                    date = dateFormat.parse(dateString);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                LocalDate date1 = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                Date input = new Date();
+                LocalDate now = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                int y = Period.between(date1, now).getYears();
+                age.setText(y + "");
+                calories.setText(menuActivity.RECOMMENDED_CALORIES + "");
             }
         }
     }

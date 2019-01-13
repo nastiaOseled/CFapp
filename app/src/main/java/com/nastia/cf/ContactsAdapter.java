@@ -56,8 +56,8 @@ public class ContactsAdapter extends
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         // Get the data model based on position
-        final Contact contact = mContacts.get(i);
-        final ViewHolder newViewHolder=viewHolder;
+        Contact contact = mContacts.get(i);
+         final ViewHolder newViewHolder=viewHolder;
 
         // Set item views based on your views and data model
         TextView textView = viewHolder.nameTextView;

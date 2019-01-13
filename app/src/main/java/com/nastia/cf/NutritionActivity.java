@@ -121,7 +121,7 @@ public class NutritionActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        recommendedCalories = LauncherActivity.RECOMMENDED_CALORIES;
+                        recommendedCalories = menuActivity.RECOMMENDED_CALORIES;
                         recommended.setText(recommendedCalories + "");
                         caloriesLeft.setText(recommendedCalories + "");
                         final CollectionReference foods = LauncherActivity.user_details.collection("nutrition reports");

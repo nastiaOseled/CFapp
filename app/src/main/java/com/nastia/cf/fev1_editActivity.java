@@ -42,6 +42,7 @@ public class fev1_editActivity extends AppCompatActivity {
     TextView finish;
     TextView seconds;
     ImageView crown;
+    Button save;
     ImageView share;
     protected int goldDark, goldMed, gold, goldLight;
     protected int[] colors;
@@ -60,6 +61,7 @@ public class fev1_editActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fev1_edit);
+        save = findViewById(R.id.save);
         crown = findViewById(R.id.crown);
         crown.setVisibility(View.INVISIBLE);
         share = findViewById(R.id.share);
@@ -143,16 +145,10 @@ public class fev1_editActivity extends AppCompatActivity {
                         }
                         else{
                             user_details.update("fev1", newFev1);
-                            if(newFev1 > fevNum){
-                                container.setVisibility(View.VISIBLE);
-                                crown.setVisibility(View.VISIBLE);
-                                share.setVisibility(View.VISIBLE);
-                                finish.setVisibility(View.VISIBLE);
-                                activeConfettiManagers.add(generateInfinite());
-                            }
+
                         }
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        finish();
+
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -161,6 +157,15 @@ public class fev1_editActivity extends AppCompatActivity {
                 }
             }
         });
+        if(newFev1 > fevNum){
+            container.setVisibility(View.VISIBLE);
+            crown.setVisibility(View.VISIBLE);
+            share.setVisibility(View.VISIBLE);
+            finish.setVisibility(View.VISIBLE);
+            save.setVisibility(View.INVISIBLE);
+            activeConfettiManagers.add(generateInfinite());
+        }
+        else finish();
 
     }
 

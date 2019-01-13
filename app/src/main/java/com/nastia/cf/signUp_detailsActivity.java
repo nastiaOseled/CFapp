@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -36,8 +37,8 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
     Button addContactBtn;
     TextView addCon;
     ViewFlipper viewFlipper;
-    Button next;
-    Button previous;
+    ImageView next;
+    ImageView previous;
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -56,12 +57,17 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
         weight= findViewById(R.id.weight);
         height =findViewById(R.id.height);
         birthDate= findViewById(R.id.birthDate);
+        calories = findViewById(R.id.calories);
         addContactBtn=findViewById(R.id.button);
         addCon = findViewById(R.id.addCon);
         if(updateFlag){
             addContactBtn.setVisibility(View.INVISIBLE);
             addCon.setVisibility(View.INVISIBLE);
-            //set from menu
+            name.setText(menuActivity.NICKNAME);
+            weight.setText(menuActivity.WEIGHT+"");
+            height.setText(menuActivity.HEIGHT+"");
+            birthDate.setText(menuActivity.BIRTHDAY+"");
+            calories.setText(menuActivity.RECOMMENDED_CALORIES+"");
         }
         birthDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,8 +105,8 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
         }
 
         viewFlipper = (ViewFlipper)findViewById(R.id.viewFlipper);
-        next = (Button) findViewById(R.id.next);
-        previous = (Button) findViewById(R.id.previous);
+        next =  findViewById(R.id.next);
+        previous = findViewById(R.id.previous);
 
         next.setOnClickListener(this);
         previous.setOnClickListener(this);
@@ -138,6 +144,8 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
         user.put("height", Integer.parseInt(height.getText().toString()));
         user.put("recommendedCaloriesPerDay", Integer.parseInt(calories.getText().toString()));
         user.put("birthDate", birthDate.getText().toString());
+        user.put("image",String.valueOf(viewFlipper.getCurrentView().getTag()));
+
 
         db.collection("user_details").document(mAuth.getCurrentUser().getUid()).set(user);
 
@@ -146,6 +154,12 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
         editor.putBoolean("userConnected", true);
         editor.commit();
         if(updateFlag){
+            menuActivity.NICKNAME=name.getText().toString();
+            menuActivity.RECOMMENDED_CALORIES=Integer.parseInt(calories.getText().toString());
+            menuActivity.HEIGHT=Integer.parseInt(height.getText().toString());
+            menuActivity.WEIGHT=Double.parseDouble(weight.getText().toString());
+            menuActivity.BIRTHDAY=birthDate.getText().toString();
+            menuActivity.IMAGE=String.valueOf(viewFlipper.getCurrentView().getTag());
             setResult(Activity.RESULT_OK);
             finish();
         }

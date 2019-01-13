@@ -20,7 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="300dp"
         app:layout_constraintTop_toBottomOf="@id/name"
-        android:layout_marginTop="60dp"/>
+        android:layout_marginTop="40dp"/>
 
     <TextView
         android:id="@+id/textView22"
@@ -61,17 +61,18 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/age"
+        android:text=""
         android:textColor="@color/gold_med"
         android:textSize="23sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="230dp"
+        app:layout_constraintTop_toBottomOf="@id/image"
+        android:layout_marginTop="30dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
@@ -82,20 +83,18 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/ageEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/age"
         android:textColor="@color/gold_med"
         android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/heightEdit"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/heightEdit"/>
+        app:layout_constraintStart_toEndOf="@id/heightEdit" />
 
     <TextView
         android:id="@+id/textView35"
@@ -105,14 +104,14 @@
         android:textColor="@color/gold_med"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@id/textView30"
-        app:layout_constraintStart_toEndOf="@id/textView30"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textView30" />
 
     <TextView
         android:id="@+id/caloriesEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/age"
+        android:text=""
         android:textColor="@color/gold_med"
         android:textSize="23sp"
         android:textStyle="bold"
@@ -126,7 +125,7 @@
         android:id="@+id/heightEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/age"
+        android:text=""
         android:textColor="@color/gold_med"
         android:textSize="23sp"
         android:textStyle="bold"
@@ -139,12 +138,22 @@
         android:id="@+id/weightEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/age"
+        android:text=""
         android:textColor="@color/gold_med"
         android:textSize="23sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/heightEdit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/heightEdit"/>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="101dp"
+        android:layout_height="106dp"
+        app:srcCompat="@drawable/img1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:layout_marginTop="50dp"/>
 
 </android.support.constraint.ConstraintLayout>

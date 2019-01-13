@@ -181,7 +181,6 @@
         android:clickable="true"
         android:focusable="true"
         android:gravity="center"
-        android:text="@string/title_fev1"
         android:textAllCaps="true"
         android:textColor="#fd8f90"
         android:textSize="30sp"
@@ -194,10 +193,10 @@
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="697dp"
-        android:layout_height="784dp"
+        android:layout_height="785dp"
         android:background="#CC000000"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:layout_editor_absoluteY="-1dp">
 
     </FrameLayout>
 

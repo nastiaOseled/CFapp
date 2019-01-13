@@ -26,9 +26,11 @@ public class LauncherActivity extends AppCompatActivity {
     public final static DocumentReference user_details = db.collection("user_details")
             .document(mAuth.getCurrentUser().getUid());
 
+/*
     public  static String NICKNAME;
     public  static int RECOMMENDED_CALORIES;
     public  static double WEIGHT;
+*/
 
     private static SharedPreferences sharedPref;
 
@@ -62,7 +64,7 @@ public class LauncherActivity extends AppCompatActivity {
                     Intent in=new Intent(LauncherActivity.this, menuActivity.class);
                     startActivity(in);
 
-                    user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+/*                    user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                             if (task.isSuccessful()) {
@@ -90,7 +92,7 @@ public class LauncherActivity extends AppCompatActivity {
                                 }
                             }
                         }
-                    });
+                    });*/
 
                     //import user's nutrition list and calories sum
 

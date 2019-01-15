@@ -1,6 +1,7 @@
 package com.nastia.cf;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 class Post {
 
@@ -54,5 +55,26 @@ class Post {
 
     public String getPostText() {
         return postText;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return likes == post.likes &&
+                type == post.type &&
+                Objects.equals(userId, post.userId) &&
+                Objects.equals(nickname, post.nickname) &&
+                Objects.equals(date, post.date) &&
+                Objects.equals(time, post.time) &&
+                Objects.equals(comments, post.comments) &&
+                Objects.equals(postText, post.postText);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(userId, nickname, date, time, likes, comments, postText, type);
     }
 }

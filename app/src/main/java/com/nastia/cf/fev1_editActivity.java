@@ -1,12 +1,17 @@
 package com.nastia.cf;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.jinatonic.confetti.CommonConfetti;
 import com.github.jinatonic.confetti.ConfettiManager;
@@ -47,7 +53,7 @@ public class fev1_editActivity extends AppCompatActivity {
     protected int goldDark, goldMed, gold, goldLight;
     protected int[] colors;
     protected ViewGroup container;
-    ArrayList mSelectedItems;
+    ArrayList<Integer> mSelectedItems;
     final ArrayList<CharSequence> contactsArry = new ArrayList<>();
     String[] conArr;
     public static ArrayList<Contact> contacts=new ArrayList<>();
@@ -197,8 +203,8 @@ public class fev1_editActivity extends AppCompatActivity {
                 .setPositiveButton("שתף", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK, so save the mSelectedItems results somewhere
-                        // or return them to the component that opened the dialog
+                        if(!mSelectedItems.isEmpty())
+                            requestSmsPermission();
 
                     }
                 })
@@ -248,6 +254,50 @@ public class fev1_editActivity extends AppCompatActivity {
     protected ConfettiManager generateInfinite() {
         return CommonConfetti.rainingConfetti(container, colors)
                 .infinite();
+    }
+
+    protected void sendSMSMessage() {
+        for (Integer index:mSelectedItems) {
+            for (Contact c : contacts) {
+                if ((contactsArry.get(index)).equals(c.myName)) {
+                    String phoneNo = c.myNumber;
+                    String message = "שיפרתי את מדדה-FEV1 שלי!!! נשלח באמצעות באפליקציית 'אני CF'!";
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNo, null, message, null, null);
+                }
+            }
+        }
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    sendSMSMessage();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+        }
+
+    }
+
+
+    private void requestSmsPermission() {
+        String permission = Manifest.permission.SEND_SMS;
+        int grant = ContextCompat.checkSelfPermission(this, permission);
+        if (grant != PackageManager.PERMISSION_GRANTED) {
+            String[] permission_list = new String[1];
+            permission_list[0] = permission;
+            ActivityCompat.requestPermissions(this, permission_list, 0);
+        }
+        else sendSMSMessage();
     }
 
 

@@ -59,11 +59,13 @@ public class sportWheel extends AppCompatActivity {
     Button BtnDone;
     Button BtnRollAgain;
     String ActivityId;
-    ArrayList mSelectedItems;
+    ArrayList<Integer> mSelectedItems;
     final ArrayList<CharSequence> contactsArry = new ArrayList<>();
     String[] conArr;
     public static ArrayList<Contact> contacts=new ArrayList<>();
     Button backBtn;
+
+    private static final int MY_PERMISSIONS_REQUEST_SEND_SMS =0 ;
 
     protected int goldDark, goldMed, gold, goldLight;
     protected int[] colors;
@@ -141,6 +143,7 @@ public class sportWheel extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 animation();
+
             }
         });
         container = (ViewGroup) findViewById(R.id.container);
@@ -222,43 +225,49 @@ public class sportWheel extends AppCompatActivity {
         return CommonConfetti.rainingConfetti(container, colors)
                 .infinite();
     }
-    private static final int PERMISSION_SEND_SMS = 123;
 
-    private void requestSmsPermission() {
-
-        // check permission is given
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            // request permission (see result in onRequestPermissionsResult() method)
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.SEND_SMS},
-                    PERMISSION_SEND_SMS);
-        } else {
-            // permission already granted run sms send
-            sendSms("", "");
+    protected void sendSMSMessage() {
+        for (Integer index:mSelectedItems) {
+            for (Contact c : contacts) {
+                if ((contactsArry.get(index)).equals(c.myName)) {
+                    String phoneNo = c.myNumber;
+                    String message = "ביצעתי את פעילות הספורט היומית שלי באפליקציית 'אני CF'!";
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNo, null, message, null, null);
+                }
+            }
         }
+
+
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case PERMISSION_SEND_SMS: {
-
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted
-                    sendSms("", "");
+            case MY_PERMISSIONS_REQUEST_SEND_SMS: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    sendSMSMessage();
                 } else {
-                    // permission denied
+                    Toast.makeText(getApplicationContext(),
+                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                    return;
                 }
-                return;
             }
         }
+
     }
 
-    private void sendSms(String phoneNumber, String message){
-        Toast.makeText(this, "worked",
-                Toast.LENGTH_LONG).show();
-        //SmsManager sms = SmsManager.getDefault();
-        //sms.sendTextMessage(phoneNumber, null, message, null, null);
+
+    private void requestSmsPermission() {
+        String permission = Manifest.permission.SEND_SMS;
+        int grant = ContextCompat.checkSelfPermission(this, permission);
+        if (grant != PackageManager.PERMISSION_GRANTED) {
+            String[] permission_list = new String[1];
+            permission_list[0] = permission;
+            ActivityCompat.requestPermissions(this, permission_list, 0);
+        }
+        else sendSMSMessage();
     }
 
     private void openShareListDialog() {
@@ -279,6 +288,7 @@ public class sportWheel extends AppCompatActivity {
                                 if (isChecked) {
                                     // If the user checked the item, add it to the selected items
                                     mSelectedItems.add(which);
+
                                 } else if (mSelectedItems.contains(which)) {
                                     // Else, if the item is already in the array, remove it
                                     mSelectedItems.remove(Integer.valueOf(which));
@@ -289,8 +299,8 @@ public class sportWheel extends AppCompatActivity {
                 .setPositiveButton("שתף", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK, so save the mSelectedItems results somewhere
-                        // or return them to the component that opened the dialog
+                        if(!mSelectedItems.isEmpty())
+                            requestSmsPermission();
 
                     }
                 })

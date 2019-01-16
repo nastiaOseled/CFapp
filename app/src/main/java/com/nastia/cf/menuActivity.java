@@ -133,6 +133,10 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(menuActivity.this, SettingsActivity.class);
             startActivity(intent);
         }
+        if(i==R.id.step) {
+            Intent intent = new Intent(menuActivity.this, stepCounter.class);
+            startActivity(intent);
+        }
 
     }
 

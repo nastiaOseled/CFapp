@@ -1,22 +1,28 @@
 package com.nastia.cf;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.os.CountDownTimer;
 
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.github.jinatonic.confetti.CommonConfetti;
@@ -60,7 +66,7 @@ public class breathingActivity extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     Button backBtn;
-    ArrayList mSelectedItems;
+    ArrayList<Integer> mSelectedItems;
     final ArrayList<CharSequence> contactsArry = new ArrayList<>();
     String[] conArr;
     public static ArrayList<Contact> contacts=new ArrayList<>();
@@ -214,8 +220,8 @@ public class breathingActivity extends AppCompatActivity {
                 .setPositiveButton("שתף", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        // User clicked OK, so save the mSelectedItems results somewhere
-                        // or return them to the component that opened the dialog
+                        if(!mSelectedItems.isEmpty())
+                            requestSmsPermission();
 
                     }
                 })
@@ -260,6 +266,50 @@ public class breathingActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    protected void sendSMSMessage() {
+        for (Integer index:mSelectedItems) {
+            for (Contact c : contacts) {
+                if ((contactsArry.get(index)).equals(c.myName)) {
+                    String phoneNo = c.myNumber;
+                    String message = "ביצעתי את פעילות הספורט היומית שלי באפליקציית 'אני CF'!";
+                    SmsManager smsManager = SmsManager.getDefault();
+                    smsManager.sendTextMessage(phoneNo, null, message, null, null);
+                }
+            }
+        }
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    sendSMSMessage();
+                } else {
+                    Toast.makeText(getApplicationContext(),
+                            "SMS faild, please try again.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+            }
+        }
+
+    }
+
+
+    private void requestSmsPermission() {
+        String permission = Manifest.permission.SEND_SMS;
+        int grant = ContextCompat.checkSelfPermission(this, permission);
+        if (grant != PackageManager.PERMISSION_GRANTED) {
+            String[] permission_list = new String[1];
+            permission_list[0] = permission;
+            ActivityCompat.requestPermissions(this, permission_list, 0);
+        }
+        else sendSMSMessage();
     }
 
 }

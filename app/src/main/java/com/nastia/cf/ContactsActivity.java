@@ -155,9 +155,6 @@ public class ContactsActivity extends AppCompatActivity {
         return;
  }
 
- public static void removeContacts(Contact c){
-
- }
 
     public static boolean updateAddBtn(){
         if(contacts.size()==3){
@@ -169,13 +166,6 @@ public class ContactsActivity extends AppCompatActivity {
         addBtn.getBackground().setAlpha(255);
         return true;
     }
-
-
-   /* public void importContacts(){
-
-        adapter.notifyDataSetChanged();
-        updateAddBtn();
-    } */
 
     public void importContacts() {
 

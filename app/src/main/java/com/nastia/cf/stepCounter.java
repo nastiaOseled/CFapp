@@ -34,11 +34,11 @@ public class stepCounter extends AppCompatActivity implements SensorEventListene
         simpleStepDetector.registerListener(this);
 
         TvSteps = (TextView) findViewById(R.id.tv_steps);
-        BtnStart = (Button) findViewById(R.id.btn_start);
-        BtnStop = (Button) findViewById(R.id.btn_stop);
+        //BtnStart = (Button) findViewById(R.id.btn_start);
+        //BtnStop = (Button) findViewById(R.id.btn_stop);
 
 
-
+/*
         BtnStart.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -61,7 +61,7 @@ public class stepCounter extends AppCompatActivity implements SensorEventListene
             }
         });
 
-
+*/
 
     }
 

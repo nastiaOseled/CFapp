@@ -57,6 +57,7 @@ public class FeedActivity extends AppCompatActivity {
     //public PostsAdapter adapter;
     TextView nickname;
     public List<Post> posts = new ArrayList<>();
+    public List<Comment> comments = new ArrayList<>();
     Button backBtn;
     ImageView iconImg;
 
@@ -115,7 +116,7 @@ public class FeedActivity extends AppCompatActivity {
             }
         });
 
-           importPosts();
+        importPosts();
     }
 
     private void importPosts() {
@@ -128,7 +129,8 @@ public class FeedActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, " getting documents: ", task.getException());
-                                final String id = document.getString("userId");
+                                final String postId = document.getId();
+                                final String userId = document.getString("userId");
                                 final String nick = document.getString("nickname");
                                 final String d = document.getString("date");
                                 final String t = document.getString("time");
@@ -136,22 +138,28 @@ public class FeedActivity extends AppCompatActivity {
                                 final String text = document.getString("text");
                                 final long type = (long) document.get("type");
 
-                           /*     CollectionReference com = (CollectionReference) document.get("comments");
-                                final ArrayList<Comment> comments = new ArrayList<>();
-                                com.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot q : task.getResult()) {
-                                                comments.add(new Comment(q.getString("nickname"),
-                                                        q.getString("date"), q.getString("time"), q.getString("text")));
+                                comments.clear();
+
+                                if (document.getReference().collection("comments") != null) {
+                                    CollectionReference com = (CollectionReference) document.getReference().collection("comments");
+                                    com.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot q : task.getResult()) {
+                                                    final String comNickname = q.getString("nickname");
+                                                    final String comDate = q.getString("date");
+                                                    final String comTime = q.getString("time");
+                                                    final String comText = q.getString("text");
+                                                    comments.add(new Comment(comNickname, comDate, comTime, comText));
+                                                  //  createComment(comNickname, comDate, comTime, comText);
+                                                }
                                             }
                                         }
-                                        posts.add(new Post(id, nick, d, t, likes, comments, text, type));
-                                    }
 
-                                });  */
-                                posts.add(new Post(id, nick, d, t, likes, null, text, type));
+                                    });
+                                }
+                                posts.add(new Post(postId, userId, nick, d, t, likes, (ArrayList<Comment>) comments, text, type));
                             }
                             adapter.notifyDataSetChanged();
                         } else {
@@ -222,17 +230,24 @@ public class FeedActivity extends AppCompatActivity {
     }
 
 
-    /**add comment to post in posts list
+    /**create new comment and add it to comments list*/
+    public void createComment(String comNickname, String comDate, String comTime, String comText){
+        Comment c=new Comment(comNickname, comDate, comTime, comText);
+        this.comments.add(c);
+    }
+
+    /**
+     * add comment to post in posts list
      * add comment to post document in DB
+     *
      * @param post
      */
-    public void addCommentToPost(Post post, Comment comment){
+    public void addCommentToPost(Post post, Comment comment) {
 
         //insert to comments list
         post.getComments().add(comment);
 
         //insert to DB
-
 
     }
 }

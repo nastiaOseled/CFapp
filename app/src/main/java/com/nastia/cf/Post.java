@@ -1,10 +1,14 @@
 package com.nastia.cf;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
 class Post {
 
+    String postId;
     String userId;
     String nickname;
     String date;
@@ -14,7 +18,8 @@ class Post {
     String postText;
     long type;
 
-    public Post(String userId, String nickname, String date, String time, long likes, ArrayList<Comment> comments, String postText, long type) {
+    public Post(String postId, String userId, String nickname, String date, String time, long likes, ArrayList<Comment> comments, String postText, long type) {
+        this.postId=postId;
         this.userId = userId;
         this.nickname = nickname;
         this.date = date;
@@ -23,6 +28,10 @@ class Post {
         this.comments = comments;
         this.postText = postText;
         this.type = type;
+    }
+
+    public String getPostId() {
+        return postId;
     }
 
     public long getType() {
@@ -57,24 +66,19 @@ class Post {
         return postText;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return likes == post.likes &&
-                type == post.type &&
-                Objects.equals(userId, post.userId) &&
-                Objects.equals(nickname, post.nickname) &&
-                Objects.equals(date, post.date) &&
-                Objects.equals(time, post.time) &&
-                Objects.equals(comments, post.comments) &&
-                Objects.equals(postText, post.postText);
+        return Objects.equals(postId, post.postId);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public int hashCode() {
 
-        return Objects.hash(userId, nickname, date, time, likes, comments, postText, type);
+        return Objects.hash(postId);
     }
 }

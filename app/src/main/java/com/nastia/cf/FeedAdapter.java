@@ -42,15 +42,6 @@ public class FeedAdapter extends
                 return new LocationViewHolder(postView);
         }
         return null;
-     /*   Context context = viewGroup.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
-
-        // Inflate the custom layout
-        View nutritionView = inflater.inflate(R.layout.item_post_text, viewGroup, false);
-
-        // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(nutritionView);
-        return viewHolder; */
     }
 
 
@@ -193,25 +184,6 @@ public class FeedAdapter extends
             time = (TextView) itemView.findViewById(R.id.time);
             text = (TextView) itemView.findViewById(R.id.text);
 
-        }
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-
-        ImageView image;
-        public TextView nickname;
-        public TextView date;
-        public TextView time;
-        public TextView text;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-            image = (ImageView) itemView.findViewById(R.id.imageLogo);
-            nickname = (TextView) itemView.findViewById(R.id.nickname);
-            date = (TextView) itemView.findViewById(R.id.date);
-            time = (TextView) itemView.findViewById(R.id.time);
-            text = (TextView) itemView.findViewById(R.id.text);
         }
     }
 }

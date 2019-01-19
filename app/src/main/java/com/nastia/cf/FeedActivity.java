@@ -232,8 +232,6 @@ public class FeedActivity extends AppCompatActivity {
 
     public void addTextPost(String text) {
 
-
-
         //add new post
         Map<String, Object> newPost = new HashMap<>();
         newPost.put("userId", LauncherActivity.mAuth.getCurrentUser().getUid());
@@ -262,6 +260,12 @@ public class FeedActivity extends AppCompatActivity {
                         Log.w(TAG, "Error writing document", e);
                     }
                 });
+
+        Post p=new Post("", LauncherActivity.mAuth.getCurrentUser().getUid(), menuActivity.NICKNAME, stringToday,
+                nowTime, 0, new ArrayList<Comment>(), text,0);
+        this.posts.add(p);
+        this.adapter.notifyDataSetChanged();
+
     }
 
 

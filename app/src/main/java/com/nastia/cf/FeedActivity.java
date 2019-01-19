@@ -89,7 +89,7 @@ public class FeedActivity extends AppCompatActivity {
         addText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInputDialog("הקלד את הטקסט שברצונך לשתף", "addtext");
+                showInputDialog("הקלד את הטקסט שברצונך לשתף", "addText");
             }
         });
         addImage=(TextView) findViewById(R.id.image);
@@ -199,7 +199,7 @@ public class FeedActivity extends AppCompatActivity {
         View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptView);
-        TextView textView=(TextView)findViewById(R.id.textView);
+        TextView textView=(TextView)promptView.findViewById(R.id.textView);
         textView.setText(displayText+"");
 
         final EditText editText = (EditText) promptView.findViewById(R.id.edittext);

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,13 +35,15 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
     public  static int RECOMMENDED_CALORIES;
     public  static String IMAGE;
     public static ArrayList<Contact> contacts=new ArrayList<>();
+    private ProgressBar pgsBar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
+        pgsBar = (ProgressBar) findViewById(R.id.pBar);
+        pgsBar.setVisibility(View.VISIBLE);
         logOut=(Button) findViewById(R.id.logOutBtn);
         logOut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,11 +67,21 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
                         if(!document.contains("name"))
                             NICKNAME="";
                         else NICKNAME=(document.getString("name"));
-                        RECOMMENDED_CALORIES=document.getLong("recommendedCaloriesPerDay").intValue();
-                        HEIGHT=document.getLong("height").intValue();
-                        WEIGHT=document.getLong("weight");
-                        BIRTHDAY=(document.getString("birthDate"));
-                        IMAGE=(document.getString("image"));
+                        if(!document.contains("recommendedCaloriesPerDay"))
+                            RECOMMENDED_CALORIES=0;
+                        else RECOMMENDED_CALORIES=document.getLong("recommendedCaloriesPerDay").intValue();
+                        if(!document.contains("height"))
+                            HEIGHT=0;
+                        else HEIGHT=document.getLong("height").intValue();
+                        if(!document.contains("weight"))
+                            WEIGHT=0;
+                        else WEIGHT=document.getLong("weight");
+                        if(!document.contains("birthDate"))
+                            BIRTHDAY="";
+                        else BIRTHDAY=(document.getString("birthDate"));
+                        if(!document.contains("image"))
+                            IMAGE="img1";
+                        else IMAGE=(document.getString("image"));
 
                         //import contacts
                         user_details.collection("contacts")
@@ -86,7 +99,7 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             }
                         });
-                    }
+                    }pgsBar.setVisibility(View.INVISIBLE);
                 }
             }
         });

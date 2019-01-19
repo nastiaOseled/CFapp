@@ -51,13 +51,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.538"
         app:srcCompat="@drawable/lungs_icon" />
 
     <ImageView
         android:id="@+id/food"
         android:layout_width="92dp"
         android:layout_height="88dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="30dp"
         android:clickable="true"
         android:focusable="true"
         android:onClick="onClick"
@@ -94,17 +95,14 @@
         android:id="@+id/breath"
         android:layout_width="92dp"
         android:layout_height="88dp"
-        android:layout_marginBottom="188dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="60dp"
         android:clickable="true"
         android:focusable="true"
         android:onClick="onClick"
-        app:layout_constraintTop_toBottomOf="@id/qa"
-        android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/qa"
         app:srcCompat="@drawable/rsz_br_icon" />
 
     <ImageView
@@ -126,19 +124,23 @@
         android:id="@+id/medc"
         android:layout_width="92dp"
         android:layout_height="88dp"
+        android:layout_marginEnd="76dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="120dp"
+        android:layout_marginStart="8dp"
         android:clickable="true"
         android:focusable="true"
         android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="@id/sport"
         app:layout_constraintEnd_toStartOf="@id/sport"
-        android:layout_marginRight="40dp"
+        app:layout_constraintStart_toStartOf="@+id/feed"
         app:srcCompat="@drawable/rsz_med_icon" />
 
     <ImageView
         android:id="@+id/step"
         android:layout_width="92dp"
-        android:layout_height="88dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="86dp"
+        android:layout_marginBottom="72dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -148,20 +150,22 @@
         android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/rsz_med_icon" />
+        app:srcCompat="@drawable/steps" />
 
     <ImageView
         android:id="@+id/sport"
         android:layout_width="92dp"
         android:layout_height="88dp"
-        android:layout_marginRight="95dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="12dp"
         android:clickable="true"
         android:focusable="true"
-        android:layout_marginTop="40dp"
         android:onClick="onClick"
+        app:layout_constraintEnd_toEndOf="@+id/qa"
         app:layout_constraintTop_toBottomOf="@id/fav"
-        app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/rsz_sport_icon" />
 
     <ImageView
@@ -224,14 +228,31 @@
         android:id="@+id/textView30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="85dp"
+        android:text="מד צעדים"
+        android:textColorLink="@color/blue"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/step"
+        app:layout_constraintStart_toStartOf="@+id/step"
+        app:layout_constraintTop_toTopOf="@+id/step" />
+
+    <TextView
+        android:id="@+id/textView34"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
         android:text="תרופות"
         android:textColorLink="@color/blue"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/medc"
-        android:layout_marginTop="75dp"
         app:layout_constraintEnd_toEndOf="@id/medc"
-        app:layout_constraintStart_toStartOf="@id/medc"/>
+        app:layout_constraintStart_toStartOf="@id/medc"
+        app:layout_constraintTop_toTopOf="@id/medc" />
 
     <TextView
         android:id="@+id/textView31"
@@ -274,4 +295,20 @@
         android:layout_marginTop="70dp"
         app:layout_constraintEnd_toEndOf="@id/qa"
         app:layout_constraintStart_toStartOf="@id/qa"/>
+
+    <ProgressBar
+        android:id="@+id/pBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="121dp"
+        android:layout_height="128dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/fav"
+        app:layout_constraintEnd_toEndOf="@+id/fav"
+        app:layout_constraintStart_toStartOf="@+id/fav"
+        app:layout_constraintTop_toTopOf="@+id/fav" />
 </android.support.constraint.ConstraintLayout>

@@ -32,8 +32,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +44,8 @@ import static com.nastia.cf.NutritionActivity.nutritionList;
 
 public class FeedActivity extends AppCompatActivity {
     private static final String TAG = "feed activity";
+    public SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+    public SimpleDateFormat stf = new SimpleDateFormat("HH:mm");
 
 
 //    //DB connection
@@ -54,12 +58,14 @@ public class FeedActivity extends AppCompatActivity {
     Button changeBtn;
     RecyclerView rvPosts;
     public FeedAdapter adapter;
-    //public PostsAdapter adapter;
     TextView nickname;
     public List<Post> posts = new ArrayList<>();
     public List<Comment> comments = new ArrayList<>();
     Button backBtn;
     ImageView iconImg;
+    TextView addText;
+    TextView addImage;
+    TextView addLocation;
 
 
     @Override
@@ -79,6 +85,21 @@ public class FeedActivity extends AppCompatActivity {
             }
         });
         iconImg = (ImageView) findViewById(R.id.iconImg);
+        addText=(TextView) findViewById(R.id.text);
+        addText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInputDialog("הקלד את הטקסט שברצונך לשתף", "addtext");
+            }
+        });
+        addImage=(TextView) findViewById(R.id.image);
+        addImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showInputDialog("נא בחר תמונה שברצונך לשתף", "addImage");
+            }
+        });
+        addLocation=(TextView) findViewById(R.id.location);
 
         Context context = iconImg.getContext();
         int id = context.getResources().getIdentifier(menuActivity.IMAGE, "drawable", context.getPackageName());
@@ -112,7 +133,7 @@ public class FeedActivity extends AppCompatActivity {
         changeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInputDialog();
+                showInputDialog("הכנס כינוי חדש", "changeNickname");
             }
         });
 
@@ -155,13 +176,14 @@ public class FeedActivity extends AppCompatActivity {
                                                   //  createComment(comNickname, comDate, comTime, comText);
                                                 }
                                             }
+                                            posts.add(new Post(postId, userId, nick, d, t, likes, (ArrayList<Comment>) comments, text, type));
+                                            adapter.notifyDataSetChanged();
                                         }
-
                                     });
                                 }
-                                posts.add(new Post(postId, userId, nick, d, t, likes, (ArrayList<Comment>) comments, text, type));
+                               // posts.add(new Post(postId, userId, nick, d, t, likes, (ArrayList<Comment>) comments, text, type));
                             }
-                            adapter.notifyDataSetChanged();
+                            //adapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
@@ -170,13 +192,15 @@ public class FeedActivity extends AppCompatActivity {
     }
 
 
-    protected void showInputDialog() {
+    protected void showInputDialog(String displayText, final String actionType) {
 
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptView);
+        TextView textView=(TextView)findViewById(R.id.textView);
+        textView.setText(displayText+"");
 
         final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
         // setup a dialog window
@@ -189,9 +213,15 @@ public class FeedActivity extends AppCompatActivity {
                         })
                 .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        nickname.setText(editText.getText() + "");
-                        menuActivity.NICKNAME = editText.getText().toString();
-                        LauncherActivity.user_details.update("name", editText.getText().toString());
+                        switch (actionType){
+                            case "changeNickname":
+                                changeNickname(editText.getText()+"");
+                                break;
+                            case "addText":
+                                addTextPost(editText.getText()+"");
+
+
+                        }
                     }
                 });
 
@@ -200,17 +230,22 @@ public class FeedActivity extends AppCompatActivity {
         alert.show();
     }
 
-    public void addPostToDB(Post post) {
+    public void addTextPost(String text) {
+
+
 
         //add new post
         Map<String, Object> newPost = new HashMap<>();
-        newPost.put("userId", post.getUserId());
-        newPost.put("nickname", post.getNickname());
-        newPost.put("date", post.getDate());
-        newPost.put("time", post.getTime());
-        newPost.put("likes", post.getLikes());
-        newPost.put("text", post.getPostText());
-        newPost.put("type", post.getType());
+        newPost.put("userId", LauncherActivity.mAuth.getCurrentUser().getUid());
+        newPost.put("nickname", menuActivity.NICKNAME);
+        Date today = new Date();
+        String stringToday = sdf.format(today);
+        newPost.put("date", stringToday);
+        String nowTime=stf.format(today.getTime());
+        newPost.put("time", nowTime);
+        newPost.put("likes", 0);
+        newPost.put("text", text);
+        newPost.put("type", 0);
         // newPost.put("comments", post.getComments());
 
         LauncherActivity.db.collection("Posts").document()
@@ -249,6 +284,12 @@ public class FeedActivity extends AppCompatActivity {
 
         //insert to DB
 
+    }
+
+    public void changeNickname(String newNickname){
+        nickname.setText(newNickname + "");
+        menuActivity.NICKNAME = newNickname;
+        LauncherActivity.user_details.update("name", newNickname);
     }
 }
 

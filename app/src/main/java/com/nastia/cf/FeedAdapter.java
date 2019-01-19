@@ -3,13 +3,16 @@ package com.nastia.cf;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FeedAdapter extends
@@ -74,6 +77,12 @@ public class FeedAdapter extends
                 id = context.getResources().getIdentifier(menuActivity.IMAGE, "drawable", context.getPackageName());
                 imageView.setImageResource(id);
 
+                ArrayList<Comment> c = p.getComments();
+                for (int i = 0; i < c.size(); i++) {
+                //    View v=new View();
+                  //  tvh.commentsLayout.addView(view, R.layout.item_comment);
+                }
+
                 break;
             case 1:
                 ImageViewHolder ivh = (ImageViewHolder) viewHolder;
@@ -129,6 +138,7 @@ public class FeedAdapter extends
         public TextView text;
         public TextView likesNum;
         public TextView commentsNum;
+        public LinearLayout commentsLayout;
 
         public TextViewHolder(View itemView) {
             super(itemView);
@@ -140,6 +150,7 @@ public class FeedAdapter extends
             text = (TextView) itemView.findViewById(R.id.text);
             likesNum = (TextView) itemView.findViewById(R.id.likesNum);
             commentsNum = (TextView) itemView.findViewById(R.id.commentsNum);
+            commentsLayout = (LinearLayout) itemView.findViewById(R.id.commentLayout);
         }
     }
 

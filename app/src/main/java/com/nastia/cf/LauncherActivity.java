@@ -1,5 +1,6 @@
 package com.nastia.cf;
 
+import android.app.AlarmManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,6 +40,11 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+
+        //start steps counter service
+        AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        //set time to start
+
 
         //check if user is already connected to app
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
@@ -101,6 +107,7 @@ public class LauncherActivity extends AppCompatActivity {
             }, 2000);
 
         }
+
 
     }
 

@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class MedicinesActivity extends AppCompatActivity {
@@ -37,6 +38,10 @@ public class MedicinesActivity extends AppCompatActivity {
     Button backBtn;
 
     ListView medList;
+
+
+    public static final int PICK_IMAGE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +61,29 @@ public class MedicinesActivity extends AppCompatActivity {
             }
         });
         importMeds();
+
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+            }
+        });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == PICK_IMAGE) {
+            if (data == null) {
+                //Display an error
+                return;
+            }
+
+        }
+    }
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -69,7 +95,7 @@ public class MedicinesActivity extends AppCompatActivity {
                     importMeds();
             }
         }
-    }
+    }*/
 
     private void importMeds(){
         meds= new ArrayList<String>();

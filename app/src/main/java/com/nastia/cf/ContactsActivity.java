@@ -1,6 +1,7 @@
 package com.nastia.cf;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -32,8 +33,8 @@ import java.util.Map;
 
 public class ContactsActivity extends AppCompatActivity {
 
-    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final  FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public final  FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     static Button addBtn;
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
@@ -169,13 +170,15 @@ public class ContactsActivity extends AppCompatActivity {
 
     public void importContacts() {
 
-        LauncherActivity.user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        db.collection("user_details")
+                .document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        LauncherActivity.user_details.collection("contacts")
+                        db.collection("user_details")
+                                .document(mAuth.getCurrentUser().getUid()).collection("contacts")
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -196,5 +199,14 @@ public class ContactsActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+
+        super.onDestroy();
+        contacts.clear();
+        adapter.notifyDataSetChanged();
+
     }
 }

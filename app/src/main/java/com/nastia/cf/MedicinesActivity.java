@@ -40,7 +40,7 @@ public class MedicinesActivity extends AppCompatActivity {
     ListView medList;
 
 
-    public static final int PICK_IMAGE = 1;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,18 +61,9 @@ public class MedicinesActivity extends AppCompatActivity {
             }
         });
         importMeds();
-
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-            }
-        });
     }
 
-    @Override
+/*    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         if (requestCode == PICK_IMAGE) {
@@ -82,8 +73,8 @@ public class MedicinesActivity extends AppCompatActivity {
             }
 
         }
-    }
-/*
+    }*/
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -95,7 +86,7 @@ public class MedicinesActivity extends AppCompatActivity {
                     importMeds();
             }
         }
-    }*/
+    }
 
     private void importMeds(){
         meds= new ArrayList<String>();

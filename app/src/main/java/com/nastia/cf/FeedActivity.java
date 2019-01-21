@@ -2,6 +2,7 @@ package com.nastia.cf;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -48,13 +49,6 @@ public class FeedActivity extends AppCompatActivity {
     public SimpleDateFormat stf = new SimpleDateFormat("HH:mm");
 
 
-//    //DB connection
-//    private final static FirebaseFirestore db = FirebaseFirestore.getInstance();
-//    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//    final DocumentReference user_details = db.collection("user_details")
-//            .document(mAuth.getCurrentUser().getUid());
-
-
     Button changeBtn;
     RecyclerView rvPosts;
     public FeedAdapter adapter;
@@ -66,7 +60,7 @@ public class FeedActivity extends AppCompatActivity {
     TextView addText;
     TextView addImage;
     TextView addLocation;
-
+    public static final int PICK_IMAGE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +90,7 @@ public class FeedActivity extends AppCompatActivity {
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showInputDialog("נא בחר תמונה שברצונך לשתף", "addImage");
+                showImageInputDialog("נא בחר תמונה שברצונך לשתף", "addImage");
             }
         });
         addLocation=(TextView) findViewById(R.id.location);
@@ -196,7 +190,55 @@ public class FeedActivity extends AppCompatActivity {
 
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
+        View promptView = layoutInflater.inflate(R.layout.input_image_dialog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setView(promptView);
+        TextView textView=(TextView)promptView.findViewById(R.id.textView);
+        textView.setText(displayText+"");
+        Button getImage=(Button)promptView.findViewById(R.id.done2);
+        getImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+            }
+        });
+
+        final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+        // setup a dialog window
+        alertDialogBuilder.setCancelable(false)
+                .setNegativeButton("ביטול",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        })
+                .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        switch (actionType){
+                            case "changeNickname":
+                                changeNickname(editText.getText()+"");
+                                break;
+                            case "addText":
+                                addTextPost(editText.getText()+"");
+
+
+                        }
+                    }
+                });
+
+        // create an alert dialog
+        AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
+    }
+
+    protected void showImageInputDialog(String displayText, final String actionType) {
+
+        // get prompts.xml view
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View promptView = layoutInflater.inflate(R.layout.input_image_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptView);
         TextView textView=(TextView)promptView.findViewById(R.id.textView);

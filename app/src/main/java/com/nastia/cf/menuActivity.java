@@ -25,8 +25,7 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
     Button logOut;
     public final static FirebaseFirestore db = FirebaseFirestore.getInstance();
     public final static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    public final static DocumentReference user_details = db.collection("user_details")
-            .document(mAuth.getCurrentUser().getUid());
+    public DocumentReference user_details;
 
     public  static String NICKNAME;
     public  static int HEIGHT;
@@ -42,6 +41,8 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        user_details = db.collection("user_details")
+                .document(mAuth.getCurrentUser().getUid());
         pgsBar = (ProgressBar) findViewById(R.id.pBar);
         pgsBar.setVisibility(View.VISIBLE);
         logOut=(Button) findViewById(R.id.logOutBtn);

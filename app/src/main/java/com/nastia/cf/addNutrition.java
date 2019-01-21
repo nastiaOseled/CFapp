@@ -317,7 +317,7 @@ public class addNutrition extends AppCompatActivity {
 //        });
 
         //add new food
-        LauncherActivity.user_details.collection("nutrition reports").add(newFood)
+        menuActivity.user_details.collection("nutrition reports").add(newFood)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {

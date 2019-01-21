@@ -115,7 +115,7 @@ public class NutritionActivity extends AppCompatActivity {
         final String stringToday = addNutrition.sfd.format(today);
 
         //get recommended calories per day
-        LauncherActivity.user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        menuActivity.user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -124,7 +124,7 @@ public class NutritionActivity extends AppCompatActivity {
                         recommendedCalories = menuActivity.RECOMMENDED_CALORIES;
                         recommended.setText(recommendedCalories + "");
                         caloriesLeft.setText(recommendedCalories + "");
-                        final CollectionReference foods = LauncherActivity.user_details.collection("nutrition reports");
+                        final CollectionReference foods = menuActivity.user_details.collection("nutrition reports");
 
                         //check if today's date matches DB date
                         foods.document("Date").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -191,7 +191,7 @@ public class NutritionActivity extends AppCompatActivity {
 
 //        db.collection("user_details").
 //                document(mAuth.getCurrentUser().getUid())
-        LauncherActivity.user_details.collection("nutrition reports").get()
+        menuActivity.user_details.collection("nutrition reports").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -206,7 +206,7 @@ public class NutritionActivity extends AppCompatActivity {
                         todayDate.put("date", stringToday);
 //                        db.collection("user_details").
 //                                document(mAuth.getCurrentUser().getUid())
-                        LauncherActivity.user_details.collection("nutrition reports")
+                        menuActivity.user_details.collection("nutrition reports")
                                 .document("Date").set(todayDate, SetOptions.merge());
 
                         todayDate.clear();
@@ -214,7 +214,7 @@ public class NutritionActivity extends AppCompatActivity {
                         todayDate.put("calories", sum);
 //                        db.collection("user_details").
 //                                document(mAuth.getCurrentUser().getUid())
-                        LauncherActivity.user_details.collection("calories_reports")
+                        menuActivity.user_details.collection("calories_reports")
                                 .add(todayDate);
                         sum = 0;
                     }

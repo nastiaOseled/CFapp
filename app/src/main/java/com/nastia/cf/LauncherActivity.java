@@ -24,8 +24,8 @@ public class LauncherActivity extends AppCompatActivity {
 
     public final static FirebaseFirestore db = FirebaseFirestore.getInstance();
     public final static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    public final static DocumentReference user_details = db.collection("user_details")
-            .document(mAuth.getCurrentUser().getUid());
+    //public final static DocumentReference user_details = db.collection("user_details")
+          //  .document(mAuth.getCurrentUser().getUid());
 
 /*
     public  static String NICKNAME;

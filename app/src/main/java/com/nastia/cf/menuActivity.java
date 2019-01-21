@@ -25,7 +25,7 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
     Button logOut;
     public final static FirebaseFirestore db = FirebaseFirestore.getInstance();
     public final static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    public DocumentReference user_details;
+    public static DocumentReference user_details;
 
     public  static String NICKNAME;
     public  static int HEIGHT;

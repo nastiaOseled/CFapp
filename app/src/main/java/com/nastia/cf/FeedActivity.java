@@ -335,7 +335,7 @@ public class FeedActivity extends AppCompatActivity {
     public void changeNickname(String newNickname){
         nickname.setText(newNickname + "");
         menuActivity.NICKNAME = newNickname;
-        LauncherActivity.user_details.update("name", newNickname);
+        menuActivity.user_details.update("name", newNickname);
     }
 }
 

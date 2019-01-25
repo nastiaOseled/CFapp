@@ -170,15 +170,13 @@ public class ContactsActivity extends AppCompatActivity {
 
     public void importContacts() {
 
-        db.collection("user_details")
-                .document(mAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        menuActivity.user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        db.collection("user_details")
-                                .document(mAuth.getCurrentUser().getUid()).collection("contacts")
+                        menuActivity.user_details.collection("contacts")
                                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -201,12 +199,12 @@ public class ContactsActivity extends AppCompatActivity {
         });
     }
 
-    @Override
+/*    @Override
     public void onDestroy() {
 
         super.onDestroy();
         contacts.clear();
         adapter.notifyDataSetChanged();
 
-    }
+    }*/
 }

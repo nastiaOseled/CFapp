@@ -3,6 +3,9 @@ package com.nastia.cf;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +35,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,7 +54,8 @@ public class FeedActivity extends AppCompatActivity {
     private static final String TAG = "feed activity";
     public SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
     public SimpleDateFormat stf = new SimpleDateFormat("HH:mm");
-
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference();
 
     Button changeBtn;
     RecyclerView rvPosts;
@@ -60,6 +68,9 @@ public class FeedActivity extends AppCompatActivity {
     TextView addText;
     TextView addImage;
     TextView addLocation;
+    Uri selectedImageUri;
+
+    View promptView;
     public static final int PICK_IMAGE = 4;
 
     @Override
@@ -190,21 +201,12 @@ public class FeedActivity extends AppCompatActivity {
 
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View promptView = layoutInflater.inflate(R.layout.input_image_dialog, null);
+        View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptView);
         TextView textView=(TextView)promptView.findViewById(R.id.textView);
         textView.setText(displayText+"");
-        Button getImage=(Button)promptView.findViewById(R.id.done2);
-        getImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-            }
-        });
+
 
         final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
         // setup a dialog window
@@ -238,11 +240,21 @@ public class FeedActivity extends AppCompatActivity {
 
         // get prompts.xml view
         LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View promptView = layoutInflater.inflate(R.layout.input_image_dialog, null);
+        promptView = layoutInflater.inflate(R.layout.input_image_dialog, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setView(promptView);
         TextView textView=(TextView)promptView.findViewById(R.id.textView);
         textView.setText(displayText+"");
+        Button getImage=(Button)promptView.findViewById(R.id.done2);
+        getImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+            }
+        });
 
         final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
         // setup a dialog window
@@ -255,15 +267,33 @@ public class FeedActivity extends AppCompatActivity {
                         })
                 .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        switch (actionType){
+/*                        switch (actionType){
                             case "changeNickname":
                                 changeNickname(editText.getText()+"");
                                 break;
                             case "addText":
                                 addTextPost(editText.getText()+"");
+                        }*/
 
+                        //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
+                        Uri file=selectedImageUri;
+                        StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
+                        UploadTask  uploadTask = riversRef.putFile(file);
 
-                        }
+                        // Register observers to listen for when the download is done or if it fails
+                        uploadTask.addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                Toast.makeText(FeedActivity.this,  "  onFailure",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                Toast.makeText(FeedActivity.this,  "  onSuccess",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                        });
                     }
                 });
 
@@ -336,6 +366,47 @@ public class FeedActivity extends AppCompatActivity {
         nickname.setText(newNickname + "");
         menuActivity.NICKNAME = newNickname;
         menuActivity.user_details.update("name", newNickname);
+    }
+
+
+   @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (requestCode == PICK_IMAGE) {
+            if (data == null) {
+                //Display an error
+                return;
+            }
+            else{
+
+                selectedImageUri = data.getData();
+                // Get the path from the Uri
+                final String path = getPathFromURI(selectedImageUri);
+                Toast.makeText(this, path + "   p",
+                        Toast.LENGTH_LONG).show();
+                if (path != null) {
+                    File f = new File(path);
+                    selectedImageUri = Uri.fromFile(f);
+
+                }
+                ((ImageView) promptView.findViewById(R.id.imgView)).setImageURI(selectedImageUri);
+
+            }
+
+        }
+    }
+
+
+    public String getPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
     }
 }
 

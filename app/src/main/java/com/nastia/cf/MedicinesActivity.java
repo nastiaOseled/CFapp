@@ -63,17 +63,6 @@ public class MedicinesActivity extends AppCompatActivity {
         importMeds();
     }
 
-/*    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (requestCode == PICK_IMAGE) {
-            if (data == null) {
-                //Display an error
-                return;
-            }
-
-        }
-    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

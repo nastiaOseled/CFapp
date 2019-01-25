@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,10 +122,23 @@ public class FeedAdapter extends
         public TextView text;
         public TextView likesNum;
         public TextView commentsNum;
-        public LinearLayout commentsLayout;
+        public RecyclerView commentsList;
+
+        List<Comment> cA=new ArrayList<>();
+
+
 
         public TextViewHolder(View itemView) {
             super(itemView);
+            Comment co=new Comment("nichname", "23/1/19", "12:22", "blalala");
+            cA.add(co);
+            CommentsAdapter adapter=new CommentsAdapter(cA);
+            commentsList.setAdapter(adapter);
+            // Set layout manager to position the items
+            //commentsList.setLayoutManager(new LinearLayoutManager(FeedActivity.class));
+
+
+
 
             imageLogo = (ImageView) itemView.findViewById(R.id.imageLogo);
             nickname = (TextView) itemView.findViewById(R.id.nickname);
@@ -132,7 +147,18 @@ public class FeedAdapter extends
             text = (TextView) itemView.findViewById(R.id.text);
             likesNum = (TextView) itemView.findViewById(R.id.likesNum);
             commentsNum = (TextView) itemView.findViewById(R.id.commentsNum);
-            commentsLayout = (LinearLayout) itemView.findViewById(R.id.commentLayout);
+            commentsList = (RecyclerView) itemView.findViewById(R.id.commentLayout);
+            //commentsList.setVisibility(View.GONE);
+            commentsNum.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    commentsList.setVisibility(View.VISIBLE);
+                    if(commentsList.getVisibility()==View.GONE)
+                        commentsList.setVisibility(View.VISIBLE);
+                    else
+                        commentsList.setVisibility(View.GONE);
+                }
+            });
         }
     }
 

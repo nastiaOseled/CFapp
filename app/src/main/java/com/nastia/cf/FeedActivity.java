@@ -186,9 +186,7 @@ public class FeedActivity extends AppCompatActivity {
                                         }
                                     });
                                 }
-                               // posts.add(new Post(postId, userId, nick, d, t, likes, (ArrayList<Comment>) comments, text, type));
                             }
-                            //adapter.notifyDataSetChanged();
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

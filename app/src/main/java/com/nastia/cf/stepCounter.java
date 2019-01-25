@@ -12,12 +12,12 @@ import android.widget.TextView;
 
 public class stepCounter extends AppCompatActivity implements SensorEventListener, StepListener {
     private TextView textView;
-    private StepDetector simpleStepDetector;
-    private SensorManager sensorManager;
-    private Sensor accel;
-    private static final String TEXT_NUM_STEPS = "Number of Steps: ";
-    private int numSteps;
-    TextView TvSteps;
+//    private StepDetector simpleStepDetector;
+//    private SensorManager sensorManager;
+//    private Sensor accel;
+//    private static final String TEXT_NUM_STEPS = "Number of Steps: ";
+//    private int numSteps;
+      TextView TvSteps;
     Button BtnStart;
     Button BtnStop;
 
@@ -26,14 +26,17 @@ public class stepCounter extends AppCompatActivity implements SensorEventListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_counter);
 
-
-        // Get an instance of the SensorManager
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        simpleStepDetector = new StepDetector();
-        simpleStepDetector.registerListener(this);
+//
+//        // Get an instance of the SensorManager
+//        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+//        accel = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+//        simpleStepDetector = new StepDetector();
+//        simpleStepDetector.registerListener(this);
 
         TvSteps = (TextView) findViewById(R.id.tv_steps);
+
+        TvSteps.setText(StepsCounterService.numSteps);
+
         //BtnStart = (Button) findViewById(R.id.btn_start);
         //BtnStop = (Button) findViewById(R.id.btn_stop);
 
@@ -73,16 +76,20 @@ public class stepCounter extends AppCompatActivity implements SensorEventListene
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            simpleStepDetector.updateAccel(
-                    event.timestamp, event.values[0], event.values[1], event.values[2]);
-        }
+//        if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+//            simpleStepDetector.updateAccel(
+//                    event.timestamp, event.values[0], event.values[1], event.values[2]);
+//        }
     }
 
     @Override
     public void step(long timeNs) {
-        numSteps++;
-        TvSteps.setText(TEXT_NUM_STEPS + numSteps);
+//        numSteps++;
+//        TvSteps.setText(TEXT_NUM_STEPS + numSteps);
     }
+
+//    public static void step(String steps){
+//        TvSteps.setText(steps);
+//    }
 
 }

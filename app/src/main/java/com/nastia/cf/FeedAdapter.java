@@ -40,9 +40,6 @@ public class FeedAdapter extends
             case 1:
                 postView = inflater.inflate(R.layout.item_post_image, viewGroup, false);
                 return new ImageViewHolder(postView);
-            case 2:
-                postView = inflater.inflate(R.layout.item_post_location, viewGroup, false);
-                return new LocationViewHolder(postView);
         }
         return null;
     }
@@ -95,21 +92,6 @@ public class FeedAdapter extends
 //                textView=ivh.text;
 //                textView.setText(p.getPostText()+"");
                 imageView = ivh.imageLogo;
-                context = imageView.getContext();
-                id = context.getResources().getIdentifier(menuActivity.IMAGE, "drawable", context.getPackageName());
-                imageView.setImageResource(id);
-                break;
-            case 2:
-                LocationViewHolder lvh = (LocationViewHolder) viewHolder;
-                textView = lvh.nickname;
-                textView.setText(p.getNickname());
-                textView = lvh.date;
-                textView.setText(p.getDate() + "");
-                textView = lvh.time;
-                textView.setText(p.getTime() + "");
-                textView = lvh.text;
-                textView.setText("Location Post");
-                imageView = lvh.imageLogo;
                 context = imageView.getContext();
                 id = context.getResources().getIdentifier(menuActivity.IMAGE, "drawable", context.getPackageName());
                 imageView.setImageResource(id);
@@ -175,26 +157,4 @@ public class FeedAdapter extends
         }
     }
 
-    class LocationViewHolder extends RecyclerView.ViewHolder {
-
-
-        ImageView imageLogo;
-        public TextView nickname;
-        public TextView date;
-        public TextView time;
-        public TextView text;
-
-
-        public LocationViewHolder(View itemView) {
-            super(itemView);
-
-
-            imageLogo = (ImageView) itemView.findViewById(R.id.imageLogo);
-            nickname = (TextView) itemView.findViewById(R.id.nickname);
-            date = (TextView) itemView.findViewById(R.id.date);
-            time = (TextView) itemView.findViewById(R.id.time);
-            text = (TextView) itemView.findViewById(R.id.text);
-
-        }
-    }
 }

@@ -14,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +24,8 @@ public class FeedAdapter extends
         RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     List<Post> mPostsList;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReference();
 
     public FeedAdapter(List<Post> posts) {
         this.mPostsList = posts;
@@ -91,9 +96,15 @@ public class FeedAdapter extends
                 textView.setText(p.getDate() + "");
                 textView = ivh.time;
                 textView.setText(p.getTime() + "");
-//                textView=ivh.text;
-//                textView.setText(p.getPostText()+"");
+                textView=ivh.text;
+                textView.setText(p.getPostText()+"");
+                String imageName = (p.getImageName());
                 imageView = ivh.imageLogo;
+                StorageReference storageReference = storageRef.child("images/island.jpg");;
+
+                //GlideApp.with(this /* context */)
+                //        .load(storageReference)
+                //        .into(imageView);
                 context = imageView.getContext();
                 id = context.getResources().getIdentifier(menuActivity.IMAGE, "drawable", context.getPackageName());
                 imageView.setImageResource(id);
@@ -133,7 +144,7 @@ public class FeedAdapter extends
             Comment co=new Comment("nichname", "23/1/19", "12:22", "blalala");
             cA.add(co);
             CommentsAdapter adapter=new CommentsAdapter(cA);
-            commentsList.setAdapter(adapter);
+            //commentsList.setAdapter(adapter);
             // Set layout manager to position the items
             //commentsList.setLayoutManager(new LinearLayoutManager(FeedActivity.class));
 

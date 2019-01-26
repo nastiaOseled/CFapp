@@ -16,6 +16,7 @@ class Post {
     long likes;
     ArrayList <Comment> comments;
     String postText;
+    String imageName;
     long type;
 
     public Post(String postId, String userId, String nickname, String date, String time, long likes, ArrayList<Comment> comments, String postText, long type) {
@@ -28,6 +29,11 @@ class Post {
         this.comments = comments;
         this.postText = postText;
         this.type = type;
+    }
+
+    public Post(String postId, String userId, String nickname, String date, String time, long likes, ArrayList<Comment> comments, String postText, long type,String image) {
+        this(postId, userId, nickname, date, time, likes, comments, postText,type);
+        this.imageName = image;
     }
 
     public String getPostId() {
@@ -56,6 +62,10 @@ class Post {
 
     public long getLikes() {
         return likes;
+    }
+
+    public String getImageName() {
+        return imageName;
     }
 
     public ArrayList<Comment> getComments() {

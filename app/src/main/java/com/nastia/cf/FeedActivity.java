@@ -163,6 +163,8 @@ public class FeedActivity extends AppCompatActivity {
                                 final long likes = (long) document.get("likes");
                                 final String text = document.getString("text");
                                 final long type = (long) document.get("type");
+                                //if(document.contains("image"))
+                                    final String image=(document.getString("image"));
 
                                 comments.clear();
 
@@ -180,6 +182,9 @@ public class FeedActivity extends AppCompatActivity {
                                                     comments.add(new Comment(comNickname, comDate, comTime, comText));
                                                   //  createComment(comNickname, comDate, comTime, comText);
                                                 }
+                                            }
+                                            if (image != null){
+                                                posts.add(new Post(postId, userId, nick, d, t, likes, (ArrayList<Comment>) comments, text, type,image));
                                             }
                                             posts.add(new Post(postId, userId, nick, d, t, likes, (ArrayList<Comment>) comments, text, type));
                                             adapter.notifyDataSetChanged();
@@ -265,33 +270,11 @@ public class FeedActivity extends AppCompatActivity {
                         })
                 .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-/*                        switch (actionType){
-                            case "changeNickname":
-                                changeNickname(editText.getText()+"");
-                                break;
-                            case "addText":
-                                addTextPost(editText.getText()+"");
-                        }*/
+                       /*Toast.makeText(FeedActivity.this,  "  bbbbb",
+                                                Toast.LENGTH_LONG).show();*/
+                                addImagePost(editText.getText()+"");
+                        //}
 
-                        //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
-                        Uri file=selectedImageUri;
-                        StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
-                        UploadTask  uploadTask = riversRef.putFile(file);
-
-                        // Register observers to listen for when the download is done or if it fails
-                        uploadTask.addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception exception) {
-                                Toast.makeText(FeedActivity.this,  "  onFailure",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Toast.makeText(FeedActivity.this,  "  onSuccess",
-                                        Toast.LENGTH_LONG).show();
-                            }
-                        });
                     }
                 });
 
@@ -333,6 +316,68 @@ public class FeedActivity extends AppCompatActivity {
 
         Post p=new Post("", LauncherActivity.mAuth.getCurrentUser().getUid(), menuActivity.NICKNAME, stringToday,
                 nowTime, 0, new ArrayList<Comment>(), text,0);
+        this.posts.add(p);
+        this.adapter.notifyDataSetChanged();
+
+    }
+
+    public void addImagePost(String text) {
+        Toast.makeText(FeedActivity.this,  "  hi",
+                Toast.LENGTH_LONG).show();
+        //add new post
+        Map<String, Object> newPost = new HashMap<>();
+        newPost.put("userId", LauncherActivity.mAuth.getCurrentUser().getUid());
+        newPost.put("nickname", menuActivity.NICKNAME);
+        Date today = new Date();
+        String stringToday = sdf.format(today);
+        newPost.put("date", stringToday);
+        String nowTime=stf.format(today.getTime());
+        newPost.put("time", nowTime);
+        newPost.put("likes", 0);
+        newPost.put("text", text);
+        newPost.put("type", 1);
+
+        // newPost.put("comments", post.getComments());
+
+        if (selectedImageUri == null)
+            return;
+        Uri file=selectedImageUri;
+        newPost.put("image", file.getLastPathSegment());
+        StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
+        UploadTask  uploadTask = riversRef.putFile(file);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Toast.makeText(FeedActivity.this,  "  onFailure",
+                        Toast.LENGTH_LONG).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(FeedActivity.this,  "  onSuccess",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        LauncherActivity.db.collection("Posts").document()
+                .set(newPost)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+
+        Post p=new Post("", LauncherActivity.mAuth.getCurrentUser().getUid(), menuActivity.NICKNAME, stringToday,
+                nowTime, 0, new ArrayList<Comment>(), text,1);
         this.posts.add(p);
         this.adapter.notifyDataSetChanged();
 

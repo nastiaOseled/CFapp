@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -60,6 +61,7 @@ public class FeedAdapter extends
         int id;
         Context context;
         ImageView imageView;
+        ImageView image;
 
         switch ((int) p.getType()) {
             case 0:
@@ -97,17 +99,18 @@ public class FeedAdapter extends
                 textView = ivh.time;
                 textView.setText(p.getTime() + "");
                 textView=ivh.text;
-                textView.setText(p.getPostText()+"");
+               // textView.setText(p.getPostText()+"");
                 String imageName = (p.getImageName());
                 imageView = ivh.imageLogo;
-                StorageReference storageReference = storageRef.child("images/island.jpg");;
-
-                //GlideApp.with(this /* context */)
-                //        .load(storageReference)
-                //        .into(imageView);
                 context = imageView.getContext();
                 id = context.getResources().getIdentifier(menuActivity.IMAGE, "drawable", context.getPackageName());
                 imageView.setImageResource(id);
+                image = ivh.imagePost;
+                StorageReference storageReference = storageRef.child("images/"+ imageName);
+
+                Glide.with( context)
+                        .load(storageReference)
+                        .into(image);
                 break;
         }
 

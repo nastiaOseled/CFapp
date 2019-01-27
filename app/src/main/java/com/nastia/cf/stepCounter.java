@@ -35,7 +35,7 @@ public class stepCounter extends AppCompatActivity implements SensorEventListene
 
         TvSteps = (TextView) findViewById(R.id.tv_steps);
 
-        TvSteps.setText(StepsCounterService.numSteps);
+        TvSteps.setText(StepsCounterService.numSteps+"");
 
         //BtnStart = (Button) findViewById(R.id.btn_start);
         //BtnStop = (Button) findViewById(R.id.btn_stop);

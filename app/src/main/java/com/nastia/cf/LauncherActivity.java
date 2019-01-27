@@ -25,7 +25,7 @@ public class LauncherActivity extends AppCompatActivity {
     public final static FirebaseFirestore db = FirebaseFirestore.getInstance();
     public final static FirebaseAuth mAuth = FirebaseAuth.getInstance();
     //public final static DocumentReference user_details = db.collection("user_details")
-          //  .document(mAuth.getCurrentUser().getUid());
+    //  .document(mAuth.getCurrentUser().getUid());
 
 /*
     public  static String NICKNAME;
@@ -40,34 +40,32 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
-
+        startService(new Intent(this, StepsCounterService.class));
         //start steps counter service
-        AlarmManager alarmManager=(AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         //set time to start
 
 
         //check if user is already connected to app
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        boolean b=sharedPref.getBoolean("userConnected", false);
-        if( ! b){
+        boolean b = sharedPref.getBoolean("userConnected", false);
+        if (!b) {
             //if not connected
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
 
-                    Intent in=new Intent(LauncherActivity.this, welcomeActivity.class);
+                    Intent in = new Intent(LauncherActivity.this, welcomeActivity.class);
                     startActivity(in);
                 }
             }, 2000);
-        }
-
-        else {
+        } else {
             //if connected
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
 
-                    Intent in=new Intent(LauncherActivity.this, menuActivity.class);
+                    Intent in = new Intent(LauncherActivity.this, menuActivity.class);
                     startActivity(in);
 
 /*                    user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -111,7 +109,7 @@ public class LauncherActivity extends AppCompatActivity {
 
     }
 
-    public static SharedPreferences getPref(){
+    public static SharedPreferences getPref() {
         return sharedPref;
     }
 }

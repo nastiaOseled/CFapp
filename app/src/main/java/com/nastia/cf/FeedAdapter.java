@@ -99,7 +99,7 @@ public class FeedAdapter extends
                 textView = ivh.time;
                 textView.setText(p.getTime() + "");
                 textView=ivh.text;
-               // textView.setText(p.getPostText()+"");
+                textView.setText(p.getPostText()+"");
                 String imageName = (p.getImageName());
                 imageView = ivh.imageLogo;
                 context = imageView.getContext();
@@ -193,7 +193,7 @@ public class FeedAdapter extends
             nickname = (TextView) itemView.findViewById(R.id.nickname);
             date = (TextView) itemView.findViewById(R.id.date);
             time = (TextView) itemView.findViewById(R.id.time);
-            text = (TextView) itemView.findViewById(R.id.text);
+            text = (TextView) itemView.findViewById(R.id.textPost);
         }
     }
 

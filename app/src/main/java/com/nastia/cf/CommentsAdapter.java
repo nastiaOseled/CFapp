@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder> {
 
     List<Comment> mCommentsList;
 
@@ -20,7 +20,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public CommentsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_comment, viewGroup, false);
@@ -28,8 +28,18 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull CommentsAdapter.ViewHolder viewHolder, int i) {
 
+        Comment c=mCommentsList.get(i);
+
+        TextView textView = viewHolder.comNickname;
+        textView.setText(c.getNickname()+"");
+        textView = viewHolder.comDate;
+        textView.setText(c.getDate()+"");
+        textView = viewHolder.comTime;
+        textView.setText(c.getTime()+"");
+        textView = viewHolder.comText;
+        textView.setText(c.getText()+"");
     }
 
     @Override
@@ -50,7 +60,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             comNickname = (TextView) itemView.findViewById(R.id.comNickname);
             comDate = (TextView) itemView.findViewById(R.id.comDate);
-            comTime = (TextView) itemView.findViewById(R.id.comNickname);
+            comTime = (TextView) itemView.findViewById(R.id.comTime);
             comText = (TextView) itemView.findViewById(R.id.comText);
         }
     }

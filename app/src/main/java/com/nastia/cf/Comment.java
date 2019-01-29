@@ -12,4 +12,20 @@ public class Comment {
         this.time = time;
         this.text = text;
     }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getText() {
+        return text;
+    }
 }

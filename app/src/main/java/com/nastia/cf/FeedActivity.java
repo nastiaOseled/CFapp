@@ -62,7 +62,7 @@ public class FeedActivity extends AppCompatActivity {
     public FeedAdapter adapter;
     TextView nickname;
     public List<Post> posts = new ArrayList<>();
-    public List<Comment> comments = new ArrayList<>();
+    public List<Comment> comments;
     Button backBtn;
     ImageView iconImg;
     TextView addText;
@@ -104,7 +104,6 @@ public class FeedActivity extends AppCompatActivity {
                 showImageInputDialog("נא בחר תמונה שברצונך לשתף", "addImage");
             }
         });
-        addLocation=(TextView) findViewById(R.id.location);
 
         Context context = iconImg.getContext();
         int id = context.getResources().getIdentifier(menuActivity.IMAGE, "drawable", context.getPackageName());
@@ -166,7 +165,9 @@ public class FeedActivity extends AppCompatActivity {
                                 //if(document.contains("image"))
                                     final String image=(document.getString("image"));
 
+                                comments=new ArrayList<>();
                                 comments.clear();
+
 
                                 if (document.getReference().collection("comments") != null) {
                                     CollectionReference com = (CollectionReference) document.getReference().collection("comments");
@@ -183,11 +184,13 @@ public class FeedActivity extends AppCompatActivity {
                                                   //  createComment(comNickname, comDate, comTime, comText);
                                                 }
                                             }
+                                            ArrayList<Comment> c = new ArrayList<>(comments);
                                             if (image != null){
-                                                posts.add(new Post(postId, userId, nick, d, t, likes, (ArrayList<Comment>) comments, text, type,image));
+                                                posts.add(new Post(postId, userId, nick, d, t, likes, c, text, type,image));
                                             }
-                                            posts.add(new Post(postId, userId, nick, d, t, likes, (ArrayList<Comment>) comments, text, type));
+                                            else posts.add(new Post(postId, userId, nick, d, t, likes, c, text, type));
                                             adapter.notifyDataSetChanged();
+                                            comments.clear();
                                         }
                                     });
                                 }

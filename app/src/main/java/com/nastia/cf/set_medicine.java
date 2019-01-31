@@ -253,39 +253,5 @@ public class set_medicine extends AppCompatActivity {
 
     }
 
-  /*  public void setComboBox(){
-
-        final List<CharSequence> spinnerArray = new ArrayList<>();
-
-        db.collection("Medicines")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                String n = document.getString("name");
-                                spinnerArray.add(n);
-                                if( n.equals(medName)){
-
-                                }
-                            }
-                            spinnerArray.add("other");
-
-                            // Create an ArrayAdapter using the string array and a default spinner layout
-                            @SuppressLint("ResourceType") ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(
-                                    set_medicine.this, android.R.layout.simple_spinner_item, spinnerArray);
-                            // Specify the layout to use when the list of choices appears
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            // Apply the adapter to the spinner
-                            spinner.setAdapter(adapter);
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-    }*/
-
 
 }

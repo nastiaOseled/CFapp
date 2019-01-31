@@ -12,6 +12,9 @@ import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class StepsCounterService extends Service implements SensorEventListener, StepListener {
 
 
@@ -21,7 +24,8 @@ public class StepsCounterService extends Service implements SensorEventListener,
     private static final String TEXT_NUM_STEPS = "Number of Steps: ";
     public static int numSteps;
     private SharedPreferences sharedPref;
-
+    public static SimpleDateFormat sfd = new SimpleDateFormat("dd/MM/YYYY");
+    private String date;
 
     @Nullable
     @Override
@@ -64,16 +68,22 @@ public class StepsCounterService extends Service implements SensorEventListener,
     @Override
     public void step(long timeNs) {
 
-//        long now = System.currentTimeMillis();
-//        long lastTimeUpdate = sharedPref.getLong("lastTime", -1);
+        if(sharedPref.getString("lastTime",null) == null){
+            Date d = new Date();
+            date = sfd.format(d);
+            sharedPref.edit().putString("lastTime", date).commit();
+    }
+        else{
+            Date today = new Date();
+            String stringNow = sfd.format(today);
+            if(!sharedPref.getString("lastTime","").equals(stringNow)){
+                numSteps=0;
+                sharedPref.edit().putInt("steps", numSteps).commit();
+                sharedPref.edit().putString("lastTime", stringNow).commit();
+            }
+        }
 
         numSteps++;
-
-//        if (Math.abs(lastTimeUpdate - now) < (1000 * 60 * 60 * 24)) {
-            sharedPref.edit().putInt("steps", numSteps).commit();
-//            sharedPref.edit().putLong("lastTime", now).commit();
-//        }
-
 
     }
 

@@ -3,11 +3,13 @@ package com.nastia.cf;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +21,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FeedAdapter extends
         RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -31,7 +40,9 @@ public class FeedAdapter extends
     List<Post> mPostsList;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
-
+    public SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/YYYY");
+    public SimpleDateFormat stf = new SimpleDateFormat("HH:mm");
+    private static final String TAG = "feed adapter";
     public FeedAdapter(List<Post> posts) {
         this.mPostsList = posts;
     }
@@ -70,6 +81,8 @@ public class FeedAdapter extends
         switch ((int) p.getType()) {
             case 0:
                 TextViewHolder tvh = (TextViewHolder) viewHolder;
+                textView = tvh.postID;
+                textView.setText(p.getPostId());
                 textView = tvh.nickname;
                 textView.setText(p.getNickname());
                 textView = tvh.date;
@@ -99,6 +112,8 @@ public class FeedAdapter extends
                 break;
             case 1:
                 ImageViewHolder ivh = (ImageViewHolder) viewHolder;
+                textView = ivh.postID;
+                textView.setText(p.getPostId());
                 textView = ivh.nickname;
                 textView.setText(p.getNickname());
                 textView = ivh.date;
@@ -146,6 +161,7 @@ public class FeedAdapter extends
         public TextView date;
         public TextView time;
         public TextView text;
+        public TextView postID;
         public TextView likesNum;
         public TextView commentsNum;
         public RecyclerView commentsList;
@@ -170,24 +186,22 @@ public class FeedAdapter extends
             commentsNum.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    commentsList.setVisibility(View.VISIBLE);
-                    //if(commentsList.getVisibility()==View.GONE)
-                        commentsList.setVisibility(View.VISIBLE);
-                    //else
-                      //  commentsList.setVisibility(View.GONE);
+                    if(commentsList.getVisibility()==View.VISIBLE)
+                        commentsList.setVisibility(View.GONE);
+                    else commentsList.setVisibility(View.VISIBLE);
                 }
             });
-
+            postID = (TextView) itemView.findViewById(R.id.postID);
             addComBtn=(Button) itemView.findViewById(R.id.addComBtn);
             addComBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    addCommentDialog();
+                    addCommentDialog(postID.getText()+"");
                 }
             });
         }
 
-        public void addCommentDialog(){
+        public void addCommentDialog(final String postId){
             // get prompts.xml view
             LayoutInflater layoutInflater = LayoutInflater.from(itemView.getContext());
             View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
@@ -208,7 +222,11 @@ public class FeedAdapter extends
                             })
                     .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            String com=editText.getText()+"";
+                            String comText=editText.getText()+"";
+                            addComment(comText,postId);
+                            adapter.notifyDataSetChanged();
+                            //commentsNum.setText(commentsList.+" תגובות");
+                            ///////////////////////////////////////////////////////////////////////////////////////////
                         }
                     });
 
@@ -218,6 +236,47 @@ public class FeedAdapter extends
 
 
         }
+
+        public CommentsAdapter getAdapter() {
+            return adapter;
+        }
+    }
+
+    private void addComment(String comText, String postId){
+        //add new comment
+        Map<String, Object> newComment = new HashMap<>();
+        newComment.put("userId", LauncherActivity.mAuth.getCurrentUser().getUid());
+        newComment.put("nickname", menuActivity.NICKNAME);
+        Date today = new Date();
+        String stringToday = sdf.format(today);
+        newComment.put("date", stringToday);
+        String nowTime=stf.format(today.getTime());
+        newComment.put("time", nowTime);
+        newComment.put("text", comText);
+
+        LauncherActivity.db.collection("Posts").document(postId).collection("comments").document()
+                .set(newComment)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error writing document", e);
+                    }
+                });
+        Comment c=new Comment(menuActivity.NICKNAME, stringToday, nowTime, comText);
+        Post postToInsert;
+        for(Post p : mPostsList) {
+            if (p.getPostId().equals(postId)) {
+                p.getComments().add(c);
+                break;
+            }
+        }
+
     }
 
     class ImageViewHolder extends RecyclerView.ViewHolder {
@@ -229,6 +288,7 @@ public class FeedAdapter extends
         public TextView text;
         public TextView commentsNum;
         public TextView likesNum;
+        public TextView postID;
 
         public ImageViewHolder(View itemView) {
 
@@ -242,8 +302,11 @@ public class FeedAdapter extends
             text = (TextView) itemView.findViewById(R.id.textPost);
             likesNum = (TextView) itemView.findViewById(R.id.likesNum);
             commentsNum = (TextView) itemView.findViewById(R.id.commentsNum);
+            postID = (TextView) itemView.findViewById(R.id.postID);
         }
     }
+
+
 
 
 

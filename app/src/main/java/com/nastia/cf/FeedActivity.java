@@ -273,8 +273,6 @@ public class FeedActivity extends AppCompatActivity {
                         })
                 .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                       /*Toast.makeText(FeedActivity.this,  "  bbbbb",
-                                                Toast.LENGTH_LONG).show();*/
                                 addImagePost(editText.getText()+"");
                         //}
 
@@ -325,8 +323,6 @@ public class FeedActivity extends AppCompatActivity {
     }
 
     public void addImagePost(String text) {
-        Toast.makeText(FeedActivity.this,  "  hi",
-                Toast.LENGTH_LONG).show();
         //add new post
         Map<String, Object> newPost = new HashMap<>();
         newPost.put("userId", LauncherActivity.mAuth.getCurrentUser().getUid());
@@ -353,14 +349,10 @@ public class FeedActivity extends AppCompatActivity {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Toast.makeText(FeedActivity.this,  "  onFailure",
-                        Toast.LENGTH_LONG).show();
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(FeedActivity.this,  "  onSuccess",
-                        Toast.LENGTH_LONG).show();
             }
         });
 
@@ -428,8 +420,6 @@ public class FeedActivity extends AppCompatActivity {
                 selectedImageUri = data.getData();
                 // Get the path from the Uri
                 final String path = getPathFromURI(selectedImageUri);
-                Toast.makeText(this, path + "   p",
-                        Toast.LENGTH_LONG).show();
                 if (path != null) {
                     File f = new File(path);
                     selectedImageUri = Uri.fromFile(f);

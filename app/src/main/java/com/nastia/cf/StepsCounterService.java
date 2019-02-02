@@ -10,10 +10,22 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StepsCounterService extends Service implements SensorEventListener, StepListener {
 
@@ -77,6 +89,30 @@ public class StepsCounterService extends Service implements SensorEventListener,
             Date today = new Date();
             String stringNow = sfd.format(today);
             if(!sharedPref.getString("lastTime","").equals(stringNow)){
+
+                //if day was over: insert previous day num of steps to DB
+                if(FirebaseAuth.getInstance().getCurrentUser() != null){
+                    DocumentReference user_details = FirebaseFirestore.getInstance().collection("user_details")
+                      .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                    Map<String, Object> newStepsRecord = new HashMap<>();
+                    newStepsRecord.put("date", sharedPref.getString("lastTime",""));
+                    newStepsRecord.put("steps number", numSteps);
+                    user_details.collection("Steps").document()
+                            .set(newStepsRecord)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("Steps counter", "DocumentSnapshot successfully written!");
+                        }
+                    })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w("Steps counter", "Error writing document", e);
+                                }
+                            });
+                }
+
                 numSteps=0;
                 sharedPref.edit().putInt("steps", numSteps).commit();
                 sharedPref.edit().putString("lastTime", stringNow).commit();

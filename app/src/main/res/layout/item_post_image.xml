@@ -133,4 +133,17 @@
         android:layout_height="match_parent"
         android:id="@+id/commentLayout"
         app:layout_constraintTop_toBottomOf="@id/layout" />
+
+    <Button
+        android:id="@+id/addComBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/round_pink_button"
+        android:text="הוסף תגובה"
+        android:textColor="#ffffff"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/commentLayout" />
 </android.support.constraint.ConstraintLayout>

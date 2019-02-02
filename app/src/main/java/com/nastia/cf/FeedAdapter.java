@@ -21,8 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -134,7 +139,11 @@ public class FeedAdapter extends
                 imageView.setImageResource(id);
                 image = ivh.imagePost;
                 StorageReference storageReference = storageRef.child("images/"+ imageName);
-
+                ArrayList<Comment> co = p.getComments();
+                ivh.adapter=new CommentsAdapter(co);
+                ivh.commentsList.setAdapter(ivh.adapter);
+                // Set layout manager to position the items
+                ivh.commentsList.setLayoutManager(new LinearLayoutManager(context));
                 Glide.with( context)
                         .load(storageReference)
                         .into(image);
@@ -163,6 +172,7 @@ public class FeedAdapter extends
         public TextView text;
         public TextView postID;
         public TextView likesNum;
+        public ImageView likeImg;
         public TextView commentsNum;
         public RecyclerView commentsList;
 
@@ -199,6 +209,13 @@ public class FeedAdapter extends
                     addCommentDialog(postID.getText()+"");
                 }
             });
+            likeImg = (ImageView) itemView.findViewById(R.id.likeImg);
+            likeImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    addLike(postID.getText()+"");
+                }
+            });
         }
 
         public void addCommentDialog(final String postId){
@@ -222,11 +239,12 @@ public class FeedAdapter extends
                             })
                     .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
+                            String commentsNumNew = (commentsNum.getText().toString()).replace(" תגובות","");
+                            int num = Integer.parseInt(commentsNumNew);
+                            commentsNum.setText((num+1)+" תגובות");
                             String comText=editText.getText()+"";
                             addComment(comText,postId);
                             adapter.notifyDataSetChanged();
-                            //commentsNum.setText(commentsList.+" תגובות");
-                            ///////////////////////////////////////////////////////////////////////////////////////////
                         }
                     });
 
@@ -234,6 +252,40 @@ public class FeedAdapter extends
             AlertDialog alert = alertDialogBuilder.create();
             alert.show();
 
+
+        }
+
+        private void addLike(final String postId){
+            String commentsNumNew = likesNum.getText().toString();
+            final int num = Integer.parseInt(commentsNumNew)+1;
+            likesNum.setText((num)+"");
+            final DocumentReference post = LauncherActivity.db.collection("Posts").document(postId);
+
+            post.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            if(!document.contains("likes")){
+                                Map<String, Object> newField = new HashMap<>();
+                                newField.put("likes", 0);
+                                post.set(newField, SetOptions.merge());
+                            }
+                            else{
+                                post.update("likes", num);
+
+                            }
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
 
         }
 
@@ -277,6 +329,8 @@ public class FeedAdapter extends
             }
         }
 
+
+
     }
 
     class ImageViewHolder extends RecyclerView.ViewHolder {
@@ -288,7 +342,12 @@ public class FeedAdapter extends
         public TextView text;
         public TextView commentsNum;
         public TextView likesNum;
+        public ImageView likeImg;
         public TextView postID;
+        public RecyclerView commentsList;
+
+        public Button addComBtn;
+        public CommentsAdapter adapter;
 
         public ImageViewHolder(View itemView) {
 
@@ -303,6 +362,101 @@ public class FeedAdapter extends
             likesNum = (TextView) itemView.findViewById(R.id.likesNum);
             commentsNum = (TextView) itemView.findViewById(R.id.commentsNum);
             postID = (TextView) itemView.findViewById(R.id.postID);
+            commentsList = (RecyclerView) itemView.findViewById(R.id.commentLayout);
+            commentsList.setVisibility(View.GONE);
+            commentsNum.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(commentsList.getVisibility()==View.VISIBLE)
+                        commentsList.setVisibility(View.GONE);
+                    else commentsList.setVisibility(View.VISIBLE);
+                }
+            });
+            addComBtn=(Button) itemView.findViewById(R.id.addComBtn);
+            addComBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    addCommentDialog(postID.getText()+"");
+                }
+            });
+            likeImg = (ImageView) itemView.findViewById(R.id.likeImg);
+            likeImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    addLike(postID.getText()+"");
+                }
+            });
+        }
+
+        public void addCommentDialog(final String postId){
+            // get prompts.xml view
+            LayoutInflater layoutInflater = LayoutInflater.from(itemView.getContext());
+            View promptView = layoutInflater.inflate(R.layout.input_dialog, null);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(itemView.getContext());
+            alertDialogBuilder.setView(promptView);
+            TextView textView=(TextView)promptView.findViewById(R.id.textView);
+            textView.setText("הקלד את תגובתך");
+
+
+            final EditText editText = (EditText) promptView.findViewById(R.id.edittext);
+            // setup a dialog window
+            alertDialogBuilder.setCancelable(false)
+                    .setNegativeButton("ביטול",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            })
+                    .setPositiveButton("אישור", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            String commentsNumNew = (commentsNum.getText().toString()).replace(" תגובות","");
+                            int num = Integer.parseInt(commentsNumNew);
+                            commentsNum.setText((num+1)+" תגובות");
+                            String comText=editText.getText()+"";
+                            addComment(comText,postId);
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
+
+            // create an alert dialog
+            AlertDialog alert = alertDialogBuilder.create();
+            alert.show();
+
+
+        }
+
+        private void addLike(final String postId){
+            String commentsNumNew = likesNum.getText().toString();
+            final int num = Integer.parseInt(commentsNumNew)+1;
+            likesNum.setText((num)+"");
+            final DocumentReference post = LauncherActivity.db.collection("Posts").document(postId);
+
+            post.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            if(!document.contains("likes")){
+                                Map<String, Object> newField = new HashMap<>();
+                                newField.put("likes", 0);
+                                post.set(newField, SetOptions.merge());
+                            }
+                            else{
+                                post.update("likes", num);
+
+                            }
+                            Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+
         }
     }
 

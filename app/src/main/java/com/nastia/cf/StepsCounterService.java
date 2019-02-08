@@ -89,14 +89,14 @@ public class StepsCounterService extends Service implements SensorEventListener,
             Date today = new Date();
             String stringNow = sfd.format(today);
             if(!sharedPref.getString("lastTime","").equals(stringNow)){
-
+                int insertSteps = numSteps;
                 //if day was over: insert previous day num of steps to DB
                 if(FirebaseAuth.getInstance().getCurrentUser() != null){
                     DocumentReference user_details = FirebaseFirestore.getInstance().collection("user_details")
                       .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
                     Map<String, Object> newStepsRecord = new HashMap<>();
                     newStepsRecord.put("date", sharedPref.getString("lastTime",""));
-                    newStepsRecord.put("steps number", numSteps);
+                    newStepsRecord.put("steps number", insertSteps);
                     user_details.collection("Steps").document()
                             .set(newStepsRecord)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {

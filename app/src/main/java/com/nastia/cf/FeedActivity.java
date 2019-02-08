@@ -317,7 +317,7 @@ public class FeedActivity extends AppCompatActivity {
 
         Post p=new Post("", LauncherActivity.mAuth.getCurrentUser().getUid(), menuActivity.NICKNAME, stringToday,
                 nowTime, 0, new ArrayList<Comment>(), text,0);
-        this.posts.add(p);
+        this.posts.add(0,p);
         this.adapter.notifyDataSetChanged();
 
     }
@@ -373,7 +373,7 @@ public class FeedActivity extends AppCompatActivity {
 
         Post p=new Post("", LauncherActivity.mAuth.getCurrentUser().getUid(), menuActivity.NICKNAME, stringToday,
                 nowTime, 0, new ArrayList<Comment>(), text,1);
-        this.posts.add(p);
+        this.posts.add(0,p);
         this.adapter.notifyDataSetChanged();
 
     }

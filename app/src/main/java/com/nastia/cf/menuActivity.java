@@ -29,6 +29,7 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
 
     public  static String NICKNAME;
     public  static int HEIGHT;
+    public  static int fev1;
     public  static double WEIGHT;
     public  static String BIRTHDAY;
     public  static int RECOMMENDED_CALORIES;
@@ -83,6 +84,9 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
                         if(!document.contains("image"))
                             IMAGE="img1";
                         else IMAGE=(document.getString("image"));
+                        if(!document.contains("fev1"))
+                            fev1=70;
+                        else fev1=document.getLong("fev1").intValue();
 
                         //import contacts
                         user_details.collection("contacts")

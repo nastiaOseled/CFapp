@@ -54,6 +54,10 @@ public class addNutrition extends AppCompatActivity {
     Spinner spinner3;   //unit of measurement
     TextView amount;
     Button saveBtn;
+    Map<String, Object> anotherFoodMap = new HashMap<>();
+    String newFoodName;
+    int newFoodCal;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,30 +116,39 @@ public class addNutrition extends AppCompatActivity {
                                 amount2 = Integer.parseInt(amount.getText().toString());
                                 String anotherFood = spinner2.getSelectedItem().toString();
                                 Map<String, Object> newFood = new HashMap<>();
-                                switch (spinner3.getSelectedItem().toString()) {
-                                    case "כוס":
-                                        caloriesToInsert = (int) calories * CONVERT_G_TO_CUP * amount2;
-                                        unitToInsert="("+amount2+" כוסות)";
-                                        newFood.put("name", anotherFood);
-                                        newFood.put("calories", caloriesToInsert);
-                                        newFood.put("unit",unitToInsert);
-                                        break;
+                                if(anotherFood == "אחר") {
+                                    newFood = anotherFoodMap;
+                                    anotherFood = newFoodName;
+                                    caloriesToInsert = newFoodCal;
+                                    unitToInsert ="";
+                                }
+                                else {
 
-                                    case "יחידה":
-                                        caloriesToInsert = (int) calories * CONVERT_G_TO_UNIT * amount2;
-                                        unitToInsert="("+amount2+" יחידות)";
-                                        newFood.put("name", anotherFood);
-                                        newFood.put("calories", caloriesToInsert);
-                                        newFood.put("unit", unitToInsert);
-                                        break;
+                                    switch (spinner3.getSelectedItem().toString()) {
+                                        case "כוס":
+                                            caloriesToInsert = (int) calories * CONVERT_G_TO_CUP * amount2;
+                                            unitToInsert = "(" + amount2 + " כוסות)";
+                                            newFood.put("name", anotherFood);
+                                            newFood.put("calories", caloriesToInsert);
+                                            newFood.put("unit", unitToInsert);
+                                            break;
 
-                                    case "100 גרם":
-                                        caloriesToInsert = (int) calories * amount2;
-                                        unitToInsert="("+amount2*100+" גרם)";
-                                        newFood.put("name", anotherFood);
-                                        newFood.put("calories", caloriesToInsert);
-                                        newFood.put("unit", unitToInsert);
-                                        break;
+                                        case "יחידה":
+                                            caloriesToInsert = (int) calories * CONVERT_G_TO_UNIT * amount2;
+                                            unitToInsert = "(" + amount2 + " יחידות)";
+                                            newFood.put("name", anotherFood);
+                                            newFood.put("calories", caloriesToInsert);
+                                            newFood.put("unit", unitToInsert);
+                                            break;
+
+                                        case "100 גרם":
+                                            caloriesToInsert = (int) calories * amount2;
+                                            unitToInsert = "(" + amount2 * 100 + " גרם)";
+                                            newFood.put("name", anotherFood);
+                                            newFood.put("calories", caloriesToInsert);
+                                            newFood.put("unit", unitToInsert);
+                                            break;
+                                    }
                                 }
 
                                 //insert new food to user's nutritionList reports list
@@ -276,16 +289,20 @@ public class addNutrition extends AppCompatActivity {
                         String anotherFood = editText.getText().toString();
 
                         //set the document before insert
-                        Map<String, Object> newFood = new HashMap<>();
-                        newFood.put("name", anotherFood);
-                        newFood.put("calories", 100);
-                        newFood.put("unit", "100 גרם");
+                        //Map<String, Object> newFood = new HashMap<>();
+                        anotherFoodMap.put("name", anotherFood);
+                        anotherFoodMap.put("calories", 100);
+                        anotherFoodMap.put("unit", "100 גרם");
+
+                        newFoodName = anotherFood + "(100 גרם)";
+                        newFoodCal = 100;
 
                         //insert new value to nutritionList list
                     //    insertNewValueToNutritionCollection(anotherFood, newFood);
 
                         //insert new value to user's nutritionList reports list
-                        insertNewFoodToUserNutritionList(anotherFood, newFood);
+
+                        //insertNewFoodToUserNutritionList(anotherFood, newFood);
 
                         //TODO
                         //     spinner2.setSelection(spinner2.getIte);

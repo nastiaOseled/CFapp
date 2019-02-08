@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -51,6 +52,7 @@ public class set_medicine extends AppCompatActivity {
     EditText name;
     ImageView searchMed;
     String[] medArr;
+    Switch switch1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,7 @@ public class set_medicine extends AppCompatActivity {
         setContentView(R.layout.activity_set_medicine);
         Bundle b = getIntent().getExtras();
         name = (EditText) findViewById(R.id.name);
+        switch1 = findViewById(R.id.switch1);
         if(b != null) {
             medId = b.getString("id");
             medName = b.getString("name");
@@ -86,6 +89,24 @@ public class set_medicine extends AppCompatActivity {
                             }
                         }
                     });
+            medRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            if(document.contains("activeAlarms")){
+                                switch1.setChecked(document.getBoolean("activeAlarms"));
+                            }
+
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
         }
 
         final Button addReminderBtn = findViewById(R.id.addReminderBtn);
@@ -103,6 +124,7 @@ public class set_medicine extends AppCompatActivity {
 
                 Map<String, Object> nameField = new HashMap<>();
                 nameField.put("Name", name.getText().toString());
+                nameField.put("activeAlarms", switch1.isChecked());
                 if (medId == null) {
                     db.collection("user_details")
                             .document(mAuth.getCurrentUser().getUid()).collection("med")
@@ -149,6 +171,20 @@ public class set_medicine extends AppCompatActivity {
                         resultIntent.putExtra("changed", true);
                     }
                     else resultIntent.putExtra("changed", false);
+                    user_med.document(medId).set(nameField)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error writing document", e);
+                                }
+                            });
+                    resultIntent.putExtra("changed", true);
                     //delete all existing alarms
                     user_med.document(medId).collection("alarms").get()
                             .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

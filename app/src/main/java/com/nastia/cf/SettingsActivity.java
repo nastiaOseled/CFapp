@@ -78,7 +78,7 @@ public class SettingsActivity extends AppCompatActivity {
         weight.setText(menuActivity.WEIGHT + "");
         height.setText(menuActivity.HEIGHT + "");
         String dateString = menuActivity.BIRTHDAY;
-        DateFormat dateFormat = new SimpleDateFormat("dd.mm.yy");
+        DateFormat dateFormat = new SimpleDateFormat("dd/mm/yy");
         Date date = null;
         try {
             date = dateFormat.parse(dateString);
@@ -110,18 +110,19 @@ public class SettingsActivity extends AppCompatActivity {
                 weight.setText(menuActivity.WEIGHT + "");
                 height.setText(menuActivity.HEIGHT + "");
                 String dateString = menuActivity.BIRTHDAY;
-                DateFormat dateFormat = new SimpleDateFormat("dd.mm.yy");
+                DateFormat dateFormat = new SimpleDateFormat("dd/mm/yy");
                 Date date = null;
                 try {
                     date = dateFormat.parse(dateString);
                 } catch (ParseException e) {
                     e.printStackTrace();
+                    LocalDate date1 = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    Date input = new Date();
+                    LocalDate now = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    int y = Period.between(date1, now).getYears();
+                    age.setText(y + "");
                 }
-                LocalDate date1 = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                Date input = new Date();
-                LocalDate now = input.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-                int y = Period.between(date1, now).getYears();
-                age.setText(y + "");
+
                 calories.setText(menuActivity.RECOMMENDED_CALORIES + "");
             }
         }

@@ -256,9 +256,9 @@ public class FeedAdapter extends
         }
 
         private void addLike(final String postId){
-            String commentsNumNew = likesNum.getText().toString();
+            String commentsNumNew = (likesNum.getText().toString()).replace(" לייקים","");
             final int num = Integer.parseInt(commentsNumNew)+1;
-            likesNum.setText((num)+"");
+            likesNum.setText((num)+" לייקים");
             final DocumentReference post = LauncherActivity.db.collection("Posts").document(postId);
 
             post.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

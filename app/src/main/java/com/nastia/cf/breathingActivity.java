@@ -122,6 +122,7 @@ public class breathingActivity extends AppCompatActivity {
         });
     }
 
+    //
     public void onClick(View v) {
         lungs.animate().
                 scaleX(2f).
@@ -134,9 +135,12 @@ public class breathingActivity extends AppCompatActivity {
         b5.setVisibility(View.INVISIBLE);
         startBtn.setVisibility(View.INVISIBLE);
         seconds.setVisibility(View.VISIBLE);
-        new CountDownTimer(5000, 1000) {
+        new CountDownTimer(8000, 1000) {
             public void onTick(long millisUntilFinished) {
-                if(millisUntilFinished/1000 >1){
+               if(millisUntilFinished/1000 >4){
+                    seconds.setText("קח נשימה עמוקה");
+                }
+                else if(millisUntilFinished/1000 >1 ){
                     String sec = millisUntilFinished/1000-1 +"";
                     seconds.setText(sec);
                 }

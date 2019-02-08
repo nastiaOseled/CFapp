@@ -125,18 +125,18 @@ public class signUpActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void signIn(String email, String password) {
-        Log.d(TAG, "signIn:" + email);
+
         if (!validateForm()) {
             return;
         }
-
+        if(email.isEmpty() || password.isEmpty()){
+        Toast.makeText(signUpActivity.this, "הזן מייל וסיסמא",
+                Toast.LENGTH_SHORT).show();
+        return;
+        }
         SharedPreferences sharedPref =LauncherActivity.getPref();
         final SharedPreferences.Editor editor = sharedPref.edit();
 
-
-        //showProgressDialog();    ??
-
-        // [START sign_in_with_email]
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

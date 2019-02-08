@@ -46,7 +46,6 @@ public class fev1_editActivity extends AppCompatActivity {
     private NumberPicker np;
     Button backBtn;
     TextView finish;
-    TextView seconds;
     ImageView crown;
     Button save;
     ImageView share;
@@ -96,33 +95,10 @@ public class fev1_editActivity extends AppCompatActivity {
         np.setMinValue(40);
         np.setMaxValue(100);
 
-        DocumentReference user_details = db.collection("user_details")
-                .document(mAuth.getCurrentUser().getUid());
-
-        user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        if(!document.contains("fev1")){
-                        fevText.setText("");
-                    }
-                    else{
-                        fevNum = document.getLong("fev1").intValue();
-                        String text = fevNum + " %";
-                        fevText.setText(text);
-                        np.setValue(fevNum);
-                    }
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                } else {
-                    Log.d(TAG, "get failed with ", task.getException());
-                }
-            }
-        });
+        fevNum = menuActivity.fev1;
+        String text = fevNum + " %";
+        fevText.setText(text);
+        np.setValue(fevNum);
 
         importContacts();
         share.setOnClickListener(new View.OnClickListener() {
@@ -135,6 +111,7 @@ public class fev1_editActivity extends AppCompatActivity {
 
     public void saveBtn(View v){
         final int newFev1 = np.getValue();
+        menuActivity.fev1=newFev1;
         final DocumentReference user_details = db.collection("user_details")
                 .document(mAuth.getCurrentUser().getUid());
 
@@ -151,6 +128,7 @@ public class fev1_editActivity extends AppCompatActivity {
                         }
                         else{
                             user_details.update("fev1", newFev1);
+
 
                         }
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
     ViewFlipper viewFlipper;
     ImageView next;
     ImageView previous;
+    FrameLayout lay;
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -60,6 +62,7 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
         calories = findViewById(R.id.calories);
         addContactBtn=findViewById(R.id.button);
         addCon = findViewById(R.id.addCon);
+        lay = findViewById(R.id.lay);
         if(updateFlag){
             addContactBtn.setVisibility(View.INVISIBLE);
             addCon.setVisibility(View.INVISIBLE);
@@ -69,7 +72,7 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
             birthDate.setText(menuActivity.BIRTHDAY+"");
             calories.setText(menuActivity.RECOMMENDED_CALORIES+"");
         }
-        birthDate.setOnClickListener(new View.OnClickListener() {
+        lay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar cal = Calendar.getInstance();

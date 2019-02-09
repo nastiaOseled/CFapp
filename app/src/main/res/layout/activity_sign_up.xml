@@ -33,11 +33,10 @@
     <TextView
         android:id="@+id/signinBtn"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="31dp"
+        android:layout_alignEnd="@+id/signin_email"
+
         android:layout_alignTop="@+id/signupBtn"
-        android:layout_alignEnd="@+id/signin_psw"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="0dp"
         android:height="19dp"
         android:background="@null"
         android:clickable="true"
@@ -47,25 +46,26 @@
         android:textSize="18sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="274dp"
-        tools:layout_editor_absoluteY="163dp" />
+        tools:layout_editor_absoluteY="163dp"
+        android:layout_alignRight="@+id/signin_email" />
 
     <TextView
         android:id="@+id/signupBtn"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="166dp"
+        android:layout_alignStart="@+id/termsCheckBox"
+        android:layout_marginTop="178dp"
         android:background="@null"
         android:clickable="true"
+        android:onClick="onClickSignUp"
         android:text="@string/sign_up"
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="54dp"
         tools:layout_editor_absoluteY="163dp"
-        android:onClick="onClickSignUp"/>
+        android:layout_alignLeft="@+id/termsCheckBox" />
 
     <View
         android:id="@+id/signinLine"
@@ -75,16 +75,21 @@
         android:layout_below="@+id/signinBtn"
         android:layout_marginStart="-8dp"
         android:layout_marginTop="-6dp"
-        android:background="@android:color/white" />
+        android:background="@android:color/white"
+        android:layout_alignLeft="@+id/signinBtn"
+        android:layout_marginLeft="-8dp" />
 
     <View
         android:id="@+id/signupLine"
         android:layout_width="80dp"
         android:layout_height="3dp"
+
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/signinBtn"
-        android:layout_marginStart="81dp"
-        android:background="@android:color/darker_gray" />
+        android:layout_alignTop="@+id/signinLine"
+        android:layout_marginStart="91dp"
+        android:background="@android:color/darker_gray"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="91dp" />
 
     <EditText
         android:id="@+id/signin_email"
@@ -105,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="187dp"
+        android:layout_marginBottom="230dp"
         android:ellipsize="start"
         android:ems="10"
         android:gravity="center_horizontal"
@@ -130,9 +135,8 @@
         android:id="@+id/signup_psw"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignTop="@+id/signin_psw"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="207dp"
         android:ellipsize="start"
         android:ems="10"
         android:gravity="center_horizontal"

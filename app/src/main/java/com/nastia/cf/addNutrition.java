@@ -153,7 +153,6 @@ public class addNutrition extends AppCompatActivity {
 
                                 //insert new food to user's nutritionList reports list
                                 insertNewFoodToUserNutritionList(anotherFood, newFood);
-                                //startActivity(new Intent(addNutrition.this,NutritionActivity.class));
 
                                 NutritionActivity.nutritionList.add(new Food(anotherFood, (long) caloriesToInsert, unitToInsert));
                                 NutritionActivity.sum+=caloriesToInsert;

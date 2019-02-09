@@ -199,12 +199,4 @@ public class ContactsActivity extends AppCompatActivity {
         });
     }
 
-/*    @Override
-    public void onDestroy() {
-
-        super.onDestroy();
-        contacts.clear();
-        adapter.notifyDataSetChanged();
-
-    }*/
 }

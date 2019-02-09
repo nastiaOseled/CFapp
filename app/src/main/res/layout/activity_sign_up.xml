@@ -34,18 +34,20 @@
         android:id="@+id/signinBtn"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_alignEnd="@+id/signin_psw"
         android:layout_alignTop="@+id/signupBtn"
+        android:layout_alignEnd="@+id/signin_psw"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="0dp"
         android:height="19dp"
         android:background="@null"
         android:clickable="true"
+        android:onClick="onClickSignIn"
         android:text="@string/sign_in"
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold"
         tools:layout_editor_absoluteX="274dp"
-        tools:layout_editor_absoluteY="163dp"
-        android:onClick="onClickSignIn"/>
+        tools:layout_editor_absoluteY="163dp" />
 
     <TextView
         android:id="@+id/signupBtn"

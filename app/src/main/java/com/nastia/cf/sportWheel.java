@@ -104,6 +104,7 @@ public class sportWheel extends AppCompatActivity {
         BtnRollAgain = findViewById(R.id.again);
         BtnDone.setVisibility(View.INVISIBLE);
         BtnRollAgain.setVisibility(View.INVISIBLE);
+        // when the user press on DONE buttrn, save it tn DB
         BtnDone.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 BtnDone.setVisibility(View.INVISIBLE);
@@ -124,6 +125,7 @@ public class sportWheel extends AppCompatActivity {
                         .add(activity);
             }
         });
+        //roll again the wheel
         BtnRollAgain.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
@@ -315,6 +317,8 @@ public class sportWheel extends AppCompatActivity {
         dialog.show();
     }
 
+
+    //import contacts from DB
     public void importContacts() {
         final DocumentReference user_details = db.collection("user_details")
                 .document(mAuth.getCurrentUser().getUid());

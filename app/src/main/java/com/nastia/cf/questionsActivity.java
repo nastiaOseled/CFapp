@@ -75,6 +75,7 @@ public class questionsActivity extends AppCompatActivity {
         outState.putLong(KEY_EXPANDED_ID, mRecyclerView.getExpandedItemId());
     }
 
+    //load questions from DB and insert to array
     private void loadData() {
         final List<questionItem> q = new ArrayList<>();
         db.collection("questions")
@@ -105,8 +106,7 @@ public class questionsActivity extends AppCompatActivity {
                         mRecyclerView.setAdapterItems(itemHolders);
                     }
                 });
-        final int dataCount = 50;
-        int index = 0;
+
 
     }
 

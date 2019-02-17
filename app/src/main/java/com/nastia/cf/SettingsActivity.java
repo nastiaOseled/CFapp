@@ -97,6 +97,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
+
+    //when result returned from 'sign up activity', update the details
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == 0) {

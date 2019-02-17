@@ -40,8 +40,6 @@ public class MedicinesActivity extends AppCompatActivity {
     ListView medList;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +61,7 @@ public class MedicinesActivity extends AppCompatActivity {
         importMeds();
     }
 
-
+    //when return from medicine edit activity, check if medicine name changed, if so then update medicines list
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -77,6 +75,7 @@ public class MedicinesActivity extends AppCompatActivity {
         }
     }
 
+    //import from DB the list of user's medicines
     private void importMeds(){
         meds= new ArrayList<String>();
         medsId= new ArrayList<String>();

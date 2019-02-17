@@ -63,15 +63,7 @@ public class signUpActivity extends AppCompatActivity implements View.OnClickLis
         signup_psw2.setVisibility(View.INVISIBLE);
         terms.setVisibility(View.INVISIBLE);
 
-        // Buttons
-        /*findViewById(R.id.email_sign_in_button).setOnClickListener(this);
-        *//*findViewById(R.id.email_create_account_button).setOnClickListener(this);
-        findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.verify_email_button).setOnClickListener(this);*/
-
-        // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
     }
 
     @Override
@@ -111,10 +103,6 @@ public class signUpActivity extends AppCompatActivity implements View.OnClickLis
                                     Toast.LENGTH_SHORT).show();
                             
                         }
-
-                        // [START_EXCLUDE]
-                        //hideProgressDialog();   ??
-                        // [END_EXCLUDE]
                     }
                 });
         // [END create_user_with_email]
@@ -171,18 +159,9 @@ public class signUpActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-       /* int i = v.getId();
-        if (i == R.id.email_create_account_button) {
-            createAccount(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        } else if (i == R.id.email_sign_in_button) {
-            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        } else if (i == R.id.sign_out_button) {
-            signOut();
-        } else if (i == R.id.verify_email_button) {
-            sendEmailVerification();
-        }*/
-    }
 
+    }
+    // change view to sign in
     public void onClickSignIn(View v){
         isSignIn=true;
         signin_email.setVisibility(View.VISIBLE);
@@ -197,6 +176,7 @@ public class signUpActivity extends AppCompatActivity implements View.OnClickLis
         signUpLine.setBackgroundColor(Color.WHITE);
     }
 
+    //change view to sign up
     public void onClickSignUp(View v){
         isSignIn=false;
         signin_email.setVisibility(View.INVISIBLE);
@@ -211,6 +191,8 @@ public class signUpActivity extends AppCompatActivity implements View.OnClickLis
         signUpLine.setBackgroundColor(Color.GRAY);
     }
 
+
+    //validate input and continue
     public void continueBtnListener(View v){
         if(isSignIn){
             signIn(signin_email.getText().toString(),signin_psw.getText().toString());

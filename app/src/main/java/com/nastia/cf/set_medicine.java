@@ -44,7 +44,6 @@ public class set_medicine extends AppCompatActivity {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private LinearLayout alarmsView;
-    //private Spinner spinner;
     ArrayList<String> alertsTime = new ArrayList<>();
     int hour,min;
     String medId ;
@@ -73,6 +72,7 @@ public class set_medicine extends AppCompatActivity {
                 openMedListDialog();
             }
         });
+        //if we wish to edit existing medicine, import medicine data from DB
         if(medId != null) {
             DocumentReference medRef = db.collection("user_details").
                     document(mAuth.getCurrentUser().getUid()).collection("med").document(medId);
@@ -115,7 +115,7 @@ public class set_medicine extends AppCompatActivity {
                 openTimePickerDialog();
             }
         });
-
+        // when save button clicked - save new medicine or update an existing one
         final Button saveBtn = findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -231,6 +231,10 @@ public class set_medicine extends AppCompatActivity {
         dialog.show();
     }
 
+    /**
+     * after user choose an alarm time , add it to alarms array list
+     * @param time alarm time HH:mm
+     */
     private void updateAlarms(String time){
         alertsTime.add(time);
         LayoutInflater factory = LayoutInflater.from(this);
@@ -247,6 +251,10 @@ public class set_medicine extends AppCompatActivity {
         tv_year.setText(time);
         alarmsView.addView(myView);
     }
+
+    /**
+     * open a list of medicines that are appear in data base, so tht the user can choose a medicine from the list
+     */
 
     private void openMedListDialog(){
         final ArrayList<CharSequence> spinnerArray = new ArrayList<>();

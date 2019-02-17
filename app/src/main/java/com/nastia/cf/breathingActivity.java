@@ -122,7 +122,8 @@ public class breathingActivity extends AppCompatActivity {
         });
     }
 
-    //
+    //animation of the heart image on click and changing the text according to the animation to match
+    //the physical activity instructions
     public void onClick(View v) {
         lungs.animate().
                 scaleX(2f).
@@ -152,7 +153,7 @@ public class breathingActivity extends AppCompatActivity {
                                 setDuration(1000).start();
                 }
             }
-
+            //when animation finished - set button to do again or save to DB and show final screen
             public void onFinish() {
                         b1.setVisibility(View.VISIBLE);
                         b2.setVisibility(View.VISIBLE);
@@ -190,12 +191,13 @@ public class breathingActivity extends AppCompatActivity {
         }.start();
 
     }
-
+    //Confetti function on finish screen
     protected ConfettiManager generateInfinite() {
         return CommonConfetti.rainingConfetti(container, colors)
                 .infinite();
     }
 
+    //open dialog to choose contact to share with the achievement
     private void openShareListDialog() {
 
         mSelectedItems = new ArrayList();  // Where we track the selected items
@@ -240,7 +242,7 @@ public class breathingActivity extends AppCompatActivity {
         dialog.show();
     }
 
-
+//import user's chosen contacts from dB
     public void importContacts() {
         final DocumentReference user_details = db.collection("user_details")
                 .document(mAuth.getCurrentUser().getUid());
@@ -272,6 +274,7 @@ public class breathingActivity extends AppCompatActivity {
         });
     }
 
+    //send sms to chosen contacts
     protected void sendSMSMessage() {
         for (Integer index:mSelectedItems) {
             for (Contact c : contacts) {
@@ -287,6 +290,7 @@ public class breathingActivity extends AppCompatActivity {
 
     }
 
+    //if app has permission to send sms, send sms to contacts , otherwise show error message
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -304,7 +308,7 @@ public class breathingActivity extends AppCompatActivity {
 
     }
 
-
+//check if app has permission to send sms , if no then ask for permission
     private void requestSmsPermission() {
         String permission = Manifest.permission.SEND_SMS;
         int grant = ContextCompat.checkSelfPermission(this, permission);

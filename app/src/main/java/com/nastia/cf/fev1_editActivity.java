@@ -108,7 +108,8 @@ public class fev1_editActivity extends AppCompatActivity {
         });
 
     }
-
+    // on click on save button, save the new fev1 value to the DB.
+    //if the new value higher then the last value, show confetti.
     public void saveBtn(View v){
         final int newFev1 = np.getValue();
         menuActivity.fev1=newFev1;
@@ -152,7 +153,7 @@ public class fev1_editActivity extends AppCompatActivity {
         else finish();
 
     }
-
+    //open dialog to choose contact to share with the achievement
     private void openShareListDialog() {
 
         mSelectedItems = new ArrayList();  // Where we track the selected items
@@ -197,7 +198,7 @@ public class fev1_editActivity extends AppCompatActivity {
         dialog.show();
     }
 
-
+    //import user's chosen contacts from dB
     public void importContacts() {
         final DocumentReference user_details = db.collection("user_details")
                 .document(mAuth.getCurrentUser().getUid());
@@ -234,6 +235,7 @@ public class fev1_editActivity extends AppCompatActivity {
                 .infinite();
     }
 
+    //send sms to chosen contacts
     protected void sendSMSMessage() {
         for (Integer index:mSelectedItems) {
             for (Contact c : contacts) {
@@ -249,6 +251,7 @@ public class fev1_editActivity extends AppCompatActivity {
 
     }
 
+    //if app has permission to send sms, send sms to contacts , otherwise show error message
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
         switch (requestCode) {
@@ -266,7 +269,7 @@ public class fev1_editActivity extends AppCompatActivity {
 
     }
 
-
+    //check if app has permission to send sms , if no then ask for permission
     private void requestSmsPermission() {
         String permission = Manifest.permission.SEND_SMS;
         int grant = ContextCompat.checkSelfPermission(this, permission);

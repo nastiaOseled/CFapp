@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.FrameLayout;
@@ -79,7 +80,11 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
                 int year = cal.get(Calendar.YEAR);
                 int month = cal.get(Calendar.MONTH);
                 int day = cal.get(Calendar.DAY_OF_MONTH);
-
+                InputMethodManager inputMethodManager =
+                        (InputMethodManager) signUp_detailsActivity.this.getSystemService(
+                                Activity.INPUT_METHOD_SERVICE);
+                inputMethodManager.hideSoftInputFromWindow(
+                        signUp_detailsActivity.this.getCurrentFocus().getWindowToken(), 0);
                 DatePickerDialog dialog = new DatePickerDialog(
                         signUp_detailsActivity.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
@@ -117,6 +122,7 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
 
     }
 
+    // check fields validation
     public void continueBtnListener(View v){
         if(name.getText().toString().isEmpty()){
             Toast.makeText(signUp_detailsActivity.this, "הכנס שם", Toast.LENGTH_SHORT).show();
@@ -134,11 +140,15 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
             Toast.makeText(signUp_detailsActivity.this, "הכנס תאריך לידה", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if(calories.getText().toString().isEmpty()){
+            Toast.makeText(signUp_detailsActivity.this, "הכנס כמות קלוריות", Toast.LENGTH_SHORT).show();
+            return;
+        }
         addUserDate();
 
     }
 
+    //save user information to DB
     public void addUserDate() {
 
         Map<String, Object> user = new HashMap<>();
@@ -173,6 +183,7 @@ public class signUp_detailsActivity extends AppCompatActivity implements View.On
 
     }
 
+    //navigate to contacts activity
     public void addContacts(View v){
         Intent intent = new Intent(signUp_detailsActivity.this, ContactsActivity.class);
         startActivity(intent);

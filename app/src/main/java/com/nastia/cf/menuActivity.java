@@ -59,7 +59,7 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(menuActivity.this, signUpActivity.class));
             }
         });
-
+        // set user static user details parameters
         user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -111,7 +111,7 @@ public class menuActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
-
+    //navigate to the chosen activity
     @Override
     public void onClick(View v){
         int i = v.getId();

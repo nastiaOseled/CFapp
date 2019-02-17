@@ -19,9 +19,7 @@ package com.nastia.cf;
 import com.sysdata.widget.accordion.Item;
 
 /**
- * Created on 05/04/17.
- *
- * @author Umberto Marini
+ * question item used for questions activity
  */
 public class questionItem extends Item {
 

@@ -111,18 +111,6 @@ public class FeedActivity extends AppCompatActivity {
 
         nickname.setText(menuActivity.NICKNAME + "");
 
-//        ArrayList<Comment> c = new ArrayList<Comment>();
-//        c.add(new Comment("u222", "25/1/18", "14:20", "tetetet"));
-//        Post p = new Post(mAuth.getCurrentUser().getUid(), "nastia", "23/1/18", "16:33", 11, c, "blblblblb", 1);
-//        addPostToDB(p);
-//        posts.add(p);
-//        p = new Post(mAuth.getCurrentUser().getUid(), "nof", "23/1/18", "16:33", 11, c, "jhjhjhh", 0);
-//        addPostToDB(p);
-//        posts.add(p);
-//       Post p = new Post(LauncherActivity.mAuth.getCurrentUser().getUid(), "Location", "23/1/18", "16:33", 11, null, "jhjhjhh", 1);
-//        addPostToDB(p);
-//        posts.add(p);
-
         adapter = new FeedAdapter(posts);
         // Attach the adapter to the recyclerview to populate items
         rvPosts.setAdapter(adapter);
@@ -144,6 +132,7 @@ public class FeedActivity extends AppCompatActivity {
         importPosts();
     }
 
+    /*display and import posts from the posts list in the DB*/
     private void importPosts() {
         //populate posts array list and notify adapter
         LauncherActivity.db.collection("Posts")
@@ -203,6 +192,10 @@ public class FeedActivity extends AppCompatActivity {
     }
 
 
+    /*show pop up window.
+    the type of what you neet to type can change.
+    for example: for text post you would be requested to type the text you want to post.
+     */
     protected void showInputDialog(String displayText, final String actionType) {
 
         // get prompts.xml view
@@ -242,6 +235,7 @@ public class FeedActivity extends AppCompatActivity {
         alert.show();
     }
 
+    /**pop up window to write the text and choose picture to post in an "image post"*/
     protected void showImageInputDialog(String displayText, final String actionType) {
 
         // get prompts.xml view
@@ -284,6 +278,7 @@ public class FeedActivity extends AppCompatActivity {
         alert.show();
     }
 
+    /**add text post to the posts list in the DB and display it*/
     public void addTextPost(String text) {
 
         //add new post
@@ -322,6 +317,8 @@ public class FeedActivity extends AppCompatActivity {
 
     }
 
+
+    /**add image post to the posts list in the DB and display it*/
     public void addImagePost(String text) {
         //add new post
         Map<String, Object> newPost = new HashMap<>();
@@ -385,21 +382,8 @@ public class FeedActivity extends AppCompatActivity {
         this.comments.add(c);
     }
 
-    /**
-     * add comment to post in posts list
-     * add comment to post document in DB
-     *
-     * @param post
-     */
-    public void addCommentToPost(Post post, Comment comment) {
 
-        //insert to comments list
-        post.getComments().add(comment);
-
-        //insert to DB
-
-    }
-
+    /**change nickname in the DB*/
     public void changeNickname(String newNickname){
         nickname.setText(newNickname + "");
         menuActivity.NICKNAME = newNickname;

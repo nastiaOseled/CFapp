@@ -43,8 +43,7 @@ public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.View
         textView.setText(food.getName()+" "+food.getUnit());
         textView = viewHolder.caloriesTextView;
         textView.setText(food.getCalories().toString());
-       // Button button = viewHolder.messageButton;
-      //  button.setEnabled(true);
+
     }
 
     @Override
@@ -56,14 +55,12 @@ public class NutritionAdapter extends RecyclerView.Adapter<NutritionAdapter.View
 
         public TextView nameTextView;
         public TextView caloriesTextView;
-   //    public Button messageButton;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             nameTextView = (TextView) itemView.findViewById(R.id.nutrition_name);
             caloriesTextView = (TextView) itemView.findViewById(R.id.nutrition_calories);
-            //messageButton = (Button) itemView.findViewById(R.id.message_button);
         }
     }
 }

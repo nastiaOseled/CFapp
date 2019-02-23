@@ -31,10 +31,6 @@ import java.util.Map;
 
 public class NutritionActivity extends AppCompatActivity {
 
-//    //DB connection
-//    private final static FirebaseFirestore db = FirebaseFirestore.getInstance();
-//    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
     Button addBtn;
     TextView calories;
     TextView caloriesLeft;
@@ -81,8 +77,6 @@ public class NutritionActivity extends AppCompatActivity {
             }
         });
 
-        //TODO import nutritionList
-
         adapter = new NutritionAdapter(nutritionList);
         // Attach the adapter to the recyclerview to populate items
         rvNutrition.setAdapter(adapter);
@@ -108,7 +102,10 @@ public class NutritionActivity extends AppCompatActivity {
 
     }
 
-
+    /**import food items of the same day from DB.
+     * sums the calories for the same day and display it.
+     * if a day has passed, reset the food list and the calories for that day.
+     */
     private void setCalories() {
 
         final Date today = new Date();
@@ -189,8 +186,6 @@ public class NutritionActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         calories.setText("0");
 
-//        db.collection("user_details").
-//                document(mAuth.getCurrentUser().getUid())
         menuActivity.user_details.collection("nutrition reports").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -204,16 +199,13 @@ public class NutritionActivity extends AppCompatActivity {
                         //add today date
                         Map<String, Object> todayDate = new HashMap<>();
                         todayDate.put("date", stringToday);
-//                        db.collection("user_details").
-//                                document(mAuth.getCurrentUser().getUid())
                         menuActivity.user_details.collection("nutrition reports")
                                 .document("Date").set(todayDate, SetOptions.merge());
 
                         todayDate.clear();
                         todayDate.put("date", previousDate);
                         todayDate.put("calories", sum);
-//                        db.collection("user_details").
-//                                document(mAuth.getCurrentUser().getUid())
+
                         menuActivity.user_details.collection("calories_reports")
                                 .add(todayDate);
                         sum = 0;

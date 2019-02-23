@@ -24,14 +24,6 @@ public class LauncherActivity extends AppCompatActivity {
 
     public final static FirebaseFirestore db = FirebaseFirestore.getInstance();
     public final static FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    //public final static DocumentReference user_details = db.collection("user_details")
-    //  .document(mAuth.getCurrentUser().getUid());
-
-/*
-    public  static String NICKNAME;
-    public  static int RECOMMENDED_CALORIES;
-    public  static double WEIGHT;
-*/
 
     private static SharedPreferences sharedPref;
 
@@ -46,7 +38,8 @@ public class LauncherActivity extends AppCompatActivity {
         //set time to start
 
 
-        //check if user is already connected to app
+        //check if user is already connected to app.
+        //YES-go to the main menu. NO-go to login screen
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         boolean b = sharedPref.getBoolean("userConnected", false);
         if (!b) {
@@ -67,39 +60,6 @@ public class LauncherActivity extends AppCompatActivity {
 
                     Intent in = new Intent(LauncherActivity.this, menuActivity.class);
                     startActivity(in);
-
-/*                    user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                   NICKNAME=(document.getString("name"));
-                                   RECOMMENDED_CALORIES=document.getLong("recommendedCaloriesPerDay").intValue();
-
-                                   //import contacts
-                                    user_details.collection("contacts")
-                                            .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                for (QueryDocumentSnapshot document : task.getResult()){
-                                                    String name=document.getString("name");
-                                                    String phone=document.getString("phone");
-                                                    Contact c=new Contact(name, phone);
-//                                                    if( ! contacts.contains(c))
-//                                                        contacts.add(c);
-                                                }
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        }
-                    });*/
-
-                    //import user's nutrition list and calories sum
-
 
                 }
             }, 2000);

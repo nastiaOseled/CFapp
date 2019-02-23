@@ -170,6 +170,8 @@ public class addNutrition extends AppCompatActivity {
     }
 
 
+    /**populate nutrition list before the user choose food item to add.
+     * taken from the DB*/
     public void setComboBox() {
 
         final List<CharSequence> spinnerArray = new ArrayList<>();
@@ -200,55 +202,8 @@ public class addNutrition extends AppCompatActivity {
                 });
     }
 
-    public void getInputFromUser() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("נא הכנס סוג מזון");
 
-        // Set up the input
-        final EditText input = new EditText(this);
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_TEXT_VARIATION_NORMAL);
-        //  input.setRawInputType(Configuration.KEYBOARD_12KEY);
-        builder.setView(input);
-
-        // Set up the buttons
-        builder.setPositiveButton("אישור", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String anotherFood = input.getText().toString();
-
-                //set the document before insert
-                Map<String, Object> newFood = new HashMap<>();
-                newFood.put("name", anotherFood);
-                newFood.put("calories", 100);
-                newFood.put("unit", "100 גרם");
-
-                //insert new value to nutritionList list
-                insertNewValueToNutritionCollection(anotherFood, newFood);
-
-                //insert new value to user's nutritionList reports list
-                insertNewFoodToUserNutritionList(anotherFood, newFood);
-
-                dialog.dismiss();
-                //TODO
-                //     spinner2.setSelection(spinner2.getIte);
-            }
-        });
-        builder.setNegativeButton("ביטול", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-
-        input.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
-
-    }
-
+    /**add new food item to nutrition list in thr DB*/
     public void insertNewValueToNutritionCollection(String anotherFood, Map<String, Object> newFood) {
         db.collection("Nutrition").document(anotherFood)
                 .set(newFood)
@@ -266,6 +221,7 @@ public class addNutrition extends AppCompatActivity {
                 });
     }
 
+    /**when choosing "other" in the nutrition list, an alert dialog pop up window pops and you type the new food item you want to add*/
     protected void showInputDialog() {
 
         // get prompts.xml view
@@ -296,15 +252,6 @@ public class addNutrition extends AppCompatActivity {
                         newFoodName = anotherFood + "(100 גרם)";
                         newFoodCal = 100;
 
-                        //insert new value to nutritionList list
-                    //    insertNewValueToNutritionCollection(anotherFood, newFood);
-
-                        //insert new value to user's nutritionList reports list
-
-                        //insertNewFoodToUserNutritionList(anotherFood, newFood);
-
-                        //TODO
-                        //     spinner2.setSelection(spinner2.getIte);
                     }
                 });
 
@@ -314,23 +261,8 @@ public class addNutrition extends AppCompatActivity {
     }
 
 
+    /**after adding food item to the daily nutrition list, method insert the new food to the user's daily nutrition list on th DB*/
     public void insertNewFoodToUserNutritionList(final String anotherFood, final Map<String, Object> newFood) {
-
-//        final Date today = new Date();
-//        final String stringToday=sfd.format(today);
-
-//        DocumentReference docRef = db.collection("user_details").
-//                document(mAuth.getCurrentUser().getUid()).collection("nutrition reports").document("Date");
-//        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-//                DocumentSnapshot document = task.getResult();
-//                String time = document.getString("date");
-//                if ( ! stringToday.equals(time)) {
-//                    NutritionActivity.deleteAllNutrition(stringToday,time);
-//                }//if date is not today
-//            }
-//        });
 
         //add new food
         menuActivity.user_details.collection("nutrition reports").add(newFood)

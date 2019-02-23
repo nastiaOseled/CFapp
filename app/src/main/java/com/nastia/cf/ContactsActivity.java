@@ -124,6 +124,7 @@ public class ContactsActivity extends AppCompatActivity {
         }
     }
 
+    /*show contacts. taken from the device contacts list*/
     private void showContacts() {
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
@@ -135,6 +136,7 @@ public class ContactsActivity extends AppCompatActivity {
         }
     }
 
+    /*save the new chosen contact to the DB contacts list*/
  public void addContacts(Contact c){
 
      //add new contact
@@ -157,6 +159,9 @@ public class ContactsActivity extends AppCompatActivity {
  }
 
 
+ /*enable or disable the "add contact" button.
+ you can only add up to 3 contacts.
+  */
     public static boolean updateAddBtn(){
         if(contacts.size()==3){
             addBtn.setEnabled(false);
@@ -168,6 +173,7 @@ public class ContactsActivity extends AppCompatActivity {
         return true;
     }
 
+    /*import the chosen contacts from the DB and display in on the screen*/
     public void importContacts() {
 
         menuActivity.user_details.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
